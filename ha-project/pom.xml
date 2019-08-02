@@ -1,72 +1,82 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.g2forge.habitat</groupId>
-  <artifactId>ha-project</artifactId>
-  <packaging>pom</packaging>
-  <version>0.0.1</version>
-  <parent>
-    <groupId>com.g2forge.alexandria</groupId>
-    <artifactId>ax-project</artifactId>
-    <version>0.0.10-SNAPSHOT</version>
-    <relativePath>../../alexandria/ax-project/pom.xml</relativePath>
-  </parent>
-  <properties>
-    <alexandria.version>0.0.10-SNAPSHOT</alexandria.version>
-    <habitat.organization>g2forge</habitat.organization>
-    <habitat.name>Habitat</habitat.name>
-    <habitat.repository>habitat</habitat.repository>
-  </properties>
-  <name>Habitat Project</name>
-  <description>Parent project for Habitat.</description>
-  <url>https://github.com/${habitat.organization}/${habitat.repository}/tree/${project.version}/${project.artifactId}</url>
-  <developers>
-    <developer>
-      <name>Greg Gibeling</name>
-      <email>gdgib@outlook.com</email>
-      <organization>G2 Forge</organization>
-      <organizationUrl>http://www.g2forge.com</organizationUrl>
-    </developer>
-  </developers>
-  <licenses>
-    <license>
-      <name>The Apache License, Version 2.0</name>
-      <url>https://github.com/${habitat.organization}/${habitat.repository}/blob/${project.version}/LICENSE</url>
-    </license>
-  </licenses>
-  <scm>
-    <connection>scm:git:git://github.com/${habitat.organization}/${habitat.repository}.git</connection>
-    <developerConnection>scm:git:ssh://github.com:${habitat.organization}/${habitat.repository}.git</developerConnection>
-    <url>http://github.com/${habitat.organization}/${habitat.repository}/tree/${project.version}</url>
-  </scm>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>versions-maven-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <properties>
-            <properties>
-              <name>alexandria.version</name>
-              <dependencies>
-                <dependency>
-                  <groupId>com.g2forge.alexandria</groupId>
-                  <artifactId>alexandria</artifactId>
-                </dependency>
-              </dependencies>
-            </properties>
-            <properties>
-              <name>alexandria.version</name>
-              <dependencies>
-                <dependency>
-                  <artifactId>alexandria</artifactId>
-                </dependency>
-              </dependencies>
-            </properties>
-          </properties>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.g2forge.habitat</groupId>
+	<artifactId>ha-project</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<parent>
+		<groupId>com.g2forge.alexandria</groupId>
+		<artifactId>ax-project</artifactId>
+		<version>0.0.10-SNAPSHOT</version>
+		<relativePath>../../alexandria/ax-project/pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<alexandria.version>0.0.10-SNAPSHOT</alexandria.version>
+		<habitat.organization>g2forge</habitat.organization>
+		<habitat.name>Habitat</habitat.name>
+		<habitat.repository>habitat</habitat.repository>
+	</properties>
+
+	<name>Habitat Project</name>
+	<description>Parent project for Habitat.</description>
+	<url>https://github.com/${habitat.organization}/${habitat.repository}/tree/${project.version}/${project.artifactId}</url>
+
+	<developers>
+		<developer>
+			<name>Greg Gibeling</name>
+			<email>gdgib@outlook.com</email>
+			<organization>G2 Forge</organization>
+			<organizationUrl>http://www.g2forge.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>https://github.com/${habitat.organization}/${habitat.repository}/blob/${project.version}/LICENSE</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git://github.com/${habitat.organization}/${habitat.repository}.git</connection>
+		<developerConnection>scm:git:ssh://github.com:${habitat.organization}/${habitat.repository}.git</developerConnection>
+		<url>http://github.com/${habitat.organization}/${habitat.repository}/tree/${project.version}</url>
+	</scm>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<properties>
+						<properties>
+							<name>alexandria.version</name>
+							<dependencies>
+								<dependency>
+									<groupId>com.g2forge.alexandria</groupId>
+									<artifactId>alexandria</artifactId>
+								</dependency>
+							</dependencies>
+						</properties>
+						<properties>
+							<name>alexandria.version</name>
+							<dependencies>
+								<dependency>
+									<artifactId>alexandria</artifactId>
+								</dependency>
+							</dependencies>
+						</properties>
+					</properties>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

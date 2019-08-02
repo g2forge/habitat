@@ -4,21 +4,23 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>habitat</artifactId>
-	<packaging>pom</packaging>
+	<artifactId>ha-trace</artifactId>
 
 	<parent>
 		<groupId>com.g2forge.habitat</groupId>
 		<artifactId>ha-project</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>ha-project/pom.xml</relativePath>
+		<relativePath>../ha-project/pom.xml</relativePath>
 	</parent>
 
-	<name>Habitat</name>
-	<description>Habitat provides all the support a growing program needs.</description>
+	<name>Habitat Trace</name>
+	<description>A small library for working with stack traces.</description>
 
-	<modules>
-		<module>ha-project</module>
-		<module>ha-trace</module>
-	</modules>
+	<dependencies>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>7.1</version>
+		</dependency>
+	</dependencies>
 </project>
