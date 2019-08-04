@@ -1,10 +1,10 @@
 package com.g2forge.habitat.trace;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -12,7 +12,6 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import com.g2forge.alexandria.java.core.helpers.HStream;
 import com.g2forge.alexandria.java.core.marker.Helpers;
 
 import lombok.experimental.UtilityClass;
@@ -20,24 +19,14 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 @Helpers
 public class HTrace {
+	public static Method getMain() {
+		final StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+		return new SmartStackTraceElement(stackTrace[stackTrace.length - 1]).getMethod();
+	}
+
 	public static Method getCaller() {
-		final StackTraceElement element = new Throwable().getStackTrace()[1];
-
-		final Class<?> klass;
-		try {
-			klass = Thread.currentThread().getContextClassLoader().loadClass(element.getClassName());
-		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e);
-		}
-		final Map<Integer, String> lineMap;
-		try {
-			lineMap = getLineMap(element.getClassName(), element.getMethodName());
-		} catch (IOException e) {
-			throw new IllegalArgumentException(e);
-		}
-
-		final String descriptor = lineMap.get(element.getLineNumber());
-		return HStream.findOne(Stream.of(klass.getDeclaredMethods()).filter(m -> element.getMethodName().equals(m.getName())).filter(m -> getDescriptor(m).equals(descriptor)));
+		final StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+		return new SmartStackTraceElement(stackTrace[1]).getMethod();
 	}
 
 	protected static String getDescriptor(Method method) {
@@ -69,13 +58,13 @@ public class HTrace {
 		return "L" + type.getName().replace('.', '/') + ";";
 	}
 
-	protected static Map<Integer, String> getLineMap(String className, String methodName) throws IOException {
+	protected static Map<Integer, String> getLineMap(InputStream classData, String methodName) throws IOException {
 		final Map<Integer, String> retVal = new HashMap<>();
-		final ClassReader reader = new ClassReader(className);
+		final ClassReader reader = new ClassReader(classData);
 		reader.accept(new ClassVisitor(Opcodes.ASM7) {
 			@Override
 			public MethodVisitor visitMethod(final int access, final String name, final String descriptor, final String signature, final String[] exceptions) {
-				if (!methodName.equals(name)) return null;
+				if ((methodName != null) && !methodName.equals(name)) return null;
 				return new MethodVisitor(Opcodes.ASM7) {
 					@Override
 					public void visitLineNumber(int line, Label start) {
