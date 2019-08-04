@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 import com.g2forge.alexandria.java.core.helpers.HStream;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -21,11 +22,18 @@ public class SmartStackTraceElement implements ISmartStackTraceElement {
 	@Delegate(types = IStackTraceElement.class)
 	protected final StackTraceElement element;
 
+	@Getter(AccessLevel.PROTECTED)
+	protected final ClassLoader classLoader;
+
 	@Getter(lazy = true)
 	private final Class<?> declaringClass = computeDeclaringClass();
 
 	@Getter(lazy = true)
 	private final Method method = computeMethod();
+
+	public SmartStackTraceElement(StackTraceElement element) {
+		this(element, Thread.currentThread().getContextClassLoader());
+	}
 
 	protected Class<?> computeDeclaringClass() {
 		final String className = getClassName();
@@ -48,14 +56,5 @@ public class SmartStackTraceElement implements ISmartStackTraceElement {
 
 		// Find the method with the correct name and descriptor
 		return HStream.findOne(Stream.of(getDeclaringClass().getDeclaredMethods()).filter(m -> element.getMethodName().equals(m.getName())).filter(m -> HTrace.getDescriptor(m).equals(descriptor)));
-	}
-
-	/**
-	 * Get the class loader to use. This should be the class loader which can load the class mentioned in the stack trace.
-	 * 
-	 * @return The class loader to use for reflection.
-	 */
-	protected ClassLoader getClassLoader() {
-		return Thread.currentThread().getContextClassLoader();
 	}
 }

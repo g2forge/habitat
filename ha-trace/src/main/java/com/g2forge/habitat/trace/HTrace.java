@@ -19,8 +19,14 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 @Helpers
 public class HTrace {
+	public static Method getMain() {
+		final StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+		return new SmartStackTraceElement(stackTrace[stackTrace.length - 1]).getMethod();
+	}
+
 	public static Method getCaller() {
-		return new SmartStackTraceElement(new Throwable().getStackTrace()[1]).getMethod();
+		final StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+		return new SmartStackTraceElement(stackTrace[1]).getMethod();
 	}
 
 	protected static String getDescriptor(Method method) {
