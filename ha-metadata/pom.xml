@@ -17,5 +17,11 @@
 	<description>When you need data about your code, and annotations just aren't enough.</description>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.g2forge.habitat</groupId>
+			<artifactId>ha-trace</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

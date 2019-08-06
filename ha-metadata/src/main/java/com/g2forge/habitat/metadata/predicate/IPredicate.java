@@ -5,5 +5,7 @@ import com.g2forge.alexandria.java.type.IGenericTyped;
 import com.g2forge.habitat.metadata.subject.ISubject;
 
 public interface IPredicate<T> extends IGenericTyped<T, IPredicateType<T>>, ITuple1G_<T> {
+	public boolean isPresent();
+
 	public ISubject getSubject();
 }
