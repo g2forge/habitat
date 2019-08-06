@@ -4,22 +4,24 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>habitat</artifactId>
-	<packaging>pom</packaging>
+	<artifactId>ha-metadata</artifactId>
 
 	<parent>
 		<groupId>com.g2forge.habitat</groupId>
 		<artifactId>ha-project</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>ha-project/pom.xml</relativePath>
+		<relativePath>../ha-project/pom.xml</relativePath>
 	</parent>
 
-	<name>Habitat</name>
-	<description>Habitat provides all the support a growing program needs.</description>
+	<name>Habitat Metadata</name>
+	<description>When you need data about your code, and annotations just aren't enough.</description>
 
-	<modules>
-		<module>ha-project</module>
-		<module>ha-trace</module>
-		<module>ha-metadata</module>
-	</modules>
+	<dependencies>
+		<dependency>
+			<groupId>com.g2forge.habitat</groupId>
+			<artifactId>ha-trace</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>
