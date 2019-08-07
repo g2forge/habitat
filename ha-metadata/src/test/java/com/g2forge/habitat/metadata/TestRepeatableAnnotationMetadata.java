@@ -36,13 +36,15 @@ public class TestRepeatableAnnotationMetadata {
 
 	@Test
 	public void annotated1() {
-		HAssert.assertEquals("A", IMetadata.of(Annotated1.class).getMetadata(Contained.class).value());
-		HAssert.assertEquals(HCollection.asList("A"), Stream.of(IMetadata.of(Annotated1.class).getMetadata(Container.class).value()).map(Contained::value).collect(Collectors.toList()));
+		final IMetadataContext metadata = HMetadata.getStandard();
+		HAssert.assertEquals("A", metadata.of(Annotated1.class).get(Contained.class).value());
+		HAssert.assertEquals(HCollection.asList("A"), Stream.of(metadata.of(Annotated1.class).get(Container.class).value()).map(Contained::value).collect(Collectors.toList()));
 	}
 
 	@Test
 	public void annotated2() {
-		HAssert.assertNull(IMetadata.of(Annotated2.class).getMetadata(Contained.class));
-		HAssert.assertEquals(HCollection.asList("A", "B"), Stream.of(IMetadata.of(Annotated2.class).getMetadata(Container.class).value()).map(Contained::value).collect(Collectors.toList()));
+		final IMetadataContext metadata = HMetadata.getStandard();
+		HAssert.assertNull(metadata.of(Annotated2.class).get(Contained.class));
+		HAssert.assertEquals(HCollection.asList("A", "B"), Stream.of(metadata.of(Annotated2.class).get(Container.class).value()).map(Contained::value).collect(Collectors.toList()));
 	}
 }
