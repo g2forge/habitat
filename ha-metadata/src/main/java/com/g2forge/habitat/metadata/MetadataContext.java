@@ -1,7 +1,10 @@
 package com.g2forge.habitat.metadata;
 
 import java.lang.reflect.AnnotatedElement;
+import java.util.stream.Collectors;
 
+import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.alexandria.java.core.helpers.HStream;
 import com.g2forge.habitat.metadata.accessor.IMetadataAccessor;
 import com.g2forge.habitat.metadata.annotations.ElementJavaAnnotations;
 import com.g2forge.habitat.metadata.annotations.IJavaAnnotations;
@@ -19,6 +22,20 @@ import lombok.RequiredArgsConstructor;
 public class MetadataContext implements IMetadataContext {
 	@Getter(AccessLevel.PROTECTED)
 	protected final IMetadataAccessor metadataAccessor;
+
+	@Override
+	public ISubject merge(ISubject... subjects) {
+		return merge(HCollection.asList(subjects));
+	}
+
+	@Override
+	public ISubject merge(Iterable<? extends ISubject> subjects) {
+		return new Subject(getMetadataAccessor(), new MergedJavaAnnotations(HStream.toStream(subjects.iterator()).map(s -> {
+			final Subject subject = (Subject) s;
+			if (getMetadataAccessor() != subject.getAccessor()) throw new IllegalArgumentException();
+			return subject.getAnnotations();
+		}).collect(Collectors.toList())));
+	}
 
 	@Override
 	public ISubject of(AnnotatedElement element) {

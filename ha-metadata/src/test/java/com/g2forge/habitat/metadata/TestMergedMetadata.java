@@ -5,8 +5,8 @@ import java.lang.annotation.RetentionPolicy;
 
 import org.junit.Test;
 
-import com.g2forge.alexandria.metadata.IMetadata;
 import com.g2forge.alexandria.test.HAssert;
+import com.g2forge.habitat.metadata.subject.ISubject;
 
 public class TestMergedMetadata {
 	@Retention(RetentionPolicy.RUNTIME)
@@ -27,8 +27,9 @@ public class TestMergedMetadata {
 
 	@Test
 	public void test() {
-		final IMetadata metadata = IMetadata.merge(IMetadata.of(C.class), IMetadata.of(D.class));
-		HAssert.assertTrue(metadata.isMetadataPresent(A.class));
-		HAssert.assertTrue(metadata.isMetadataPresent(B.class));
+		final IMetadataContext metadata = HMetadata.getStandard();
+		final ISubject subject = metadata.merge(metadata.of(C.class), metadata.of(D.class));
+		HAssert.assertTrue(subject.isPresent(A.class));
+		HAssert.assertTrue(subject.isPresent(B.class));
 	}
 }
