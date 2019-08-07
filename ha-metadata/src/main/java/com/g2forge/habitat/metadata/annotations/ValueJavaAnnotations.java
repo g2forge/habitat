@@ -18,7 +18,10 @@ public class ValueJavaAnnotations implements IJavaAnnotations {
 	protected final Object value;
 
 	protected AnnotatedElement getAnnotatedElement() {
-		return getValue().getClass();
+		final Object value = getValue();
+		// If the value is an annotation, then we need to get the real type, since annotations are implemented by proxies
+		if (value instanceof Annotation) return ((Annotation) value).annotationType();
+		return value.getClass();
 	}
 
 	@Override
