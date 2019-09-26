@@ -18,6 +18,7 @@
 
 	<properties>
 		<alexandria.version>0.0.10-SNAPSHOT</alexandria.version>
+		
 		<habitat.organization>g2forge</habitat.organization>
 		<habitat.name>Habitat</habitat.name>
 		<habitat.repository>habitat</habitat.repository>
