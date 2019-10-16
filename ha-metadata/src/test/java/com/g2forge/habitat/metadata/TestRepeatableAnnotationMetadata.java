@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
+import com.g2forge.habitat.metadata.value.IMetadataValue;
 
 public class TestRepeatableAnnotationMetadata {
 	@Contained("A")
@@ -36,14 +37,14 @@ public class TestRepeatableAnnotationMetadata {
 
 	@Test
 	public void annotated1() {
-		final IMetadataContext metadata = HMetadata.getStandard();
+		final IMetadataValue metadata = HMetadata.getStandard();
 		HAssert.assertEquals("A", metadata.of(Annotated1.class).get(Contained.class).value());
 		HAssert.assertEquals(HCollection.asList("A"), Stream.of(metadata.of(Annotated1.class).get(Container.class).value()).map(Contained::value).collect(Collectors.toList()));
 	}
 
 	@Test
 	public void annotated2() {
-		final IMetadataContext metadata = HMetadata.getStandard();
+		final IMetadataValue metadata = HMetadata.getStandard();
 		HAssert.assertNull(metadata.of(Annotated2.class).get(Contained.class));
 		HAssert.assertEquals(HCollection.asList("A", "B"), Stream.of(metadata.of(Annotated2.class).get(Container.class).value()).map(Contained::value).collect(Collectors.toList()));
 	}

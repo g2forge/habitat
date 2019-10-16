@@ -1,4 +1,4 @@
-package com.g2forge.habitat.metadata;
+package com.g2forge.habitat.metadata.value;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.stream.Collectors;
@@ -10,16 +10,16 @@ import com.g2forge.habitat.metadata.annotations.ElementJavaAnnotations;
 import com.g2forge.habitat.metadata.annotations.IJavaAnnotations;
 import com.g2forge.habitat.metadata.annotations.MergedJavaAnnotations;
 import com.g2forge.habitat.metadata.annotations.MergedJavaAnnotations.MergedJavaAnnotationsBuilder;
+import com.g2forge.habitat.metadata.value.subject.ISubject;
+import com.g2forge.habitat.metadata.value.subject.Subject;
 import com.g2forge.habitat.metadata.annotations.ValueJavaAnnotations;
-import com.g2forge.habitat.metadata.subject.ISubject;
-import com.g2forge.habitat.metadata.subject.Subject;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class MetadataContext implements IMetadataContext {
+public class MetadataValue implements IMetadataValue {
 	@Getter(AccessLevel.PROTECTED)
 	protected final IMetadataAccessor metadataAccessor;
 

@@ -1,4 +1,4 @@
-package com.g2forge.habitat.metadata.predicate;
+package com.g2forge.habitat.metadata.type.predicate;
 
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 

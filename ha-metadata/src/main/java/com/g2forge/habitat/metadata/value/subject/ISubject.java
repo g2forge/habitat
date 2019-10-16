@@ -1,11 +1,12 @@
-package com.g2forge.habitat.metadata.subject;
+package com.g2forge.habitat.metadata.value.subject;
 
 import java.lang.annotation.Annotation;
 
 import com.g2forge.alexandria.java.type.ITyped;
-import com.g2forge.habitat.metadata.predicate.AnnotationPredicateType;
-import com.g2forge.habitat.metadata.predicate.IPredicate;
-import com.g2forge.habitat.metadata.predicate.IPredicateType;
+import com.g2forge.habitat.metadata.type.predicate.AnnotationPredicateType;
+import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
+import com.g2forge.habitat.metadata.type.subject.ISubjectType;
+import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 
 public interface ISubject extends ITyped<ISubjectType> {
 	public <T> IPredicate<T> bind(IPredicateType<T> predicateType);

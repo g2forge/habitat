@@ -1,4 +1,4 @@
-package com.g2forge.habitat.metadata.predicate;
+package com.g2forge.habitat.metadata.type.predicate;
 
 public interface ISimplePredicateType<T> extends IPredicateType<T> {
 	@Override

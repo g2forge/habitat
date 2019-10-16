@@ -1,9 +1,9 @@
-package com.g2forge.habitat.metadata.subject;
+package com.g2forge.habitat.metadata.value.subject;
 
 import com.g2forge.habitat.metadata.accessor.IMetadataAccessor;
 import com.g2forge.habitat.metadata.annotations.IJavaAnnotations;
-import com.g2forge.habitat.metadata.predicate.IPredicate;
-import com.g2forge.habitat.metadata.predicate.IPredicateType;
+import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
+import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 
 import lombok.Builder;
 import lombok.Data;

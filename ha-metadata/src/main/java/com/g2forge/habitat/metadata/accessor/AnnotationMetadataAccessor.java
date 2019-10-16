@@ -11,10 +11,10 @@ import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.habitat.metadata.annotations.DynamicAnnotationInvocationHandler;
 import com.g2forge.habitat.metadata.annotations.IJavaAnnotations;
-import com.g2forge.habitat.metadata.predicate.AnnotationPredicateType;
-import com.g2forge.habitat.metadata.predicate.IPredicate;
-import com.g2forge.habitat.metadata.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.subject.ISubject;
+import com.g2forge.habitat.metadata.type.predicate.AnnotationPredicateType;
+import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
+import com.g2forge.habitat.metadata.value.predicate.IPredicate;
+import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.Getter;
 

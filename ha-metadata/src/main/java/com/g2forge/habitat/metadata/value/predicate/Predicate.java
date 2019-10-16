@@ -1,6 +1,7 @@
-package com.g2forge.habitat.metadata.predicate;
+package com.g2forge.habitat.metadata.value.predicate;
 
-import com.g2forge.habitat.metadata.subject.ISubject;
+import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
+import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 public class Predicate<T> implements IPredicate<T> {
 	protected final IPredicateType<T> type;

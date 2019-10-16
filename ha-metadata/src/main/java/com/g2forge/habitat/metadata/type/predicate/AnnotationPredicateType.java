@@ -1,4 +1,4 @@
-package com.g2forge.habitat.metadata.predicate;
+package com.g2forge.habitat.metadata.type.predicate;
 
 import java.lang.annotation.Annotation;
 
@@ -23,5 +23,4 @@ public class AnnotationPredicateType<T extends Annotation> implements IPredicate
 	public Class<?> getPredicateID() {
 		return getType();
 	}
-
 }
