@@ -11,6 +11,7 @@ import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.habitat.metadata.v2.TestRepeatableAnnotationMetadata.Contained;
 import com.g2forge.habitat.metadata.v2.TestRepeatableAnnotationMetadata.Container;
+import com.g2forge.habitat.metadata.v2.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.v2.value.subject.ISubject;
 
 public class TestMergedMetadata {
@@ -42,12 +43,17 @@ public class TestMergedMetadata {
 		final ISubject subject = metadata.merge(metadata.of(C.class), metadata.of(D.class));
 		HAssert.assertTrue(subject.isPresent(A.class));
 		HAssert.assertTrue(subject.isPresent(B.class));
+
+		HAssert.assertEquals("A", subject.get(A.class).value());
+		HAssert.assertEquals("B", subject.get(B.class).value());
 	}
-	
+
 	@Test
 	public void repeatable() {
 		final IMetadata metadata = Metadata.getStandard();
 		final ISubject subject = metadata.merge(metadata.of(E.class), metadata.of(F.class));
-		HAssert.assertEquals(HCollection.asList("A", "B"), Stream.of(subject.get(Container.class).value()).map(Contained::value).collect(Collectors.toList()));
+		final IPredicate<Container> predicate = subject.bind(Container.class);
+		HAssert.assertTrue(predicate.isPresent());
+		HAssert.assertEquals(HCollection.asList("A", "B"), Stream.of(predicate.get0().value()).map(Contained::value).collect(Collectors.toList()));
 	}
 }

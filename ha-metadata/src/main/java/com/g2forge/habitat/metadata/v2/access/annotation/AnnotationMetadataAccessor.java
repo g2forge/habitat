@@ -7,11 +7,19 @@ import com.g2forge.habitat.metadata.v2.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.v2.value.subject.ElementSubject;
 import com.g2forge.habitat.metadata.v2.value.subject.ISubject;
 
-public class AnnotationMetadataAccessor implements IMetadataAccessor {
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter(AccessLevel.PROTECTED)
+@RequiredArgsConstructor
+class AnnotationMetadataAccessor implements IMetadataAccessor {
+	protected final AnnotationMetadataRegistry registry;
+
 	@Override
 	public <T> IPredicate<T> bind(ISubject subject, IPredicateType<T> predicateType) {
 		if (!(subject instanceof ElementSubject)) throw new IllegalArgumentException(String.format("%1$s is not an element subject!", subject));
-		AnnotationMetadataRegistry.check(predicateType);
+		getRegistry().check(predicateType);
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final IPredicate<T> retVal = new AnnotationPredicate((ElementSubject) subject, (AnnotationPredicateType) predicateType);
