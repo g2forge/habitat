@@ -3,6 +3,7 @@ package com.g2forge.habitat.metadata.v2.type.predicate;
 import java.lang.annotation.Annotation;
 
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
+import com.g2forge.habitat.metadata.v2.type.IMetadataTypeContext;
 
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class AnnotationPredicateType<T extends Annotation> implements IPredicateType<T> {
+	protected final IMetadataTypeContext context;
+	
 	protected final Class<T> annotationType;
 
 	@Override

@@ -14,6 +14,7 @@ import com.g2forge.habitat.metadata.annotations.ElementJavaAnnotations;
 import com.g2forge.habitat.metadata.v2.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.v2.access.IMetadataRegistry;
 import com.g2forge.habitat.metadata.v2.access.IMetadataRegistry.IFindContext;
+import com.g2forge.habitat.metadata.v2.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.v2.type.predicate.AnnotationPredicateType;
 import com.g2forge.habitat.metadata.v2.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.v2.type.subject.ElementSubjectType;
@@ -33,7 +34,7 @@ public class Metadata implements IMetadata {
 			final Retention retention = type.getAnnotation(Retention.class);
 			if ((retention == null) || !RetentionPolicy.RUNTIME.equals(retention.value())) throw new IllegalArgumentException("The annotation \"" + type.getName() + "\" cannot be read at runtime, since it is not retained!");
 		}
-		
+
 		protected static Class<? extends Annotation> getRepeatable(Class<? extends Annotation> container) {
 			final Method[] methods = container.getDeclaredMethods();
 			if ((methods.length == 1) && (methods[0].getName().equals("value"))) {
@@ -123,6 +124,27 @@ public class Metadata implements IMetadata {
 		@Override
 		public IMetadataAccessor find(ISubjectType subjectType, IPredicateType<?> predicateType) {
 			return getRegistry().find(new IFindContext() {}, subjectType, predicateType);
+		}
+
+		@Override
+		public IMetadataTypeContext getTypeContext() {
+			return new IMetadataTypeContext() {
+				@Override
+				public <T> IPredicateType<T> predicate(Class<T> type) {
+					if (Annotation.class.isAssignableFrom(type)) {
+						@SuppressWarnings({ "unchecked", "rawtypes" })
+						final IPredicateType<T> retVal = new AnnotationPredicateType<>(this, (Class) type);
+						return retVal;
+					}
+					throw new IllegalArgumentException(String.format("Type %1$s is not a valid predicate", type), new NotYetImplementedError());
+				}
+
+				@Override
+				public ISubjectType subject(Class<?> type) {
+					if (AnnotatedElement.class.isAssignableFrom(type)) return ElementSubjectType.valueOf(this, type.asSubclass(AnnotatedElement.class));
+					throw new IllegalArgumentException(String.format("Type %1$s is not a valid subject", type), new NotYetImplementedError());
+				}
+			};
 		}
 	}
 
