@@ -1,9 +1,15 @@
 package com.g2forge.habitat.metadata.v2;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 
 import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
+import com.g2forge.habitat.metadata.annotations.DynamicAnnotationInvocationHandler;
 import com.g2forge.habitat.metadata.annotations.ElementJavaAnnotations;
 import com.g2forge.habitat.metadata.v2.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.v2.access.IMetadataRegistry;
@@ -22,23 +28,37 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 public class Metadata implements IMetadata {
-	@RequiredArgsConstructor
-	@Getter(AccessLevel.PROTECTED)
-	protected static class MetadataValueContext implements IMetadataValueContext {
-		protected final IMetadataRegistry registry;
-
-		@Override
-		public IMetadataAccessor find(ISubjectType subjectType, IPredicateType<?> predicateType) {
-			return getRegistry().find(new IFindContext() {}, subjectType, predicateType);
-		}
-	}
-
 	protected static class AnnotationMetadataRegistry implements IMetadataRegistry {
+		protected static void check(Class<? extends Annotation> type) {
+			final Retention retention = type.getAnnotation(Retention.class);
+			if ((retention == null) || !RetentionPolicy.RUNTIME.equals(retention.value())) throw new IllegalArgumentException("The annotation \"" + type.getName() + "\" cannot be read at runtime, since it is not retained!");
+		}
+		
+		protected static Class<? extends Annotation> getRepeatable(Class<? extends Annotation> container) {
+			final Method[] methods = container.getDeclaredMethods();
+			if ((methods.length == 1) && (methods[0].getName().equals("value"))) {
+				final Class<?> returnType = methods[0].getReturnType();
+				if (returnType.isArray()) {
+					final Class<?> componentType = returnType.getComponentType();
+					if (componentType.isAnnotation()) {
+						final Repeatable repeatable = componentType.getAnnotation(Repeatable.class);
+						if (repeatable.value().equals(container)) {
+							@SuppressWarnings({ "rawtypes", "unchecked" })
+							final Class<? extends Annotation> retVal = (Class) componentType;
+							return retVal;
+						}
+					}
+				}
+			}
+			return null;
+		}
+
 		@Override
 		public IMetadataAccessor find(IFindContext context, ISubjectType subjectType, IPredicateType<?> predicateType) {
 			if (context == null) throw new NullPointerException("The find context must be provided!");
 			if (!(subjectType instanceof ElementSubjectType)) throw new IllegalArgumentException(String.format("%1$s is not an element subject type!", subjectType));
 			if (!(predicateType instanceof AnnotationPredicateType)) throw new IllegalArgumentException(String.format("%1$s is not an annotation predicate type!", predicateType));
+			check(((AnnotationPredicateType<?>) ((AnnotationPredicateType<?>) predicateType)).getAnnotationType());
 
 			return new IMetadataAccessor() {
 				@Override
@@ -54,21 +74,35 @@ public class Metadata implements IMetadata {
 					final AnnotationPredicateType<T> castPredicateType = (AnnotationPredicateType<T>) predicateType;
 					final ElementJavaAnnotations annotations = new ElementJavaAnnotations(castSubject.getElement());
 					return new IPredicate<T>() {
-
-						@Override
-						public IPredicateType<T> getType() {
-							return predicateType;
-						}
-
 						@Override
 						public T get0() {
-							if (!isPresent()) throw new IllegalArgumentException();
-							return annotations.getAnnotation(castPredicateType.getAnnotationType());
+							final Class<T> type = castPredicateType.getAnnotationType();
+							final T retVal = annotations.getAnnotation(type);
+							if (retVal == null) {
+								final Class<? extends Annotation> repeatableType = getRepeatable(type);
+								if (repeatableType != null) {
+									final Object repeatable = annotations.getAnnotation(repeatableType);
+									if (repeatable == null) return null;
+
+									final Object array = Array.newInstance(repeatableType, 1);
+									Array.set(array, 0, repeatable);
+
+									@SuppressWarnings({ "rawtypes", "unchecked" })
+									final T retValDynamic = (T) new DynamicAnnotationInvocationHandler.Builder<Annotation>((Class) type).add("value", array).build();
+									return retValDynamic;
+								}
+							}
+							return retVal;
 						}
 
 						@Override
 						public ISubject getSubject() {
 							return castSubject;
+						}
+
+						@Override
+						public IPredicateType<T> getType() {
+							return predicateType;
 						}
 
 						@Override
@@ -78,6 +112,17 @@ public class Metadata implements IMetadata {
 					};
 				}
 			};
+		}
+	}
+
+	@RequiredArgsConstructor
+	@Getter(AccessLevel.PROTECTED)
+	protected static class MetadataValueContext implements IMetadataValueContext {
+		protected final IMetadataRegistry registry;
+
+		@Override
+		public IMetadataAccessor find(ISubjectType subjectType, IPredicateType<?> predicateType) {
+			return getRegistry().find(new IFindContext() {}, subjectType, predicateType);
 		}
 	}
 
