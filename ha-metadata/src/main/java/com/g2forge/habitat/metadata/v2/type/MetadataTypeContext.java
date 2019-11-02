@@ -2,14 +2,21 @@ package com.g2forge.habitat.metadata.v2.type;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.util.Collection;
 
 import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.habitat.metadata.v2.type.predicate.AnnotationPredicateType;
 import com.g2forge.habitat.metadata.v2.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.v2.type.subject.ElementSubjectType;
 import com.g2forge.habitat.metadata.v2.type.subject.ISubjectType;
+import com.g2forge.habitat.metadata.v2.type.subject.MergedSubjectType;
 
 public class MetadataTypeContext implements IMetadataTypeContext {
+	@Override
+	public ISubjectType merge(Collection<? extends ISubjectType> types) {
+		return new MergedSubjectType(this, types);
+	}
+
 	@Override
 	public <T> IPredicateType<T> predicate(Class<T> type) {
 		if (Annotation.class.isAssignableFrom(type)) {

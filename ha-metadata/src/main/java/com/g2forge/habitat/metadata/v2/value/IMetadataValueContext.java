@@ -5,8 +5,8 @@ import com.g2forge.habitat.metadata.v2.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.v2.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.v2.type.subject.ISubjectType;
 
-public interface IMetadataValueContext {
-	public IMetadataTypeContext getTypeContext();
-
+public interface IMetadataValueContext extends IMetadataSubjectFactory {
 	public IMetadataAccessor find(ISubjectType subjectType, IPredicateType<?> predicateType);
+
+	public IMetadataTypeContext getTypeContext();
 }

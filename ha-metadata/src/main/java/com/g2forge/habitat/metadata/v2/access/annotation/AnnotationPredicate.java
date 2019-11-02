@@ -1,7 +1,9 @@
 package com.g2forge.habitat.metadata.v2.access.annotation;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Repeatable;
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 
 import com.g2forge.habitat.metadata.annotations.DynamicAnnotationInvocationHandler;
 import com.g2forge.habitat.metadata.annotations.ElementJavaAnnotations;
@@ -15,7 +17,34 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor class AnnotationPredicate<T extends Annotation> implements IPredicate<T> {
+@RequiredArgsConstructor
+class AnnotationPredicate<T extends Annotation> implements IPredicate<T> {
+	/**
+	 * Get the repeatable annotation that <code>container</code> contains, or return <code>null</code> if <code>container</code> isn't a repeatable annotation
+	 * container.
+	 * 
+	 * @param container The type of an annotation which might be a repeatable container.
+	 * @return The type of the repeatable annotation, or <code>null</code> if <code>container</code> isn't actually a container.
+	 */
+	protected static Class<? extends Annotation> getRepeatable(Class<? extends Annotation> container) {
+		final Method[] methods = container.getDeclaredMethods();
+		if ((methods.length == 1) && (methods[0].getName().equals("value"))) {
+			final Class<?> returnType = methods[0].getReturnType();
+			if (returnType.isArray()) {
+				final Class<?> componentType = returnType.getComponentType();
+				if (componentType.isAnnotation()) {
+					final Repeatable repeatable = componentType.getAnnotation(Repeatable.class);
+					if (repeatable.value().equals(container)) {
+						@SuppressWarnings({ "rawtypes", "unchecked" })
+						final Class<? extends Annotation> retVal = (Class) componentType;
+						return retVal;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	protected final ElementSubject subject;
 
 	protected final AnnotationPredicateType<T> type;
@@ -28,7 +57,7 @@ import lombok.RequiredArgsConstructor;
 		final Class<T> annotationType = getType().getAnnotationType();
 		final T retVal = getAnnotations().getAnnotation(annotationType);
 		if (retVal == null) {
-			final Class<? extends Annotation> repeatableType = AnnotationMetadataAccessor.getRepeatable(annotationType);
+			final Class<? extends Annotation> repeatableType = AnnotationPredicate.getRepeatable(annotationType);
 			if (repeatableType != null) {
 				final Object repeatable = getAnnotations().getAnnotation(repeatableType);
 				if (repeatable == null) return null;

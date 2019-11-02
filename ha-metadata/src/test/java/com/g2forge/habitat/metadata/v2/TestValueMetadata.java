@@ -3,8 +3,8 @@ package com.g2forge.habitat.metadata.v2;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.habitat.metadata.v2.examples.Annotated;
-import com.g2forge.habitat.metadata.v2.examples.Retained;
+import com.g2forge.habitat.metadata.v2.TestAnnotationMetadata.Annotated;
+import com.g2forge.habitat.metadata.v2.TestAnnotationMetadata.Retained;
 
 public class TestValueMetadata {
 	@Test

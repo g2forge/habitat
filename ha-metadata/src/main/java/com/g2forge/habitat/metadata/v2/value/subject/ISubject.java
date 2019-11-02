@@ -9,7 +9,9 @@ import com.g2forge.habitat.metadata.v2.value.IMetadataValue;
 import com.g2forge.habitat.metadata.v2.value.predicate.IPredicate;
 
 public interface ISubject extends ITyped<ISubjectType>, IMetadataValue {
-	public <T> IPredicate<T> bind(IPredicateType<T> predicateType);
+	public default <T> IPredicate<T> bind(IPredicateType<T> predicateType) {
+		return getContext().find(getType(), predicateType).bind(this, predicateType);
+	}
 
 	public default <T extends Annotation> T get(Class<T> type) {
 		final IPredicateType<T> predicateType = getContext().getTypeContext().predicate(type);

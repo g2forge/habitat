@@ -1,13 +1,27 @@
 package com.g2forge.habitat.metadata.v2;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.habitat.metadata.v2.examples.Annotated;
-import com.g2forge.habitat.metadata.v2.examples.NotRetained;
-import com.g2forge.habitat.metadata.v2.examples.Retained;
 
 public class TestAnnotationMetadata {
+	@Retained("Hello")
+	@NotRetained("Hello")
+	public class Annotated {}
+
+	public @interface NotRetained {
+		public String value();
+	}
+
+	@Retained("Meta")
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface Retained {
+		public String value();
+	}
+
 	@Test
 	public void meta() {
 		final IMetadata metadata = Metadata.getStandard();

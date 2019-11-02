@@ -1,6 +1,7 @@
 package com.g2forge.habitat.metadata.v2.value.subject;
 
-import java.lang.reflect.AnnotatedElement;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import com.g2forge.habitat.metadata.v2.type.subject.ISubjectType;
 import com.g2forge.habitat.metadata.v2.value.IMetadataValueContext;
@@ -13,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class ElementSubject implements ISubject {
+public class MergedSubject implements ISubject {
 	protected final IMetadataValueContext context;
 
-	protected final AnnotatedElement element;
+	protected final Collection<? extends ISubject> subjects;
 
 	@Getter(lazy = true)
-	private final ISubjectType type = getContext().getTypeContext().subject(getElement().getClass());
+	private final ISubjectType type = getContext().getTypeContext().merge(getSubjects().stream().map(ISubject::getType).collect(Collectors.toList()));
 }
