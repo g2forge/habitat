@@ -6,11 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
+import com.g2forge.habitat.metadata.IMetadata;
+import com.g2forge.habitat.metadata.Metadata;
 
 public class TestAnnotationMetadata {
 	@Retained("Hello")
 	@NotRetained("Hello")
-	public static class Annotated {}
+	public class Annotated {}
 
 	public @interface NotRetained {
 		public String value();
@@ -24,27 +26,25 @@ public class TestAnnotationMetadata {
 
 	@Test
 	public void meta() {
-		final IMetadataContext metadata = HMetadata.getStandard();
-		final Retained a = metadata.of(Annotated.class).get(Retained.class);
-		final Retained b = metadata.of(null, a).get(Retained.class);
-		HAssert.assertEquals("Meta", b.value());
+		final IMetadata metadata = Metadata.getStandard();
+		HAssert.assertEquals("Meta", metadata.of(Retained.class).get(Retained.class).value());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void notRetained() {
-		HMetadata.getStandard().of(Annotated.class).get(NotRetained.class);
+		Metadata.getStandard().of(Annotated.class).get(NotRetained.class);
 	}
 
 	@Test
 	public void present() {
-		final IMetadataContext metadata = HMetadata.getStandard();
+		final IMetadata metadata = Metadata.getStandard();
 		HAssert.assertTrue(metadata.of(Annotated.class).isPresent(Retained.class));
 		HAssert.assertFalse(metadata.of(TestAnnotationMetadata.class).isPresent(Retained.class));
 	}
 
 	@Test
 	public void retained() {
-		final Retained value = HMetadata.getStandard().of(Annotated.class).get(Retained.class);
+		final Retained value = Metadata.getStandard().of(Annotated.class).get(Retained.class);
 		HAssert.assertEquals("Hello", value.value());
 	}
 }
