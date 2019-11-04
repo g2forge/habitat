@@ -1,4 +1,4 @@
-package com.g2forge.habitat.metadata.annotations;
+package com.g2forge.habitat.metadata.annotations.implementations;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.reflect.JavaScope;
+import com.g2forge.habitat.metadata.annotations.IJavaAnnotations;
 
 import lombok.Builder;
 import lombok.Data;

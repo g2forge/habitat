@@ -3,7 +3,7 @@ package com.g2forge.habitat.metadata.v2.access.annotation;
 import java.lang.annotation.Annotation;
 
 import com.g2forge.habitat.metadata.annotations.ContainerAnnotationReflection;
-import com.g2forge.habitat.metadata.annotations.ElementJavaAnnotations;
+import com.g2forge.habitat.metadata.annotations.implementations.ElementJavaAnnotations;
 import com.g2forge.habitat.metadata.v2.type.predicate.IAnnotationPredicateType;
 import com.g2forge.habitat.metadata.v2.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.v2.value.subject.ElementSubject;
