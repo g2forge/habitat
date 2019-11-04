@@ -1,7 +1,7 @@
 package com.g2forge.habitat.metadata.v2.access.annotation;
 
 import com.g2forge.habitat.metadata.v2.access.IMetadataAccessor;
-import com.g2forge.habitat.metadata.v2.type.predicate.AnnotationPredicateType;
+import com.g2forge.habitat.metadata.v2.type.predicate.IAnnotationPredicateType;
 import com.g2forge.habitat.metadata.v2.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.v2.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.v2.value.subject.ElementSubject;
@@ -22,7 +22,7 @@ class AnnotationMetadataAccessor implements IMetadataAccessor {
 		getRegistry().check(predicateType);
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		final IPredicate<T> retVal = new AnnotationPredicate((ElementSubject) subject, (AnnotationPredicateType) predicateType);
+		final IPredicate<T> retVal = new AnnotationPredicate((ElementSubject) subject, (IAnnotationPredicateType) predicateType);
 		return retVal;
 	}
 }

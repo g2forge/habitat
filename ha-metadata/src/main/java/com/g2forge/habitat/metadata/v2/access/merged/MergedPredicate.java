@@ -1,7 +1,12 @@
 package com.g2forge.habitat.metadata.v2.access.merged;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.g2forge.habitat.metadata.v2.type.predicate.IContainerPredicateType;
 import com.g2forge.habitat.metadata.v2.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.v2.value.predicate.IPredicate;
+import com.g2forge.habitat.metadata.v2.value.subject.ISubject;
 import com.g2forge.habitat.metadata.v2.value.subject.MergedSubject;
 
 import lombok.Data;
@@ -16,8 +21,26 @@ class MergedPredicate<T> implements IPredicate<T> {
 
 	@Override
 	public T get0() {
-		// TODO Auto-generated method stub
-		return null;
+		if (getType() instanceof IContainerPredicateType) {
+			@SuppressWarnings("unchecked")
+			final IContainerPredicateType<T, ?> cast = (IContainerPredicateType<T, ?>) getType();
+			return merge(cast);
+		} else {
+			for (ISubject subject : getSubject().getSubjects()) {
+				final IPredicate<T> bound = subject.bind(getType());
+				if (bound.isPresent()) return bound.get0();
+			}
+			return null;
+		}
+	}
+
+	protected <U> T merge(IContainerPredicateType<T, U> predicateType) {
+		final List<U> retVal = new ArrayList<>();
+		for (ISubject subject : getSubject().getSubjects()) {
+			final IPredicate<T> bound = subject.bind(getType());
+			if (bound.isPresent()) retVal.addAll(predicateType.unwrap(bound.get0()));
+		}
+		return predicateType.wrap(retVal);
 	}
 
 	@Override

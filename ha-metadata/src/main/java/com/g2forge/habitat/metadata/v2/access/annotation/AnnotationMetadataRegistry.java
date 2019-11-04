@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import com.g2forge.habitat.metadata.v2.access.AMetadataRegistry;
 import com.g2forge.habitat.metadata.v2.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.v2.access.NoAccessorFoundException;
-import com.g2forge.habitat.metadata.v2.type.predicate.AnnotationPredicateType;
+import com.g2forge.habitat.metadata.v2.type.predicate.IAnnotationPredicateType;
 import com.g2forge.habitat.metadata.v2.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.v2.type.subject.ElementSubjectType;
 import com.g2forge.habitat.metadata.v2.type.subject.ISubjectType;
@@ -21,8 +21,8 @@ public class AnnotationMetadataRegistry extends AMetadataRegistry {
 
 	@Override
 	protected <T> void check(IPredicateType<?> predicateType) {
-		if (!(predicateType instanceof AnnotationPredicateType)) throw new NoAccessorFoundException(String.format("%1$s is not an annotation predicate type!", predicateType));
-		final Class<? extends Annotation> type = ((AnnotationPredicateType<?>) predicateType).getAnnotationType();
+		if (!(predicateType instanceof IAnnotationPredicateType)) throw new NoAccessorFoundException(String.format("%1$s is not an annotation predicate type!", predicateType));
+		final Class<? extends Annotation> type = ((IAnnotationPredicateType<?>) predicateType).getAnnotationType();
 		final Retention retention = type.getAnnotation(Retention.class);
 		if ((retention == null) || !RetentionPolicy.RUNTIME.equals(retention.value())) throw new IllegalArgumentException("The annotation \"" + type.getName() + "\" cannot be read at runtime, since it is not retained!");
 	}

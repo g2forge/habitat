@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class AnnotationPredicateType<T extends Annotation> implements IPredicateType<T> {
+public class AnnotationPredicateType<T extends Annotation> implements IPredicateType<T>, IAnnotationPredicateType<T> {
 	protected final IMetadataTypeContext context;
 	
 	protected final Class<T> annotationType;
