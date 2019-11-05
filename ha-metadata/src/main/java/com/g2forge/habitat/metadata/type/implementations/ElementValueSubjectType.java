@@ -3,7 +3,7 @@ package com.g2forge.habitat.metadata.type.implementations;
 import java.lang.reflect.AnnotatedElement;
 
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
-import com.g2forge.habitat.metadata.type.subject.ISubjectType;
+import com.g2forge.habitat.metadata.type.subject.IValueSubjectType;
 
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +14,10 @@ import lombok.ToString;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 @ToString(exclude = "context")
-class ElementValueSubjectType implements ISubjectType {
+class ElementValueSubjectType implements IValueSubjectType {
 	public static ElementValueSubjectType valueOf(IMetadataTypeContext context, Class<? extends AnnotatedElement> type) {
+		if (type == null) return new ElementValueSubjectType(context, null);
+
 		for (ElementSubjectType.Type retVal : ElementSubjectType.Type.values()) {
 			if (retVal.getType() == null) continue;
 			if (retVal.getType().isAssignableFrom(type)) return new ElementValueSubjectType(context, retVal);
@@ -26,4 +28,9 @@ class ElementValueSubjectType implements ISubjectType {
 	protected final IMetadataTypeContext context;
 
 	protected final ElementSubjectType.Type type;
+
+	@Override
+	public boolean isValueOnly() {
+		return getType() == null;
+	}
 }

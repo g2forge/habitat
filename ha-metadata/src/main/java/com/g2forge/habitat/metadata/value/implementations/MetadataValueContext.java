@@ -39,10 +39,9 @@ public class MetadataValueContext implements IMetadataValueContext {
 		if (element == null) {
 			if (value == null) throw new NullPointerException("Cannot get metadata for a null element and value!");
 			if (value instanceof AnnotatedElement) return of((AnnotatedElement) value, null);
-			else return new ValueSubject(this, value);
-		} else {
-			if (value == null) return new ElementSubject(this, element);
-			return new ElementValueSubject(this, element, value);
 		}
+
+		if (value == null) return new ElementSubject(this, element);
+		return new ElementValueSubject(this, element, value);
 	}
 }
