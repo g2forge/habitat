@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.g2forge.alexandria.java.reflect.JavaScope;
-import com.g2forge.habitat.metadata.annotations.IJavaAnnotations;
+import com.g2forge.habitat.metadata.annotations.IJavaAnnotated;
 
 import lombok.Builder;
 import lombok.Data;
@@ -17,17 +17,17 @@ import lombok.Singular;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class MergedJavaAnnotations implements IJavaAnnotations {
+public class MergedJavaAnnotated implements IJavaAnnotated {
 	@Singular("annotations")
-	protected final List<IJavaAnnotations> annotations;
+	protected final List<IJavaAnnotated> annotations;
 
-	public MergedJavaAnnotations(IJavaAnnotations... annotations) {
+	public MergedJavaAnnotated(IJavaAnnotated... annotations) {
 		this(Arrays.asList(annotations));
 	}
 
 	@Override
 	public <T extends Annotation> T getAnnotation(Class<T> type) {
-		for (IJavaAnnotations annotations : getAnnotations()) {
+		for (IJavaAnnotated annotations : getAnnotations()) {
 			final T retVal = annotations.getAnnotation(type);
 			if (retVal != null) return retVal;
 		}
@@ -41,7 +41,7 @@ public class MergedJavaAnnotations implements IJavaAnnotations {
 
 	@Override
 	public boolean isAnnotated(Class<? extends Annotation> type) {
-		for (IJavaAnnotations annotations : getAnnotations()) {
+		for (IJavaAnnotated annotations : getAnnotations()) {
 			if (annotations.isAnnotated(type)) return true;
 		}
 		return false;

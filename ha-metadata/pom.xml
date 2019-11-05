@@ -27,7 +27,6 @@
 			<groupId>com.g2forge.alexandria</groupId>
 			<artifactId>ax-adt</artifactId>
 			<version>${alexandria.version}</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

@@ -1,8 +1,6 @@
 package com.g2forge.habitat.metadata.access.merged;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.g2forge.alexandria.adt.collection.collector.ICollectionBuilder;
 import com.g2forge.habitat.metadata.type.predicate.IContainerPredicateType;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
@@ -34,17 +32,17 @@ class MergedPredicate<T> implements IPredicate<T> {
 		}
 	}
 
-	protected <U> T merge(IContainerPredicateType<T, U> predicateType) {
-		final List<U> retVal = new ArrayList<>();
-		for (ISubject subject : getSubject().getSubjects()) {
-			final IPredicate<T> bound = subject.bind(getType());
-			if (bound.isPresent()) retVal.addAll(predicateType.unwrap(bound.get0()));
-		}
-		return predicateType.wrap(retVal);
-	}
-
 	@Override
 	public boolean isPresent() {
 		return getSubject().getSubjects().stream().map(s -> s.bind(getType())).anyMatch(IPredicate::isPresent);
+	}
+
+	protected <U> T merge(IContainerPredicateType<T, U> predicateType) {
+		final ICollectionBuilder<T, U> builder = predicateType.getCollectionStrategy().builder();
+		for (ISubject subject : getSubject().getSubjects()) {
+			final IPredicate<T> bound = subject.bind(getType());
+			if (bound.isPresent()) builder.add(predicateType.getCollectionStrategy().iterable(bound.get0()));
+		}
+		return builder.get();
 	}
 }

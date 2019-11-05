@@ -5,6 +5,12 @@ import java.lang.annotation.Repeatable;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.g2forge.alexandria.adt.collection.collector.ICollectionBuilder;
+import com.g2forge.alexandria.adt.collection.strategy.ICollectionStrategy;
+import com.g2forge.alexandria.java.core.helpers.HCollection;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -70,21 +76,42 @@ public class ContainerAnnotationReflection<T extends Annotation, U extends Annot
 		this.method = methods[0];
 	}
 
-	@SuppressWarnings("unchecked")
-	public U[] unwrap(T container) {
-		try {
-			return (U[]) getMethod().invoke(container);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new RuntimeException("Failed to get repeatable values from container!", e);
-		}
-	}
+	public ICollectionStrategy<T, U> getCollectionStrategy() {
+		return new ICollectionStrategy<T, U>() {
+			@Override
+			public ICollectionBuilder<T, U> builder() {
+				return new ICollectionBuilder<T, U>() {
+					protected final List<U> list = new ArrayList<>();
 
-	public T wrap(@SuppressWarnings("unchecked") final U... repeatable) {
-		final Object array = Array.newInstance(getRepeatable(), repeatable.length);
-		System.arraycopy(repeatable, 0, array, 0, repeatable.length);
+					@Override
+					public ICollectionBuilder<T, U> add(U value) {
+						list.add(value);
+						return this;
+					}
 
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		final T retValDynamic = (T) new DynamicAnnotationInvocationHandler.Builder<Annotation>((Class) getContainer()).add("value", array).build();
-		return retValDynamic;
+					@Override
+					public T get() {
+						@SuppressWarnings("unchecked")
+						final U[] array = (U[]) Array.newInstance(getRepeatable(), list.size());
+						list.toArray(array);
+
+						@SuppressWarnings({ "rawtypes", "unchecked" })
+						final T retValDynamic = (T) new DynamicAnnotationInvocationHandler.Builder<Annotation>((Class) getContainer()).add("value", array).build();
+						return retValDynamic;
+					}
+				};
+			}
+
+			@Override
+			public Iterable<U> iterable(T collection) {
+				try {
+					@SuppressWarnings("unchecked")
+					final U[] array = (U[]) getMethod().invoke(collection);
+					return HCollection.asList(array);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					throw new RuntimeException("Failed to get repeatable values from container!", e);
+				}
+			}
+		};
 	}
 }

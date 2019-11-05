@@ -1,4 +1,4 @@
-package com.g2forge.habitat.metadata.type;
+package com.g2forge.habitat.metadata.type.implementations;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -6,12 +6,9 @@ import java.util.Collection;
 
 import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.habitat.metadata.annotations.ContainerAnnotationReflection;
-import com.g2forge.habitat.metadata.type.predicate.AnnotationContainerPredicateType;
-import com.g2forge.habitat.metadata.type.predicate.AnnotationPredicateType;
+import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.type.subject.ElementSubjectType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
-import com.g2forge.habitat.metadata.type.subject.MergedSubjectType;
 
 public class MetadataTypeContext implements IMetadataTypeContext {
 	@Override

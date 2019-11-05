@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.g2forge.alexandria.java.reflect.JavaScope;
-import com.g2forge.habitat.metadata.annotations.IJavaAnnotations;
+import com.g2forge.habitat.metadata.annotations.IJavaAnnotated;
 
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +16,7 @@ import lombok.Singular;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class JavaAnnotations implements IJavaAnnotations {
+public class JavaAnnotated implements IJavaAnnotated {
 	@Singular
 	protected final List<Annotation> annotations;
 

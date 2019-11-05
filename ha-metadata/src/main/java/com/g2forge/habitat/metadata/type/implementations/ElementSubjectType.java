@@ -1,4 +1,4 @@
-package com.g2forge.habitat.metadata.type.subject;
+package com.g2forge.habitat.metadata.type.implementations;
 
 import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
+import com.g2forge.habitat.metadata.type.subject.IAnnotatedSubjectType;
 
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class ElementSubjectType implements ISubjectType {
+class ElementSubjectType implements IAnnotatedSubjectType {
 	@Getter
 	@RequiredArgsConstructor
 	public enum Type {

@@ -1,4 +1,4 @@
-package com.g2forge.habitat.metadata.value;
+package com.g2forge.habitat.metadata.value.implementations;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
@@ -10,9 +10,8 @@ import com.g2forge.habitat.metadata.access.IMetadataRegistry.IFindContext;
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
-import com.g2forge.habitat.metadata.value.subject.ElementSubject;
+import com.g2forge.habitat.metadata.value.IMetadataValueContext;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
-import com.g2forge.habitat.metadata.value.subject.MergedSubject;
 
 import lombok.AccessLevel;
 import lombok.Getter;

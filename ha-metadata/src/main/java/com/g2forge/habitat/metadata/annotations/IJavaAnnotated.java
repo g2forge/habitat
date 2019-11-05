@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import com.g2forge.alexandria.java.reflect.JavaScope;
 
-public interface IJavaAnnotations {
+public interface IJavaAnnotated {
 	public <T extends Annotation> T getAnnotation(Class<T> type);
 
 	public Collection<? extends Annotation> getAnnotations(JavaScope scope);

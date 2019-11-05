@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.reflect.JavaScope;
-import com.g2forge.habitat.metadata.annotations.IJavaAnnotations;
+import com.g2forge.habitat.metadata.annotations.IJavaAnnotated;
 
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +15,15 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class ElementJavaAnnotations implements IJavaAnnotations {
-	protected final AnnotatedElement annotatedElement;
+public class ValueJavaAnnotated implements IJavaAnnotated {
+	protected final Object value;
+
+	protected AnnotatedElement getAnnotatedElement() {
+		final Object value = getValue();
+		// If the value is an annotation, then we need to get the real type, since annotations are implemented by proxies
+		if (value instanceof Annotation) return ((Annotation) value).annotationType();
+		return value.getClass();
+	}
 
 	@Override
 	public <T extends Annotation> T getAnnotation(Class<T> type) {
