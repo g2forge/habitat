@@ -38,6 +38,6 @@ public class MetadataTypeContext implements IMetadataTypeContext {
 	public ISubjectType subject(Class<? extends AnnotatedElement> elementType, Class<?> valueType) {
 		if ((elementType == null) && (valueType == null)) throw new NullPointerException("Cannot construct a subject type without either an element or value type!");
 		if (valueType == null) return ElementSubjectType.valueOf(this, elementType);
-		return ElementValueSubjectType.valueOf(this, elementType);
+		return new ElementValueSubjectType(this, elementType, valueType);
 	}
 }

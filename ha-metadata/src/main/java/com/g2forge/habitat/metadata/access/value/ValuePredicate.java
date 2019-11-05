@@ -1,8 +1,8 @@
 package com.g2forge.habitat.metadata.access.value;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.alexandria.java.function.ISupplier;
@@ -38,8 +38,13 @@ class ValuePredicate<T> implements IPredicate<T> {
 	protected IPredicate<T> computeDelegate() {
 		final IMetadataValueContext context = getContext();
 		final IValueSubject subject = getSubject();
-		final IPredicateType<T> type = getType();
-		final List<? extends ISupplier<? extends IPredicate<T>>> suppliers = HCollection.asList(/* TODO: VALUE ONLY, */ () -> context.of(subject.getValue().getClass(), null).bind(type), () -> context.of(subject.getElement(), null).bind(type));
+		final IPredicateType<T> predicateType = getType();
+
+		final List<ISupplier<? extends IPredicate<T>>> suppliers = new ArrayList<>();
+		// TODO: VALUE ONLY
+		suppliers.add(() -> context.of(subject.getType().getValue(), null).bind(predicateType));
+		if (subject.getElement() != null) suppliers.add(() -> context.of(subject.getElement(), null).bind(predicateType));
+
 		return first(IPredicate::isPresent, IFunction1.identity(), () -> new IPredicate<T>() {
 			@Override
 			public T get0() {

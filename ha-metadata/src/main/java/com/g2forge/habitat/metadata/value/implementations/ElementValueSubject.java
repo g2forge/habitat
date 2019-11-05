@@ -1,8 +1,9 @@
 package com.g2forge.habitat.metadata.value.implementations;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
-import com.g2forge.habitat.metadata.type.subject.ISubjectType;
+import com.g2forge.habitat.metadata.type.subject.IValueSubjectType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
 import com.g2forge.habitat.metadata.value.subject.IValueSubject;
 
@@ -24,10 +25,15 @@ public class ElementValueSubject implements IValueSubject {
 	protected final Object value;
 
 	@Getter(lazy = true)
-	private final ISubjectType type = computeType();
+	private final IValueSubjectType type = computeType();
 
-	protected ISubjectType computeType() {
+	protected IValueSubjectType computeType() {
 		final AnnotatedElement element = getElement();
-		return getContext().getTypeContext().subject(element == null ? null : element.getClass(), getValue().getClass());
+		final Class<? extends AnnotatedElement> elementType = element == null ? null : element.getClass();
+
+		final Object value = getValue();
+		final Class<?> valueType = (value instanceof Annotation) ? ((Annotation) value).annotationType() : value.getClass();
+
+		return (IValueSubjectType) getContext().getTypeContext().subject(elementType, valueType);
 	}
 }
