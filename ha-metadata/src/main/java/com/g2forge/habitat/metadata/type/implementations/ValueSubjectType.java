@@ -1,9 +1,6 @@
 package com.g2forge.habitat.metadata.type.implementations;
 
-import java.util.Collection;
-
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
-import com.g2forge.habitat.metadata.type.subject.IMergedSubjectType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 
 import lombok.Builder;
@@ -15,8 +12,6 @@ import lombok.ToString;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 @ToString(exclude = "context")
-class MergedSubjectType implements IMergedSubjectType {
+class ValueSubjectType implements ISubjectType {
 	protected final IMetadataTypeContext context;
-
-	protected final Collection<? extends ISubjectType> types;
 }

@@ -35,4 +35,9 @@ class AnnotationContainerPredicateType<T extends Annotation, U extends Annotatio
 	public ICollectionStrategy<T, U> getCollectionStrategy() {
 		return getContainerAnnotationReflection().getCollectionStrategy();
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "(" + getAnnotationType() + ")";
+	}
 }

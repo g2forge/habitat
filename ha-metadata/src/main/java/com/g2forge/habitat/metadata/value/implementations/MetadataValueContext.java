@@ -3,7 +3,6 @@ package com.g2forge.habitat.metadata.value.implementations;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
 
-import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.access.IMetadataRegistry;
 import com.g2forge.habitat.metadata.access.IMetadataRegistry.IFindContext;
@@ -37,9 +36,13 @@ public class MetadataValueContext implements IMetadataValueContext {
 
 	@Override
 	public ISubject of(AnnotatedElement element, Object value) {
-		if ((element == null) && (value instanceof AnnotatedElement)) return of((AnnotatedElement) value, null);
-		if ((value != null) || (element == null)) throw new NotYetImplementedError();
-
-		return new ElementSubject(this, element);
+		if (element == null) {
+			if (value == null) throw new NullPointerException("Cannot get metadata for a null element and value!");
+			if (value instanceof AnnotatedElement) return of((AnnotatedElement) value, null);
+			else return new ValueSubject(this, value);
+		} else {
+			if (value == null) return new ElementSubject(this, element);
+			return new ElementValueSubject(this, element, value);
+		}
 	}
 }

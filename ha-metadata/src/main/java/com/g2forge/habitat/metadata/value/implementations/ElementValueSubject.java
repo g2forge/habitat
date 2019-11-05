@@ -2,11 +2,9 @@ package com.g2forge.habitat.metadata.value.implementations;
 
 import java.lang.reflect.AnnotatedElement;
 
-import com.g2forge.habitat.metadata.annotations.IJavaAnnotated;
-import com.g2forge.habitat.metadata.annotations.implementations.ElementJavaAnnotated;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
-import com.g2forge.habitat.metadata.value.subject.IAnnotatedSubject;
+import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.Builder;
 import lombok.Data;
@@ -18,14 +16,13 @@ import lombok.ToString;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 @ToString(exclude = "context")
-class ElementSubject implements IAnnotatedSubject {
+public class ElementValueSubject implements ISubject {
 	protected final IMetadataValueContext context;
 
 	protected final AnnotatedElement element;
+	
+	protected final Object value;
 
 	@Getter(lazy = true)
-	private final ISubjectType type = getContext().getTypeContext().subject(getElement().getClass(), null);
-
-	@Getter(lazy = true)
-	private final IJavaAnnotated annotated = new ElementJavaAnnotated(getElement());
+	private final ISubjectType type = getContext().getTypeContext().subject(getElement().getClass(), getValue().getClass());
 }

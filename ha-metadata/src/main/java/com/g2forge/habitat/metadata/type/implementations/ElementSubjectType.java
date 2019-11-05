@@ -14,10 +14,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
+@ToString(exclude = "context")
 class ElementSubjectType implements IAnnotatedSubjectType {
 	@Getter
 	@RequiredArgsConstructor

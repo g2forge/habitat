@@ -10,7 +10,13 @@ import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+
 public class MetadataTypeContext implements IMetadataTypeContext {
+	@Getter(value = AccessLevel.PROTECTED, lazy = true)
+	private final ValueSubjectType valueSubjectType = new ValueSubjectType(this);
+
 	@Override
 	public ISubjectType merge(Collection<? extends ISubjectType> types) {
 		return new MergedSubjectType(this, types);
@@ -35,8 +41,13 @@ public class MetadataTypeContext implements IMetadataTypeContext {
 	}
 
 	@Override
-	public ISubjectType subject(Class<?> type) {
-		if (AnnotatedElement.class.isAssignableFrom(type)) return ElementSubjectType.valueOf(this, type.asSubclass(AnnotatedElement.class));
-		throw new IllegalArgumentException(String.format("Type %1$s is not a valid subject", type), new NotYetImplementedError());
+	public ISubjectType subject(Class<? extends AnnotatedElement> elementType, Class<?> valueType) {
+		if (elementType == null) {
+			if (valueType == null) throw new NullPointerException("Cannot construct a subject type without either an element or value type!");
+			return getValueSubjectType();
+		} else {
+			if (valueType == null) return ElementSubjectType.valueOf(this, elementType);
+			return ElementValueSubjectType.valueOf(this, elementType);
+		}
 	}
 }

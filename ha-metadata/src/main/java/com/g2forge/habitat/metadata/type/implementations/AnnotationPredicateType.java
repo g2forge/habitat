@@ -17,4 +17,9 @@ class AnnotationPredicateType<T extends Annotation> implements IPredicateType<T>
 	protected final IMetadataTypeContext context;
 
 	protected final Class<T> annotationType;
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "(" + getAnnotationType() + ")";
+	}
 }
