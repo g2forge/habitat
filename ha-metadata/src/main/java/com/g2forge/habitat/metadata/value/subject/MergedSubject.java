@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class MergedSubject implements ISubject {
+public class MergedSubject implements IMergedSubject {
 	protected final IMetadataValueContext context;
 
 	protected final Collection<? extends ISubject> subjects;

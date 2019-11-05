@@ -4,7 +4,7 @@ import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 
 public abstract class AMetadataRegistry implements IMetadataRegistry {
-	protected <T> void check(IPredicateType<?> predicateType) {}
+	protected void check(IPredicateType<?> predicateType) {}
 
 	protected void check(ISubjectType subjectType) {}
 

@@ -20,7 +20,7 @@ public class AnnotationMetadataRegistry extends AMetadataRegistry {
 	private final IMetadataAccessor accessor = new AnnotationMetadataAccessor(this);
 
 	@Override
-	protected <T> void check(IPredicateType<?> predicateType) {
+	protected void check(IPredicateType<?> predicateType) {
 		if (!(predicateType instanceof IAnnotationPredicateType)) throw new NoAccessorFoundException(String.format("%1$s is not an annotation predicate type!", predicateType));
 		final Class<? extends Annotation> type = ((IAnnotationPredicateType<?>) predicateType).getAnnotationType();
 		final Retention retention = type.getAnnotation(Retention.class);

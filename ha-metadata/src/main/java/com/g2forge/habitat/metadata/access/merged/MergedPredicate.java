@@ -6,8 +6,8 @@ import java.util.List;
 import com.g2forge.habitat.metadata.type.predicate.IContainerPredicateType;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
+import com.g2forge.habitat.metadata.value.subject.IMergedSubject;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
-import com.g2forge.habitat.metadata.value.subject.MergedSubject;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 class MergedPredicate<T> implements IPredicate<T> {
-	protected final MergedSubject subject;
+	protected final IMergedSubject subject;
 
 	protected final IPredicateType<T> type;
 
