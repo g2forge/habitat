@@ -5,12 +5,22 @@ import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
 
 import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
+import com.g2forge.habitat.metadata.access.indirect.IndirectMetadata;
 import com.g2forge.habitat.metadata.annotations.ContainerAnnotationReflection;
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
+import com.g2forge.habitat.metadata.value.IMetadataValueContext;
+import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public class MetadataTypeContext implements IMetadataTypeContext {
+	protected final IMetadataValueContext valueContext;
+
 	@Override
 	public ISubjectType merge(Collection<? extends ISubjectType> types) {
 		return new MergedSubjectType(this, types);
@@ -30,6 +40,10 @@ public class MetadataTypeContext implements IMetadataTypeContext {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			final IPredicateType<T> retVal = new AnnotationPredicateType<>(this, (Class) type);
 			return retVal;
+		}
+		{
+			final IPredicate<IndirectMetadata> predicate = getValueContext().of(type, null).bind(IndirectMetadata.class);
+			if (predicate.isPresent()) return new IndirectPredicateType<>(this, type, predicate.get0());
 		}
 		throw new IllegalArgumentException(String.format("Type %1$s is not a valid predicate", type), new NotYetImplementedError());
 	}

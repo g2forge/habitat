@@ -1,16 +1,5 @@
 package com.g2forge.habitat.metadata;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.g2forge.alexandria.annotations.note.Note;
-import com.g2forge.alexandria.annotations.note.NoteType;
-import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.habitat.metadata.TestAnnotationMetadata.Annotated;
-
-import lombok.Builder;
-import lombok.Data;
-
 public class TestDynamicMetadata {
 	/*@Data
 	@Builder(toBuilder = true)

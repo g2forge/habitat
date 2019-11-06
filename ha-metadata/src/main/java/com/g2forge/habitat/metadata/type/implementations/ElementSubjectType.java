@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
-import com.g2forge.habitat.metadata.type.subject.IAnnotatedSubjectType;
+import com.g2forge.habitat.metadata.type.subject.IElementSubjectType;
 
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +20,7 @@ import lombok.ToString;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 @ToString(exclude = "context")
-class ElementSubjectType implements IAnnotatedSubjectType {
+class ElementSubjectType implements IElementSubjectType {
 	@Getter
 	@RequiredArgsConstructor
 	public enum Type {
@@ -48,11 +48,13 @@ class ElementSubjectType implements IAnnotatedSubjectType {
 		protected final Class<? extends AnnotatedElement> type;
 	}
 
-	public static ElementSubjectType valueOf(IMetadataTypeContext context, Class<? extends AnnotatedElement> type) {
-		return new ElementSubjectType(context, ElementSubjectType.Type.valueOf(type));
+	public static ElementSubjectType valueOf(IMetadataTypeContext context, Class<? extends AnnotatedElement> element) {
+		return new ElementSubjectType(context, element, ElementSubjectType.Type.valueOf(element));
 	}
 
 	protected final IMetadataTypeContext context;
+
+	protected final Class<? extends AnnotatedElement> element;
 
 	protected final Type type;
 }

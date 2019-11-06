@@ -9,14 +9,18 @@ import com.g2forge.habitat.metadata.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.access.NoAccessorFoundException;
 import com.g2forge.habitat.metadata.type.predicate.IAnnotationPredicateType;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.type.subject.IAnnotatedSubjectType;
+import com.g2forge.habitat.metadata.type.subject.IElementSubjectType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 public class AnnotationMetadataRegistry extends AMetadataRegistry {
 	@Getter(value = AccessLevel.PROTECTED, lazy = true)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private final IMetadataAccessor accessor = new AnnotationMetadataAccessor(this);
 
 	@Override
@@ -29,6 +33,6 @@ public class AnnotationMetadataRegistry extends AMetadataRegistry {
 
 	@Override
 	protected void check(ISubjectType subjectType) {
-		if (!(subjectType instanceof IAnnotatedSubjectType)) throw new NoAccessorFoundException(String.format("%1$s is not an annotated subject type!", subjectType));
+		if (!(subjectType instanceof IElementSubjectType)) throw new NoAccessorFoundException(String.format("%1$s is not an annotated subject type!", subjectType));
 	}
 }
