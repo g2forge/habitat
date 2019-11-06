@@ -6,7 +6,7 @@ import com.g2forge.habitat.metadata.annotations.ContainerAnnotationReflection;
 import com.g2forge.habitat.metadata.annotations.IJavaAnnotated;
 import com.g2forge.habitat.metadata.type.predicate.IAnnotationPredicateType;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
-import com.g2forge.habitat.metadata.value.subject.IAnnotatedSubject;
+import com.g2forge.habitat.metadata.value.subject.IElementSubject;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -18,7 +18,7 @@ import lombok.ToString;
 @Data
 @RequiredArgsConstructor
 public class AnnotationPredicate<T extends Annotation> implements IPredicate<T> {
-	protected final IAnnotatedSubject subject;
+	protected final IElementSubject subject;
 
 	protected final IAnnotationPredicateType<T> type;
 

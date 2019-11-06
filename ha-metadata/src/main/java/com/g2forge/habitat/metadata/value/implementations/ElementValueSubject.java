@@ -3,6 +3,8 @@ package com.g2forge.habitat.metadata.value.implementations;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
+import com.g2forge.habitat.metadata.annotations.IJavaAnnotated;
+import com.g2forge.habitat.metadata.annotations.implementations.ElementJavaAnnotated;
 import com.g2forge.habitat.metadata.type.subject.IValueSubjectType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
 import com.g2forge.habitat.metadata.value.subject.IValueSubject;
@@ -29,6 +31,11 @@ public class ElementValueSubject implements IValueSubject {
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	private final IValueSubjectType type = computeType();
+
+	@Getter(lazy = true)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	private final IJavaAnnotated annotated = new ElementJavaAnnotated(getElement());
 
 	protected IValueSubjectType computeType() {
 		final AnnotatedElement element = getElement();

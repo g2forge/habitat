@@ -6,7 +6,7 @@ import com.g2forge.habitat.metadata.annotations.IJavaAnnotated;
 import com.g2forge.habitat.metadata.annotations.implementations.ElementJavaAnnotated;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
-import com.g2forge.habitat.metadata.value.subject.IAnnotatedSubject;
+import com.g2forge.habitat.metadata.value.subject.IElementSubject;
 
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ import lombok.ToString;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-class ElementSubject implements IAnnotatedSubject {
+class ElementSubject implements IElementSubject {
 	@ToString.Exclude
 	protected final IMetadataValueContext context;
 
