@@ -2,6 +2,8 @@ package com.g2forge.habitat.metadata;
 
 import org.junit.Test;
 
+import com.g2forge.alexandria.annotations.note.Note;
+import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.access.indirect.IndirectMetadata;
@@ -23,7 +25,9 @@ public class TestIndirectMetadata {
 		protected final Class<?> type;
 	}
 
+	@Note(type = NoteType.TODO, value = "Improve filtering and type safety for indirect metadata accessors", issue = "G2-634")
 	public static class IndirectMetadataAccessor implements IMetadataAccessor {
+		@Note(type = NoteType.TODO, value = "Simple central predicate implementation", issue = "G2-634")
 		@Override
 		public <T> IPredicate<T> bind(ISubject subject, IPredicateType<T> predicateType) {
 			return new IPredicate<T>() {
@@ -51,6 +55,7 @@ public class TestIndirectMetadata {
 		}
 	}
 
+	@Note(type = NoteType.TODO, value = "Simplify metadata API for indirect predicate types", issue = "G2-634")
 	@Test
 	public void test() {
 		final IMetadata metadata = Metadata.getStandard();
