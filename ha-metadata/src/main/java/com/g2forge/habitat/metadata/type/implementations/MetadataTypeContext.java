@@ -1,4 +1,4 @@
-package com.g2forge.habitat.metadata.type;
+package com.g2forge.habitat.metadata.type.implementations;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -6,12 +6,9 @@ import java.util.Collection;
 
 import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.habitat.metadata.annotations.ContainerAnnotationReflection;
-import com.g2forge.habitat.metadata.type.predicate.AnnotationContainerPredicateType;
-import com.g2forge.habitat.metadata.type.predicate.AnnotationPredicateType;
+import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.type.subject.ElementSubjectType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
-import com.g2forge.habitat.metadata.type.subject.MergedSubjectType;
 
 public class MetadataTypeContext implements IMetadataTypeContext {
 	@Override
@@ -38,8 +35,9 @@ public class MetadataTypeContext implements IMetadataTypeContext {
 	}
 
 	@Override
-	public ISubjectType subject(Class<?> type) {
-		if (AnnotatedElement.class.isAssignableFrom(type)) return ElementSubjectType.valueOf(this, type.asSubclass(AnnotatedElement.class));
-		throw new IllegalArgumentException(String.format("Type %1$s is not a valid subject", type), new NotYetImplementedError());
+	public ISubjectType subject(Class<? extends AnnotatedElement> elementType, Class<?> valueType) {
+		if ((elementType == null) && (valueType == null)) throw new NullPointerException("Cannot construct a subject type without either an element or value type!");
+		if (valueType == null) return ElementSubjectType.valueOf(this, elementType);
+		return new ElementValueSubjectType(this, elementType, valueType);
 	}
 }

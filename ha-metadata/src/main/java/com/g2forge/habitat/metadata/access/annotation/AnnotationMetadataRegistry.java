@@ -9,7 +9,7 @@ import com.g2forge.habitat.metadata.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.access.NoAccessorFoundException;
 import com.g2forge.habitat.metadata.type.predicate.IAnnotationPredicateType;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.type.subject.ElementSubjectType;
+import com.g2forge.habitat.metadata.type.subject.IAnnotatedSubjectType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ public class AnnotationMetadataRegistry extends AMetadataRegistry {
 	private final IMetadataAccessor accessor = new AnnotationMetadataAccessor(this);
 
 	@Override
-	protected <T> void check(IPredicateType<?> predicateType) {
+	protected void check(IPredicateType<?> predicateType) {
 		if (!(predicateType instanceof IAnnotationPredicateType)) throw new NoAccessorFoundException(String.format("%1$s is not an annotation predicate type!", predicateType));
 		final Class<? extends Annotation> type = ((IAnnotationPredicateType<?>) predicateType).getAnnotationType();
 		final Retention retention = type.getAnnotation(Retention.class);
@@ -29,6 +29,6 @@ public class AnnotationMetadataRegistry extends AMetadataRegistry {
 
 	@Override
 	protected void check(ISubjectType subjectType) {
-		if (!(subjectType instanceof ElementSubjectType)) throw new NoAccessorFoundException(String.format("%1$s is not an element subject type!", subjectType));
+		if (!(subjectType instanceof IAnnotatedSubjectType)) throw new NoAccessorFoundException(String.format("%1$s is not an annotated subject type!", subjectType));
 	}
 }
