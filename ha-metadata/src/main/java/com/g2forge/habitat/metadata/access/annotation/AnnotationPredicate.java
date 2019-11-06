@@ -10,8 +10,10 @@ import com.g2forge.habitat.metadata.value.subject.IAnnotatedSubject;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
 @RequiredArgsConstructor
@@ -21,6 +23,8 @@ public class AnnotationPredicate<T extends Annotation> implements IPredicate<T> 
 	protected final IAnnotationPredicateType<T> type;
 
 	@Getter(value = AccessLevel.PROTECTED, lazy = true)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private final ContainerAnnotationReflection<T, Annotation> containerAnnotationReflection = ContainerAnnotationReflection.createIfContainer(getType().getAnnotationType());
 
 	@Override

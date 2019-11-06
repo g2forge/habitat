@@ -10,6 +10,7 @@ import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -17,12 +18,14 @@ import lombok.ToString;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-@ToString(exclude = "context")
 class MergedSubject implements IMergedSubject {
+	@ToString.Exclude
 	protected final IMetadataValueContext context;
 
 	protected final Collection<? extends ISubject> subjects;
 
 	@Getter(lazy = true)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private final ISubjectType type = getContext().getTypeContext().merge(getSubjects().stream().map(ISubject::getType).collect(Collectors.toList()));
 }

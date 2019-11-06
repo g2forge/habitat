@@ -7,6 +7,7 @@ import com.g2forge.habitat.metadata.type.subject.IValueSubjectType;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -14,8 +15,8 @@ import lombok.ToString;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-@ToString(exclude = "context")
 class ElementValueSubjectType implements IValueSubjectType {
+	@ToString.Exclude
 	protected final IMetadataTypeContext context;
 	
 	protected final Class<? extends AnnotatedElement> element;
@@ -23,6 +24,8 @@ class ElementValueSubjectType implements IValueSubjectType {
 	protected final Class<?> value;
 
 	@Getter(lazy = true)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private final ElementSubjectType.Type type = ElementSubjectType.Type.valueOf(getElement());
 
 	@Override

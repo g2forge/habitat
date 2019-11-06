@@ -7,10 +7,14 @@ import com.g2forge.habitat.metadata.type.subject.IMergedSubjectType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 public class MergedMetadataRegistry extends AMetadataRegistry {
 	@Getter(value = AccessLevel.PROTECTED, lazy = true)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private final IMetadataAccessor accessor = new MergedMetadataAccessor();
 
 	@Override

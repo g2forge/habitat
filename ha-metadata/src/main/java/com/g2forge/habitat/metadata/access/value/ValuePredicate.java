@@ -14,8 +14,10 @@ import com.g2forge.habitat.metadata.value.subject.IValueSubject;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
 @RequiredArgsConstructor
@@ -33,6 +35,8 @@ class ValuePredicate<T> implements IPredicate<T> {
 	protected final IPredicateType<T> type;
 
 	@Getter(value = AccessLevel.PROTECTED, lazy = true)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private final IPredicate<T> delegate = computeDelegate();
 
 	protected IPredicate<T> computeDelegate() {

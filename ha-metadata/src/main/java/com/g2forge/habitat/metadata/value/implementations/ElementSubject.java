@@ -10,6 +10,7 @@ import com.g2forge.habitat.metadata.value.subject.IAnnotatedSubject;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -17,15 +18,19 @@ import lombok.ToString;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-@ToString(exclude = "context")
 class ElementSubject implements IAnnotatedSubject {
+	@ToString.Exclude
 	protected final IMetadataValueContext context;
 
 	protected final AnnotatedElement element;
 
 	@Getter(lazy = true)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private final ISubjectType type = getContext().getTypeContext().subject(getElement().getClass(), null);
 
 	@Getter(lazy = true)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private final IJavaAnnotated annotated = new ElementJavaAnnotated(getElement());
 }
