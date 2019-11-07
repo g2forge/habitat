@@ -59,8 +59,7 @@ public class TestIndirectMetadata {
 	@Test
 	public void test() {
 		final IMetadata metadata = Metadata.getStandard();
-		final IPredicateType<Indirect> predicateType = metadata.getContext().getTypeContext().predicate(Indirect.class);
-		final IPredicate<Indirect> predicate = metadata.of(getClass()).bind(predicateType);
+		final IPredicate<Indirect> predicate = metadata.of(getClass()).bind(Indirect.class);
 		HAssert.assertEquals(getClass(), predicate.get0().getType());
 	}
 }
