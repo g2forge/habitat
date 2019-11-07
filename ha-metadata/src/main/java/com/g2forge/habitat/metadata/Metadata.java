@@ -1,9 +1,13 @@
 package com.g2forge.habitat.metadata;
 
 import java.lang.reflect.AnnotatedElement;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
+import com.g2forge.habitat.metadata.access.IMetadataRegistry;
 import com.g2forge.habitat.metadata.access.annotation.AnnotationMetadataRegistry;
 import com.g2forge.habitat.metadata.access.caching.CachingMetadataRegistry;
 import com.g2forge.habitat.metadata.access.chained.ChainedMetadataRegistry;
@@ -49,7 +53,20 @@ public class Metadata implements IMetadata {
 				return getContext().of(element, value);
 			}
 		});
-		final CachingMetadataRegistry registry = new CachingMetadataRegistry(new ChainedMetadataRegistry(new MergedMetadataRegistry(), new IndirectMetadataRegistry(), new ValueMetadataRegistry(), new AnnotationMetadataRegistry()));
+
+		final List<IMetadataRegistry> registries = new ArrayList<>();
+		registries.add(getMixinRegistry());
+		registries.add(new MergedMetadataRegistry());
+		registries.add(new IndirectMetadataRegistry());
+		registries.add(new ValueMetadataRegistry());
+		registries.add(new AnnotationMetadataRegistry());
+		registries.removeIf(Objects::isNull);
+
+		final CachingMetadataRegistry registry = new CachingMetadataRegistry(new ChainedMetadataRegistry(registries));
 		return new MetadataValueContext(typeContext, registry);
+	}
+
+	protected IMetadataRegistry getMixinRegistry() {
+		return null;
 	}
 }

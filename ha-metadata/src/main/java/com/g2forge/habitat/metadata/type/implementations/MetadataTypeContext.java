@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
 
-import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.habitat.metadata.access.indirect.IndirectMetadata;
 import com.g2forge.habitat.metadata.annotations.ContainerAnnotationReflection;
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
@@ -28,6 +27,7 @@ public class MetadataTypeContext implements IMetadataTypeContext {
 
 	@Override
 	public <T> IPredicateType<T> predicate(Class<T> type) {
+		// Handle annotation predicate types
 		if (Annotation.class.isAssignableFrom(type)) {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			final ContainerAnnotationReflection containerAnnotationReflection = ContainerAnnotationReflection.createIfContainer((Class) type);
@@ -41,11 +41,13 @@ public class MetadataTypeContext implements IMetadataTypeContext {
 			final IPredicateType<T> retVal = new AnnotationPredicateType<>(this, (Class) type);
 			return retVal;
 		}
-		{
-			final IPredicate<IndirectMetadata> predicate = getValueContext().of(type, null).bind(IndirectMetadata.class);
-			if (predicate.isPresent()) return new IndirectPredicateType<>(this, type, predicate.get0());
-		}
-		throw new IllegalArgumentException(String.format("Type %1$s is not a valid predicate", type), new NotYetImplementedError());
+
+		// Handle indirect predicate types
+		final IPredicate<IndirectMetadata> predicate = getValueContext().of(type, null).bind(IndirectMetadata.class);
+		if (predicate.isPresent() && (predicate.get0() != null)) return new IndirectPredicateType<>(this, type, predicate.get0());
+
+		// Fall back to general predicate types
+		return new PredicateType<>(this, type);
 	}
 
 	@Override

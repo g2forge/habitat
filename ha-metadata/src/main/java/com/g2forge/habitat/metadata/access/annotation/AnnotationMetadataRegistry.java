@@ -8,14 +8,13 @@ import com.g2forge.habitat.metadata.access.AMetadataRegistry;
 import com.g2forge.habitat.metadata.access.ITypedMetadataAccessor;
 import com.g2forge.habitat.metadata.type.predicate.IAnnotationPredicateType;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.type.subject.IElementSubjectType;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-public class AnnotationMetadataRegistry extends AMetadataRegistry<IElementSubjectType> {
+public class AnnotationMetadataRegistry extends AMetadataRegistry {
 	@Getter(value = AccessLevel.PROTECTED, lazy = true)
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
