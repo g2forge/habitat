@@ -1,15 +1,13 @@
 package com.g2forge.habitat.metadata.access.merged;
 
-import com.g2forge.habitat.metadata.access.IMetadataAccessor;
+import com.g2forge.habitat.metadata.access.ITypedMetadataAccessor;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.value.subject.IMergedSubject;
-import com.g2forge.habitat.metadata.value.subject.ISubject;
 
-class MergedMetadataAccessor implements IMetadataAccessor {
+class MergedMetadataAccessor<T> implements ITypedMetadataAccessor<T, IMergedSubject, IPredicateType<T>> {
 	@Override
-	public <T> IPredicate<T> bind(ISubject subject, IPredicateType<T> predicateType) {
-		if (!(subject instanceof IMergedSubject)) throw new IllegalArgumentException(String.format("%1$s is not an element subject!", subject));
-		return new MergedPredicate<>((IMergedSubject) subject, predicateType);
+	public IPredicate<T> bindTyped(IMergedSubject subject, IPredicateType<T> predicateType) {
+		return new MergedPredicate<>(subject, predicateType);
 	}
 }
