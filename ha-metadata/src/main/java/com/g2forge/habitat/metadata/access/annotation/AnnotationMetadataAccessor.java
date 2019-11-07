@@ -1,11 +1,11 @@
 package com.g2forge.habitat.metadata.access.annotation;
 
-import com.g2forge.habitat.metadata.access.IMetadataAccessor;
+import java.lang.annotation.Annotation;
+
+import com.g2forge.habitat.metadata.access.ITypedMetadataAccessor;
 import com.g2forge.habitat.metadata.type.predicate.IAnnotationPredicateType;
-import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.value.subject.IElementSubject;
-import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,16 +13,12 @@ import lombok.RequiredArgsConstructor;
 
 @Getter(AccessLevel.PROTECTED)
 @RequiredArgsConstructor
-class AnnotationMetadataAccessor implements IMetadataAccessor {
+class AnnotationMetadataAccessor<T extends Annotation> implements ITypedMetadataAccessor<T, IElementSubject, IAnnotationPredicateType<T>> {
 	protected final AnnotationMetadataRegistry registry;
 
 	@Override
-	public <T> IPredicate<T> bind(ISubject subject, IPredicateType<T> predicateType) {
-		if (!(subject instanceof IElementSubject)) throw new IllegalArgumentException(String.format("%1$s is not an annotated subject!", subject));
+	public IPredicate<T> bindTyped(IElementSubject subject, IAnnotationPredicateType<T> predicateType) {
 		getRegistry().check(predicateType);
-
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		final IPredicate<T> retVal = new AnnotationPredicate((IElementSubject) subject, (IAnnotationPredicateType) predicateType);
-		return retVal;
+		return new AnnotationPredicate<>(subject, predicateType);
 	}
 }

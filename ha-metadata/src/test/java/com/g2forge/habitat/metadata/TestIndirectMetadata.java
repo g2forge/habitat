@@ -2,15 +2,14 @@ package com.g2forge.habitat.metadata;
 
 import org.junit.Test;
 
-import com.g2forge.alexandria.annotations.note.Note;
-import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.habitat.metadata.access.IMetadataAccessor;
+import com.g2forge.habitat.metadata.access.ITypedMetadataAccessor;
 import com.g2forge.habitat.metadata.access.indirect.IndirectMetadata;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
+import com.g2forge.habitat.metadata.value.predicate.ConstantPredicate;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.value.subject.IElementSubject;
-import com.g2forge.habitat.metadata.value.subject.ISubject;
+import com.g2forge.habitat.metadata.value.subject.IValueSubject;
 
 import lombok.Builder;
 import lombok.Data;
@@ -20,47 +19,66 @@ public class TestIndirectMetadata {
 	@Data
 	@Builder(toBuilder = true)
 	@RequiredArgsConstructor
-	@IndirectMetadata(IndirectMetadataAccessor.class)
-	public static class Indirect {
+	@IndirectMetadata(ElementMetadataAccessor.class)
+	public static class Element {
 		protected final Class<?> type;
 	}
 
-	@Note(type = NoteType.TODO, value = "Improve filtering and type safety for indirect metadata accessors", issue = "G2-634")
-	public static class IndirectMetadataAccessor implements IMetadataAccessor {
-		@Note(type = NoteType.TODO, value = "Simple central predicate implementation", issue = "G2-634")
+	public static class ElementMetadataAccessor implements ITypedMetadataAccessor<Element, IElementSubject, IPredicateType<Element>> {
 		@Override
-		public <T> IPredicate<T> bind(ISubject subject, IPredicateType<T> predicateType) {
-			return new IPredicate<T>() {
-				@SuppressWarnings("unchecked")
-				@Override
-				public T get0() {
-					return (T) new Indirect((Class<?>) ((IElementSubject) subject).getElement());
-				}
-
-				@Override
-				public ISubject getSubject() {
-					return subject;
-				}
-
-				@Override
-				public IPredicateType<T> getType() {
-					return predicateType;
-				}
-
-				@Override
-				public boolean isPresent() {
-					return true;
-				}
-			};
+		public IPredicate<Element> bindTyped(IElementSubject subject, IPredicateType<Element> predicateType) {
+			return new ConstantPredicate<>(subject, predicateType, new Element((Class<?>) subject.getElement()), true);
 		}
 	}
 
-	@Note(type = NoteType.TODO, value = "Simplify metadata API for indirect predicate types", issue = "G2-634")
+	@Data
+	@Builder(toBuilder = true)
+	@RequiredArgsConstructor
+	@IndirectMetadata(InstanceOfMetadataAccessor.class)
+	public static class InstanceOf {
+		protected final boolean assignable;
+	}
+
+	public static class InstanceOfMetadataAccessor implements ITypedMetadataAccessor<InstanceOf, IValueSubject, IPredicateType<InstanceOf>> {
+		@Override
+		public IPredicate<InstanceOf> bindTyped(IValueSubject subject, IPredicateType<InstanceOf> predicateType) {
+			return new ConstantPredicate<>(subject, predicateType, new InstanceOf(((Class<?>) subject.getElement()).isInstance(subject.getValue())), true);
+		}
+	}
+
+	@Data
+	@Builder(toBuilder = true)
+	@RequiredArgsConstructor
+	@IndirectMetadata(ValueMetadataAccessor.class)
+	public static class Value {
+		protected final Object value;
+	}
+
+	public static class ValueMetadataAccessor implements ITypedMetadataAccessor<Value, IValueSubject, IPredicateType<Value>> {
+		@Override
+		public IPredicate<Value> bindTyped(IValueSubject subject, IPredicateType<Value> predicateType) {
+			return new ConstantPredicate<>(subject, predicateType, new Value(subject.getValue()), true);
+		}
+	}
+
 	@Test
-	public void test() {
-		final IMetadata metadata = Metadata.getStandard();
-		final IPredicateType<Indirect> predicateType = metadata.getContext().getTypeContext().predicate(Indirect.class);
-		final IPredicate<Indirect> predicate = metadata.of(getClass()).bind(predicateType);
+	public void element() {
+		final IPredicate<Element> predicate = Metadata.getStandard().of(getClass()).bind(Element.class);
 		HAssert.assertEquals(getClass(), predicate.get0().getType());
+	}
+
+	@Test
+	public void instanceOf() {
+		final IMetadata metadata = Metadata.getStandard();
+		HAssert.assertTrue(metadata.of(getClass(), this).get(InstanceOf.class).isAssignable());
+		HAssert.assertFalse(metadata.of(getClass(), new Object()).get(InstanceOf.class).isAssignable());
+		HAssert.assertFalse(metadata.of(Comparable.class, new Object()).get(InstanceOf.class).isAssignable());
+		HAssert.assertTrue(metadata.of(Object.class, this).get(InstanceOf.class).isAssignable());
+	}
+
+	@Test
+	public void value() {
+		final IPredicate<Value> predicate = Metadata.getStandard().of(getClass(), this).bind(Value.class);
+		HAssert.assertSame(this, predicate.get0().getValue());
 	}
 }
