@@ -3,10 +3,8 @@ package com.g2forge.habitat.metadata;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.habitat.metadata.access.IMetadataRegistry;
 import com.g2forge.habitat.metadata.access.ITypedMetadataAccessor;
 import com.g2forge.habitat.metadata.access.NoAccessorFoundException;
-import com.g2forge.habitat.metadata.access.computed.MixinMetadataRegistry;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.value.predicate.ConstantPredicate;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
@@ -32,18 +30,14 @@ public class TestMixinMetadata {
 	}
 
 	@Test
-	public void unmixed() {
-		HAssert.assertException(NoAccessorFoundException.class, () -> Metadata.getStandard().of(getClass()).bind(Element.class));
+	public void mixed() {
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.accessorTyped(new ElementMetadataAccessor()).build()).build();
+		final IPredicate<Element> predicate = metadata.of(getClass()).bind(Element.class);
+		HAssert.assertEquals(getClass(), predicate.get0().getType());
 	}
 
 	@Test
-	public void mixed() {
-		final IPredicate<Element> predicate = new Metadata() {
-			@Override
-			protected IMetadataRegistry getMixinRegistry() {
-				return new MixinMetadataRegistry().add(new ElementMetadataAccessor());
-			}
-		}.of(getClass()).bind(Element.class);
-		HAssert.assertEquals(getClass(), predicate.get0().getType());
+	public void unmixed() {
+		HAssert.assertException(NoAccessorFoundException.class, () -> Metadata.getStandard().of(getClass()).bind(Element.class));
 	}
 }
