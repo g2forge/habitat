@@ -8,12 +8,14 @@ import java.util.Objects;
 
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
+import com.g2forge.alexandria.java.function.builder.IExtensibleBuilder;
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.access.IMetadataRegistry;
 import com.g2forge.habitat.metadata.access.annotation.AnnotationMetadataRegistry;
 import com.g2forge.habitat.metadata.access.caching.CachingMetadataRegistry;
 import com.g2forge.habitat.metadata.access.chained.ChainedMetadataRegistry;
 import com.g2forge.habitat.metadata.access.computed.MixinMetadataRegistry;
+import com.g2forge.habitat.metadata.access.computed.MixinMetadataRegistry.MixinMetadataRegistryBuilder;
 import com.g2forge.habitat.metadata.access.indirect.IndirectMetadataRegistry;
 import com.g2forge.habitat.metadata.access.merged.MergedMetadataRegistry;
 import com.g2forge.habitat.metadata.access.value.ValueMetadataRegistry;
@@ -32,7 +34,16 @@ import lombok.Getter;
 
 @Builder(toBuilder = true)
 public class Metadata implements IMetadata {
-	public static class MetadataBuilder implements IBuilder<IMetadata> {
+	public static class MetadataBuilder implements IExtensibleBuilder<IMetadata> {
+		@Override
+		public <ET, EB extends IBuilder<ET>> MetadataBuilder extend(Class<EB> type, IFunction1<? super EB, ? extends ET> function) {
+			if (type.isAssignableFrom(MixinMetadataRegistry.MixinMetadataRegistryBuilder.class)) {
+				@SuppressWarnings("unchecked")
+				final IFunction1<? super MixinMetadataRegistryBuilder, ? extends MixinMetadataRegistry> cast = (IFunction1<? super MixinMetadataRegistryBuilder, ? extends MixinMetadataRegistry>) function;
+				return mixins(cast);
+			} else throw new ExtensionUnknownException(type);
+		}
+
 		public MetadataBuilder mixins(IFunction1<? super MixinMetadataRegistry.MixinMetadataRegistryBuilder, ? extends MixinMetadataRegistry> function) {
 			mixinRegistry(function.apply(MixinMetadataRegistry.builder()));
 			return this;

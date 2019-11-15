@@ -15,6 +15,10 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 public class TestMixinMetadata {
+	public static interface A {}
+
+	public static interface B {}
+
 	@Data
 	@Builder(toBuilder = true)
 	@RequiredArgsConstructor
@@ -34,6 +38,12 @@ public class TestMixinMetadata {
 		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.accessorTyped(new ElementMetadataAccessor()).build()).build();
 		final IPredicate<Element> predicate = metadata.of(getClass()).bind(Element.class);
 		HAssert.assertEquals(getClass(), predicate.get0().getType());
+	}
+
+	@Test
+	public void specDirectDirect() {
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().of(A.class).bind(String.class).set("Hello").build()).build();
+		HAssert.assertEquals("Hello", metadata.of(A.class).get(String.class));
 	}
 
 	@Test
