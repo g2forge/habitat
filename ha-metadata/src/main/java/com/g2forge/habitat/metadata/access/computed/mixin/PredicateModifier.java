@@ -16,12 +16,12 @@ class PredicateModifier implements IPredicateModifier {
 
 	@Override
 	public <T> IValueModifier<T> bind(Class<T> type) {
-		return test(null);
+		return test(p -> p.getContext().predicate(type).equals(p));
 	}
 
 	@Override
 	public <T> IValueModifier<T> bind(IPredicateType<T> predicateType) {
-		return test(null);
+		return test(IPredicate1.isEqual(predicateType));
 	}
 
 	@Override
@@ -31,7 +31,7 @@ class PredicateModifier implements IPredicateModifier {
 
 	@Override
 	public <T> IValueModifier<T> predicate(Class<T> type) {
-		return test(null);
+		return test(p -> p.getContext().predicate(type).equals(p));
 	}
 
 	@Override

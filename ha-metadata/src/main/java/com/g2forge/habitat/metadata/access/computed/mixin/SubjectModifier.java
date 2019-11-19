@@ -1,7 +1,6 @@
 package com.g2forge.habitat.metadata.access.computed.mixin;
 
 import java.lang.reflect.AnnotatedElement;
-import java.util.Collection;
 
 import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
@@ -22,24 +21,13 @@ class SubjectModifier implements ISubjectModifier {
 	}
 
 	@Override
-	public IPredicateModifier merge(Collection<? extends ISubject> subjects) {
-		return testSubject(null);
-	}
-
-	@Override
 	public IPredicateModifier of(AnnotatedElement element, Object value) {
-		// this.subject(element.getClass(), value.getClass());
-		return testSubject(null);
+		return testSubject(s -> s.getContext().of(element, value).equals(s));
 	}
 
 	@Override
 	public IPredicateModifier subject(Class<? extends AnnotatedElement> elementType, Class<?> valueType) {
-		return testType(null);
-	}
-
-	@Override
-	public IPredicateModifier subject(Collection<? extends IPredicateModifier> types) {
-		return testType(null);
+		return testType(st -> st.getContext().subject(elementType, valueType).equals(st));
 	}
 
 	@Override
