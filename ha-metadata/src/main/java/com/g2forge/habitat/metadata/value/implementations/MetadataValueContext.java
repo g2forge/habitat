@@ -4,7 +4,9 @@ import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
 
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
+import com.g2forge.habitat.metadata.access.IMetadataAccessorFactory;
 import com.g2forge.habitat.metadata.access.IMetadataRegistry;
+import com.g2forge.habitat.metadata.access.NoneMetadataAccessorFactory;
 import com.g2forge.habitat.metadata.access.IMetadataRegistry.IFindContext;
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
@@ -26,7 +28,17 @@ public class MetadataValueContext implements IMetadataValueContext {
 
 	@Override
 	public IMetadataAccessor find(ISubjectType subjectType, IPredicateType<?> predicateType) {
-		return getRegistry().find(new IFindContext() {}, subjectType, predicateType);
+		return getRegistry().find(new IFindContext() {
+			@Override
+			public IMetadataAccessorFactory getDescendant() {
+				return NoneMetadataAccessorFactory.create();
+			}
+
+			@Override
+			public IMetadataAccessorFactory getTop() {
+				return MetadataValueContext.this;
+			}
+		}, subjectType, predicateType);
 	}
 
 	@Override

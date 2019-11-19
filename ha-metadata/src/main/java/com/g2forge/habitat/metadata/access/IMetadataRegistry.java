@@ -4,7 +4,11 @@ import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 
 public interface IMetadataRegistry {
-	public interface IFindContext {}
+	public interface IFindContext {
+		public IMetadataAccessorFactory getDescendant();
+
+		public IMetadataAccessorFactory getTop();
+	}
 
 	/**
 	 * Find an appropriate accessor in this registry.
