@@ -85,6 +85,13 @@ public class TestMixinMetadata {
 	}
 
 	@Test
+	public void specTypeTypeSet() {
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().subject(Class.class, null).predicate(String.class).set("Hello").build()).build();
+		HAssert.assertEquals("Hello", metadata.of(A.class).get(String.class));
+		HAssert.assertEquals("Hello", metadata.of(B.class).get(String.class));
+	}
+
+	@Test
 	public void unmixed() {
 		HAssert.assertException(NoAccessorFoundException.class, () -> Metadata.getStandard().of(getClass()).bind(Element.class));
 	}

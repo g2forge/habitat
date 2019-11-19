@@ -25,4 +25,9 @@ class PredicateModifier implements IPredicateModifier {
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder done() {
 		return getBuilder();
 	}
+
+	@Override
+	public <T> IValueModifier<T> predicate(Class<T> type) {
+		return new ValueModifier<>(getBuilder());
+	}
 }

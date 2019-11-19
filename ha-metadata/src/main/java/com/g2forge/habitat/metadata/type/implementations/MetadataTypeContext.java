@@ -21,11 +21,6 @@ public class MetadataTypeContext implements IMetadataTypeContext {
 	protected final IMetadataValueContext valueContext;
 
 	@Override
-	public ISubjectType merge(Collection<? extends ISubjectType> types) {
-		return new MergedSubjectType(this, types);
-	}
-
-	@Override
 	public <T> IPredicateType<T> predicate(Class<T> type) {
 		// Handle annotation predicate types
 		if (Annotation.class.isAssignableFrom(type)) {
@@ -55,5 +50,10 @@ public class MetadataTypeContext implements IMetadataTypeContext {
 		if ((elementType == null) && (valueType == null)) throw new NullPointerException("Cannot construct a subject type without either an element or value type!");
 		if (valueType == null) return ElementSubjectType.valueOf(this, elementType);
 		return new ElementValueSubjectType(this, elementType, valueType);
+	}
+
+	@Override
+	public ISubjectType subject(Collection<? extends ISubjectType> types) {
+		return new MergedSubjectType(this, types);
 	}
 }

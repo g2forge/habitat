@@ -3,7 +3,6 @@ package com.g2forge.habitat.metadata.access.computed.mixin;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
 
-import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.AccessLevel;
@@ -22,11 +21,21 @@ class SubjectModifier implements ISubjectModifier {
 
 	@Override
 	public IPredicateModifier merge(Collection<? extends ISubject> subjects) {
-		throw new NotYetImplementedError();
+		return new PredicateModifier(getBuilder());
 	}
 
 	@Override
 	public IPredicateModifier of(AnnotatedElement element, Object value) {
+		return new PredicateModifier(getBuilder());
+	}
+
+	@Override
+	public IPredicateModifier subject(Class<? extends AnnotatedElement> elementType, Class<?> valueType) {
+		return new PredicateModifier(getBuilder());
+	}
+
+	@Override
+	public IPredicateModifier subject(Collection<? extends IPredicateModifier> types) {
 		return new PredicateModifier(getBuilder());
 	}
 }
