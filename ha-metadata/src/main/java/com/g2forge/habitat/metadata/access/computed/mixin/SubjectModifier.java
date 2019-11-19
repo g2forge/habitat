@@ -3,6 +3,8 @@ package com.g2forge.habitat.metadata.access.computed.mixin;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
 
+import com.g2forge.alexandria.java.function.IPredicate1;
+import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.AccessLevel;
@@ -36,6 +38,16 @@ class SubjectModifier implements ISubjectModifier {
 
 	@Override
 	public IPredicateModifier subject(Collection<? extends IPredicateModifier> types) {
+		return new PredicateModifier(getBuilder());
+	}
+
+	@Override
+	public IPredicateModifier testSubject(IPredicate1<? super ISubject> filter) {
+		return new PredicateModifier(getBuilder());
+	}
+
+	@Override
+	public IPredicateModifier testType(IPredicate1<? super ISubjectType> filter) {
 		return new PredicateModifier(getBuilder());
 	}
 }

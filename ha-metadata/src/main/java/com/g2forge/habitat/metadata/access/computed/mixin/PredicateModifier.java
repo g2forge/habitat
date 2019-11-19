@@ -1,5 +1,6 @@
 package com.g2forge.habitat.metadata.access.computed.mixin;
 
+import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 
 import lombok.AccessLevel;
@@ -28,6 +29,11 @@ class PredicateModifier implements IPredicateModifier {
 
 	@Override
 	public <T> IValueModifier<T> predicate(Class<T> type) {
+		return new ValueModifier<>(getBuilder());
+	}
+
+	@Override
+	public <T> IValueModifier<T> test(IPredicate1<? super IPredicateType<T>> filter) {
 		return new ValueModifier<>(getBuilder());
 	}
 }

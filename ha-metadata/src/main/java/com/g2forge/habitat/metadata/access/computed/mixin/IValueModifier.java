@@ -8,7 +8,7 @@ public interface IValueModifier<T> extends IModifier<MixinMetadataRegistry.Mixin
 
 	public ICopyModifier copy();
 
-	public MixinMetadataRegistry.MixinMetadataRegistryBuilder functional(ISupplier<? super T> supplier);
+	public MixinMetadataRegistry.MixinMetadataRegistryBuilder supply(ISupplier<? super T> supplier);
 
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder set(T value);
 }

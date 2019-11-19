@@ -28,7 +28,7 @@ class ValueModifier<T> implements IValueModifier<T> {
 	}
 
 	@Override
-	public MixinMetadataRegistry.MixinMetadataRegistryBuilder functional(ISupplier<? super T> supplier) {
+	public MixinMetadataRegistry.MixinMetadataRegistryBuilder supply(ISupplier<? super T> supplier) {
 		throw new NotYetImplementedError();
 	}
 

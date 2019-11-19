@@ -5,6 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 import org.junit.Test;
 
+import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.habitat.metadata.access.ITypedMetadataAccessor;
 import com.g2forge.habitat.metadata.access.NoAccessorFoundException;
@@ -72,7 +73,7 @@ public class TestMixinMetadata {
 	@Test
 	public void specDirectDirectFunctional() {
 		final String[] array = new String[1];
-		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().of(A.class).bind(String.class).functional(() -> array[0]).build()).build();
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().of(A.class).bind(String.class).supply(() -> array[0]).build()).build();
 		HAssert.assertNull(null, metadata.of(A.class).get(String.class));
 		array[0] = "Hello";
 		HAssert.assertEquals(array[0], metadata.of(A.class).get(String.class));
@@ -82,6 +83,20 @@ public class TestMixinMetadata {
 	public void specDirectDirectSet() {
 		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().of(A.class).bind(String.class).set("Hello").build()).build();
 		HAssert.assertEquals("Hello", metadata.of(A.class).get(String.class));
+	}
+
+	@Test
+	public void specFunctionalSubjectFunctionalSet() {
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().testSubject(A.class::isInstance).test(p -> p.getObjectType().isAssignableFrom(ITypeRef.of(String.class))).set("Hello").build()).build();
+		HAssert.assertEquals("Hello", metadata.of(A.class).get(String.class));
+		HAssert.assertFalse(metadata.of(B.class).isPresent(String.class));
+	}
+
+	@Test
+	public void specFunctionalTypeFunctionalSet() {
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().testType(Class.class::isInstance).test(p -> p.getObjectType().isAssignableFrom(ITypeRef.of(String.class))).set("Hello").build()).build();
+		HAssert.assertEquals("Hello", metadata.of(A.class).get(String.class));
+		HAssert.assertEquals("Hello", metadata.of(B.class).get(String.class));
 	}
 
 	@Test

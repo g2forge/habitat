@@ -1,5 +1,6 @@
 package com.g2forge.habitat.metadata.access.computed.mixin;
 
+import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.alexandria.java.function.builder.IModifier;
 import com.g2forge.habitat.metadata.type.IMetadataPredicateTypeFactory;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
@@ -14,4 +15,6 @@ public interface IPredicateModifier extends IModifier<MixinMetadataRegistry.Mixi
 
 	@Override
 	public <T> IValueModifier<T> predicate(Class<T> type);
+
+	public <T> IValueModifier<T> test(IPredicate1<? super IPredicateType<T>> filter);
 }
