@@ -53,6 +53,23 @@ public class TestMixinMetadata {
 	}
 
 	@Test
+	public void specDirectDirectCopy() {
+		{ // Present
+			final IMetadata metadata = Metadata.builder().mixins(mixins -> {
+				mixins.subject().of(A.class).bind(String.class).copy().of(B.class);
+				mixins.subject().of(B.class).bind(String.class).set("Hello");
+				return mixins.build();
+			}).build();
+			HAssert.assertEquals("Hello", metadata.of(A.class).get(String.class));
+		}
+
+		{ // Absent
+			final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().of(A.class).bind(String.class).copy().of(B.class).build()).build();
+			HAssert.assertFalse(metadata.of(A.class).isPresent(String.class));
+		}
+	}
+
+	@Test
 	public void specDirectDirectFunctional() {
 		final String[] array = new String[1];
 		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().of(A.class).bind(String.class).functional(() -> array[0]).build()).build();

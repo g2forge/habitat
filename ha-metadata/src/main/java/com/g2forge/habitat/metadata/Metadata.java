@@ -14,8 +14,7 @@ import com.g2forge.habitat.metadata.access.IMetadataRegistry;
 import com.g2forge.habitat.metadata.access.annotation.AnnotationMetadataRegistry;
 import com.g2forge.habitat.metadata.access.caching.CachingMetadataRegistry;
 import com.g2forge.habitat.metadata.access.chained.ChainedMetadataRegistry;
-import com.g2forge.habitat.metadata.access.computed.MixinMetadataRegistry;
-import com.g2forge.habitat.metadata.access.computed.MixinMetadataRegistry.MixinMetadataRegistryBuilder;
+import com.g2forge.habitat.metadata.access.computed.mixin.MixinMetadataRegistry;
 import com.g2forge.habitat.metadata.access.indirect.IndirectMetadataRegistry;
 import com.g2forge.habitat.metadata.access.merged.MergedMetadataRegistry;
 import com.g2forge.habitat.metadata.access.value.ValueMetadataRegistry;
@@ -39,7 +38,7 @@ public class Metadata implements IMetadata {
 		public <ET, EB extends IBuilder<ET>> MetadataBuilder extend(Class<EB> type, IFunction1<? super EB, ? extends ET> function) {
 			if (type.isAssignableFrom(MixinMetadataRegistry.MixinMetadataRegistryBuilder.class)) {
 				@SuppressWarnings("unchecked")
-				final IFunction1<? super MixinMetadataRegistryBuilder, ? extends MixinMetadataRegistry> cast = (IFunction1<? super MixinMetadataRegistryBuilder, ? extends MixinMetadataRegistry>) function;
+				final IFunction1<? super MixinMetadataRegistry.MixinMetadataRegistryBuilder, ? extends MixinMetadataRegistry> cast = (IFunction1<? super MixinMetadataRegistry.MixinMetadataRegistryBuilder, ? extends MixinMetadataRegistry>) function;
 				return mixins(cast);
 			} else throw new ExtensionUnknownException(type);
 		}

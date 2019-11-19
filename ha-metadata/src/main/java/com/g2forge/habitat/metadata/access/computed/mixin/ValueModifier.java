@@ -1,9 +1,7 @@
-package com.g2forge.habitat.metadata.access.computed;
+package com.g2forge.habitat.metadata.access.computed.mixin;
 
 import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.alexandria.java.function.ISupplier;
-import com.g2forge.habitat.metadata.access.computed.MixinMetadataRegistry.IValueModifier;
-import com.g2forge.habitat.metadata.access.computed.MixinMetadataRegistry.MixinMetadataRegistryBuilder;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,12 +18,17 @@ class ValueModifier<T> implements IValueModifier<T> {
 	}
 
 	@Override
-	public MixinMetadataRegistryBuilder done() {
+	public ICopyModifier copy() {
+		return new CopyModifier(getBuilder());
+	}
+
+	@Override
+	public MixinMetadataRegistry.MixinMetadataRegistryBuilder done() {
 		return getBuilder();
 	}
 
 	@Override
-	public MixinMetadataRegistryBuilder functional(ISupplier<? super T> supplier) {
+	public MixinMetadataRegistry.MixinMetadataRegistryBuilder functional(ISupplier<? super T> supplier) {
 		throw new NotYetImplementedError();
 	}
 
