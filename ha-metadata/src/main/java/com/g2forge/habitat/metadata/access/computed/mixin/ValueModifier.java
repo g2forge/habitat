@@ -1,6 +1,5 @@
 package com.g2forge.habitat.metadata.access.computed.mixin;
 
-import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.alexandria.java.function.ISupplier;
 
 import lombok.AccessLevel;
@@ -12,9 +11,11 @@ import lombok.RequiredArgsConstructor;
 class ValueModifier<T> implements IValueModifier<T> {
 	protected final MixinMetadataRegistry.MixinMetadataRegistryBuilder builder;
 
+	protected final MixinMetadataAccessor.MixinMetadataAccessorBuilder accessor;
+
 	@Override
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder absent() {
-		throw new NotYetImplementedError();
+		return getBuilder().applicable(getAccessor().supplier(null).build());
 	}
 
 	@Override
@@ -28,12 +29,12 @@ class ValueModifier<T> implements IValueModifier<T> {
 	}
 
 	@Override
-	public MixinMetadataRegistry.MixinMetadataRegistryBuilder supply(ISupplier<? super T> supplier) {
-		throw new NotYetImplementedError();
+	public MixinMetadataRegistry.MixinMetadataRegistryBuilder set(T value) {
+		return getBuilder().applicable(getAccessor().supplier(ISupplier.create(value)).build());
 	}
 
 	@Override
-	public MixinMetadataRegistry.MixinMetadataRegistryBuilder set(T value) {
-		throw new NotYetImplementedError();
+	public MixinMetadataRegistry.MixinMetadataRegistryBuilder supply(ISupplier<? super T> supplier) {
+		return getBuilder().applicable(getAccessor().supplier(supplier).build());
 	}
 }

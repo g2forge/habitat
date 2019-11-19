@@ -12,14 +12,16 @@ import lombok.RequiredArgsConstructor;
 class PredicateModifier implements IPredicateModifier {
 	protected final MixinMetadataRegistry.MixinMetadataRegistryBuilder builder;
 
+	protected final MixinMetadataAccessor.MixinMetadataAccessorBuilder accessor;
+
 	@Override
 	public <T> IValueModifier<T> bind(Class<T> type) {
-		return new ValueModifier<>(getBuilder());
+		return test(null);
 	}
 
 	@Override
 	public <T> IValueModifier<T> bind(IPredicateType<T> predicateType) {
-		return new ValueModifier<>(getBuilder());
+		return test(null);
 	}
 
 	@Override
@@ -29,11 +31,11 @@ class PredicateModifier implements IPredicateModifier {
 
 	@Override
 	public <T> IValueModifier<T> predicate(Class<T> type) {
-		return new ValueModifier<>(getBuilder());
+		return test(null);
 	}
 
 	@Override
-	public <T> IValueModifier<T> test(IPredicate1<? super IPredicateType<T>> filter) {
-		return new ValueModifier<>(getBuilder());
+	public <T> IValueModifier<T> test(IPredicate1<? super IPredicateType<?>> filter) {
+		return new ValueModifier<>(getBuilder(), getAccessor().predicateType(filter));
 	}
 }

@@ -10,6 +10,7 @@ import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.habitat.metadata.access.ITypedMetadataAccessor;
 import com.g2forge.habitat.metadata.access.NoAccessorFoundException;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
+import com.g2forge.habitat.metadata.type.subject.IElementSubjectType;
 import com.g2forge.habitat.metadata.value.predicate.ConstantPredicate;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.value.subject.IElementSubject;
@@ -41,7 +42,7 @@ public class TestMixinMetadata {
 
 	@Test
 	public void mixed() {
-		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.accessorTyped(new ElementMetadataAccessor()).build()).build();
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.applicable(new ElementMetadataAccessor()).build()).build();
 		final IPredicate<Element> predicate = metadata.of(getClass()).bind(Element.class);
 		HAssert.assertEquals(getClass(), predicate.get0().getType());
 	}
@@ -94,7 +95,7 @@ public class TestMixinMetadata {
 
 	@Test
 	public void specFunctionalTypeFunctionalSet() {
-		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().testType(Class.class::isInstance).test(p -> p.getObjectType().isAssignableFrom(ITypeRef.of(String.class))).set("Hello").build()).build();
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().testType(s -> (s instanceof IElementSubjectType) && Class.class.equals(((IElementSubjectType) s).getElement())).test(p -> p.getObjectType().isAssignableFrom(ITypeRef.of(String.class))).set("Hello").build()).build();
 		HAssert.assertEquals("Hello", metadata.of(A.class).get(String.class));
 		HAssert.assertEquals("Hello", metadata.of(B.class).get(String.class));
 	}

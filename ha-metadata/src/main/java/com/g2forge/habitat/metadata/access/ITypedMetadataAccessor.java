@@ -2,6 +2,8 @@ package com.g2forge.habitat.metadata.access;
 
 import java.lang.reflect.Type;
 
+import com.g2forge.alexandria.annotations.note.Note;
+import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.reflect.HReflection;
 import com.g2forge.alexandria.java.type.ref.ATypeRefIdentity;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
@@ -11,7 +13,8 @@ import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
 import com.g2forge.habitat.metadata.value.subject.SubjectType;
 
-public interface ITypedMetadataAccessor<T, S extends ISubject, PT extends IPredicateType<T>> extends IMetadataAccessor {
+@Note(type = NoteType.TODO, value = "Abstract duplicate code structure in bind, check and isApplicable")
+public interface ITypedMetadataAccessor<T, S extends ISubject, PT extends IPredicateType<T>> extends IApplicableMetadataAccessor {
 	@Override
 	public default <_T> IPredicate<_T> bind(ISubject subject, IPredicateType<_T> predicateType) {
 		if (!getSubjectType().isInstance(subject)) throw new IllegalArgumentException(String.format("Subject %1$s is not an instance of %2$s!", subject, getSubjectType()));
@@ -56,6 +59,7 @@ public interface ITypedMetadataAccessor<T, S extends ISubject, PT extends IPredi
 		};
 	}
 
+	@Override
 	public default boolean isApplicable(ISubjectType subjectType, IPredicateType<?> predicateType) {
 		final ITypeRef<? extends IPredicateType<T>> predicateTypeType = getPredicateTypeType();
 		final ITypeRef<? extends ISubjectType> subjectTypeType = ITypeRef.of(getSubjectType().getErasedType().getAnnotation(SubjectType.class).value());

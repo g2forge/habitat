@@ -16,5 +16,5 @@ public interface IPredicateModifier extends IModifier<MixinMetadataRegistry.Mixi
 	@Override
 	public <T> IValueModifier<T> predicate(Class<T> type);
 
-	public <T> IValueModifier<T> test(IPredicate1<? super IPredicateType<T>> filter);
+	public <T> IValueModifier<T> test(IPredicate1<? super IPredicateType<?>> filter);
 }

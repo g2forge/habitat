@@ -4,13 +4,12 @@ import java.util.Map;
 
 import com.g2forge.alexandria.java.function.IPredicate2;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
+import com.g2forge.habitat.metadata.access.IApplicableMetadataAccessor;
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
-import com.g2forge.habitat.metadata.access.ITypedMetadataAccessor;
 import com.g2forge.habitat.metadata.access.NoAccessorFoundException;
 import com.g2forge.habitat.metadata.access.computed.IComputedMetadataRegistry;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
-import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,7 +19,7 @@ import lombok.Singular;
 @Builder(toBuilder = true)
 public class MixinMetadataRegistry implements IComputedMetadataRegistry {
 	public static class MixinMetadataRegistryBuilder implements IBuilder<MixinMetadataRegistry> {
-		public <T> MixinMetadataRegistryBuilder accessorTyped(ITypedMetadataAccessor<T, ? extends ISubject, ? extends IPredicateType<T>> accessor) {
+		public MixinMetadataRegistryBuilder applicable(IApplicableMetadataAccessor accessor) {
 			accessor(accessor::isApplicable, (IMetadataAccessor) accessor);
 			return this;
 		}
