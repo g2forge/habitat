@@ -1,5 +1,8 @@
 package com.g2forge.habitat.metadata;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
@@ -15,9 +18,11 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 public class TestMixinMetadata {
+	@B
 	public static interface A {}
 
-	public static interface B {}
+	@Retention(RetentionPolicy.RUNTIME)
+	public static @interface B {}
 
 	@Data
 	@Builder(toBuilder = true)
@@ -41,7 +46,23 @@ public class TestMixinMetadata {
 	}
 
 	@Test
-	public void specDirectDirect() {
+	public void specDirectDirectAbsent() {
+		HAssert.assertTrue(Metadata.getStandard().of(A.class).isPresent(B.class));
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().of(A.class).bind(B.class).absent().build()).build();
+		HAssert.assertFalse(metadata.of(A.class).isPresent(B.class));
+	}
+
+	@Test
+	public void specDirectDirectFunctional() {
+		final String[] array = new String[1];
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().of(A.class).bind(String.class).functional(() -> array[0]).build()).build();
+		HAssert.assertNull(null, metadata.of(A.class).get(String.class));
+		array[0] = "Hello";
+		HAssert.assertEquals(array[0], metadata.of(A.class).get(String.class));
+	}
+
+	@Test
+	public void specDirectDirectSet() {
 		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().of(A.class).bind(String.class).set("Hello").build()).build();
 		HAssert.assertEquals("Hello", metadata.of(A.class).get(String.class));
 	}

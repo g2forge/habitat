@@ -3,6 +3,7 @@ package com.g2forge.habitat.metadata.access.computed;
 import java.util.Map;
 
 import com.g2forge.alexandria.java.function.IPredicate2;
+import com.g2forge.alexandria.java.function.ISupplier;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
 import com.g2forge.alexandria.java.function.builder.IModifier;
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
@@ -23,8 +24,10 @@ import lombok.Singular;
 @Builder(toBuilder = true)
 public class MixinMetadataRegistry implements IMetadataRegistry {
 	public interface IPredicateModifier extends IModifier<MixinMetadataRegistryBuilder>, IMetadataPredicateFactory<IValueModifier<?>> {
+		@Override
 		public <T> IValueModifier<T> bind(Class<T> type);
 
+		@Override
 		public <T> IValueModifier<T> bind(IPredicateType<T> predicateType);
 	}
 
@@ -32,6 +35,8 @@ public class MixinMetadataRegistry implements IMetadataRegistry {
 
 	public interface IValueModifier<T> extends IModifier<MixinMetadataRegistryBuilder> {
 		public MixinMetadataRegistryBuilder absent();
+
+		public MixinMetadataRegistryBuilder functional(ISupplier<? super T> supplier);
 
 		public MixinMetadataRegistryBuilder set(T value);
 	}
