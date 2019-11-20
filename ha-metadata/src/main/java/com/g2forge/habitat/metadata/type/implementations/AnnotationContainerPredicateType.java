@@ -14,11 +14,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 class AnnotationContainerPredicateType<T extends Annotation, U extends Annotation> implements IContainerPredicateType<T, U>, IAnnotationPredicateType<T> {
+	@ToString.Exclude
 	protected final IMetadataTypeContext context;
 
 	@Getter(AccessLevel.PROTECTED)

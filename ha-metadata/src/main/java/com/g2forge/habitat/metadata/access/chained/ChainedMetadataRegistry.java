@@ -9,7 +9,7 @@ import com.g2forge.habitat.metadata.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.access.IMetadataRegistry;
 import com.g2forge.habitat.metadata.access.NoAccessorFoundException;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.type.subject.ISubjectType;
+import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.Builder;
 import lombok.Data;
@@ -28,16 +28,15 @@ public class ChainedMetadataRegistry implements IMetadataRegistry {
 	}
 
 	@Override
-	public IMetadataAccessor find(IFindContext context, ISubjectType subjectType, IPredicateType<?> predicateType) throws NoAccessorFoundException {
-		final IFindContext childContext = new IFindContext() {};
+	public IMetadataAccessor find(ISubject subject, IPredicateType<?> predicateType) throws NoAccessorFoundException {
 		final List<NoAccessorFoundException> exceptions = new ArrayList<>();
-		for (IMetadataRegistry registry : getRegistries()) {
+		for (int i = 0; i < registries.size(); i++) {
 			try {
-				return registry.find(childContext, subjectType, predicateType);
+				return registries.get(i).find(subject, predicateType);
 			} catch (NoAccessorFoundException exception) {
 				exceptions.add(exception);
 			}
 		}
-		throw HError.addSuppressed(new NoAccessorFoundException(String.format("None of the chained registries found an appropriate accessor for subject type %1$s and predicate type %2$s!", subjectType, predicateType)), exceptions);
+		throw HError.addSuppressed(new NoAccessorFoundException(String.format("None of the chained registries found an appropriate accessor for subject type %1$s and predicate type %2$s!", subject, predicateType)), exceptions);
 	}
 }

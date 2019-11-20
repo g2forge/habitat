@@ -5,12 +5,11 @@ import java.util.Collection;
 
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.access.IMetadataRegistry;
-import com.g2forge.habitat.metadata.access.IMetadataRegistry.IFindContext;
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
+import com.g2forge.habitat.metadata.value.subject.SubjectDescriptor;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,8 +24,8 @@ public class MetadataValueContext implements IMetadataValueContext {
 	protected final IMetadataRegistry registry;
 
 	@Override
-	public IMetadataAccessor find(ISubjectType subjectType, IPredicateType<?> predicateType) {
-		return getRegistry().find(new IFindContext() {}, subjectType, predicateType);
+	public IMetadataAccessor find(ISubject subject, IPredicateType<?> predicateType) {
+		return getRegistry().find(subject, predicateType);
 	}
 
 	@Override
@@ -36,12 +35,8 @@ public class MetadataValueContext implements IMetadataValueContext {
 
 	@Override
 	public ISubject of(AnnotatedElement element, Object value) {
-		if (element == null) {
-			if (value == null) throw new NullPointerException("Cannot get metadata for a null element and value!");
-			if (value instanceof AnnotatedElement) return of((AnnotatedElement) value, null);
-		}
-
-		if (value == null) return new ElementSubject(this, element);
-		return new ElementValueSubject(this, element, value);
+		final SubjectDescriptor descriptor = new SubjectDescriptor(element, value).reduce();
+		if (descriptor.getValue() == null) return new ElementSubject(this, descriptor.getElement());
+		return new ElementValueSubject(this, descriptor.getElement(), descriptor.getValue());
 	}
 }

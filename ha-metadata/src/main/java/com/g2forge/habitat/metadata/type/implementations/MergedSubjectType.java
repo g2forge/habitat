@@ -14,8 +14,9 @@ import lombok.ToString;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-@ToString(exclude = "context")
+@ToString
 class MergedSubjectType implements IMergedSubjectType {
+	@ToString.Exclude
 	protected final IMetadataTypeContext context;
 
 	protected final Collection<? extends ISubjectType> types;

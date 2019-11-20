@@ -27,5 +27,5 @@ class MergedSubject implements IMergedSubject {
 	@Getter(lazy = true)
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	private final ISubjectType type = getContext().getTypeContext().merge(getSubjects().stream().map(ISubject::getType).collect(Collectors.toList()));
+	private final ISubjectType type = getContext().getTypeContext().subject(getSubjects().stream().map(ISubject::getType).collect(Collectors.toList()));
 }
