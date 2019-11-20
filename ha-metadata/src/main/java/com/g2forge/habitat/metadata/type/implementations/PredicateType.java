@@ -6,7 +6,6 @@ import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
@@ -14,7 +13,6 @@ import lombok.ToString;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 class PredicateType<T> implements IPredicateType<T> {
-	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	protected final IMetadataTypeContext context;
 

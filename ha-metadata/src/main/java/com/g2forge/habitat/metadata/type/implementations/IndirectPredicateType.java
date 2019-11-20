@@ -8,11 +8,13 @@ import com.g2forge.habitat.metadata.type.predicate.IIndirectPredicateType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 class IndirectPredicateType<T> implements IIndirectPredicateType<T> {
+	@ToString.Exclude
 	protected final IMetadataTypeContext context;
 
 	protected final Class<T> type;
