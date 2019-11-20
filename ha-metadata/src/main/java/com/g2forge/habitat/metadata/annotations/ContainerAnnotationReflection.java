@@ -96,7 +96,7 @@ public class ContainerAnnotationReflection<T extends Annotation, U extends Annot
 						list.toArray(array);
 
 						@SuppressWarnings({ "rawtypes", "unchecked" })
-						final T retValDynamic = (T) new DynamicAnnotationInvocationHandler.Builder<Annotation>((Class) getContainer()).add("value", array).build();
+						final T retValDynamic = (T) new DynamicAnnotationBuilder<Annotation>((Class) getContainer()).add("value", array).build();
 						return retValDynamic;
 					}
 				};

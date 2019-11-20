@@ -7,7 +7,7 @@ import com.g2forge.habitat.metadata.access.IMetadataRegistry;
 import com.g2forge.habitat.metadata.access.NoAccessorFoundException;
 import com.g2forge.habitat.metadata.type.predicate.IIndirectPredicateType;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.type.subject.ISubjectType;
+import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.Builder;
 import lombok.Data;
@@ -43,8 +43,7 @@ public class IndirectMetadataRegistry implements IMetadataRegistry {
 	}
 
 	@Override
-	public IMetadataAccessor find(IFindContext context, ISubjectType subjectType, IPredicateType<?> predicateType) throws NoAccessorFoundException {
-		if (context == null) throw new NullPointerException("The find context must be provided!");
+	public IMetadataAccessor find(ISubject subject, IPredicateType<?> predicateType) throws NoAccessorFoundException {
 		if (!(predicateType instanceof IIndirectPredicateType)) throw new NoAccessorFoundException(String.format("%1$s is not an indirect predicate type!", predicateType));
 
 		final Class<? extends IMetadataAccessor> type = ((IIndirectPredicateType<?>) predicateType).getIndirectMetadata().value();

@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 class PredicateModifier implements IPredicateModifier {
 	protected final MixinMetadataRegistry.MixinMetadataRegistryBuilder builder;
 
-	protected final MixinMetadataAccessor.MixinMetadataAccessorBuilder accessor;
+	protected final MixinMetadata.MixinMetadataBuilder metadata;
 
 	@Override
 	public <T> IValueModifier<T> bind(Class<T> type) {
@@ -37,6 +37,6 @@ class PredicateModifier implements IPredicateModifier {
 
 	@Override
 	public <T> IValueModifier<T> test(IPredicate1<? super IPredicateType<?>> filter) {
-		return new ValueModifier<>(getBuilder(), getAccessor().predicateType(filter));
+		return new ValueModifier<>(getBuilder(), getMetadata().predicateType(filter));
 	}
 }

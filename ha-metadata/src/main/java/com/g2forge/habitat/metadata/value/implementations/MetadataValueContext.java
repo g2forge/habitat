@@ -4,13 +4,9 @@ import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
 
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
-import com.g2forge.habitat.metadata.access.IMetadataAccessorFactory;
 import com.g2forge.habitat.metadata.access.IMetadataRegistry;
-import com.g2forge.habitat.metadata.access.IMetadataRegistry.IFindContext;
-import com.g2forge.habitat.metadata.access.NoneMetadataAccessorFactory;
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
 import com.g2forge.habitat.metadata.value.subject.SubjectDescriptor;
@@ -28,18 +24,8 @@ public class MetadataValueContext implements IMetadataValueContext {
 	protected final IMetadataRegistry registry;
 
 	@Override
-	public IMetadataAccessor find(ISubjectType subjectType, IPredicateType<?> predicateType) {
-		return getRegistry().find(new IFindContext() {
-			@Override
-			public IMetadataAccessorFactory getDescendant() {
-				return NoneMetadataAccessorFactory.create();
-			}
-
-			@Override
-			public IMetadataAccessorFactory getTop() {
-				return MetadataValueContext.this;
-			}
-		}, subjectType, predicateType);
+	public IMetadataAccessor find(ISubject subject, IPredicateType<?> predicateType) {
+		return getRegistry().find(subject, predicateType);
 	}
 
 	@Override

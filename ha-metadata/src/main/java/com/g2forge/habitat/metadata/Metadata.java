@@ -21,7 +21,6 @@ import com.g2forge.habitat.metadata.access.value.ValueMetadataRegistry;
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.implementations.MetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
-import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
 import com.g2forge.habitat.metadata.value.implementations.MetadataValueContext;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
@@ -83,8 +82,8 @@ public class Metadata implements IMetadata {
 	protected MetadataTypeContext computeTypeContext() {
 		return new MetadataTypeContext(new IMetadataValueContext() {
 			@Override
-			public IMetadataAccessor find(ISubjectType subjectType, IPredicateType<?> predicateType) {
-				return getContext().find(subjectType, predicateType);
+			public IMetadataAccessor find(ISubject subject, IPredicateType<?> predicateType) {
+				return getContext().find(subject, predicateType);
 			}
 
 			@Override

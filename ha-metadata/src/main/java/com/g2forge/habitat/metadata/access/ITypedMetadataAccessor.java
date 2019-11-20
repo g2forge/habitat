@@ -26,10 +26,10 @@ public interface ITypedMetadataAccessor<T, S extends ISubject, PT extends IPredi
 
 	public IPredicate<T> bindTyped(S subject, PT predicateType);
 
-	@Override
-	public default void check(IMetadataRegistry.IFindContext context, ISubjectType subjectType, IPredicateType<?> predicateType) {
+	public default void check(ISubject subject, IPredicateType<?> predicateType) {
+		if (!getSubjectType().isInstance(subject)) throw new NoAccessorFoundException(String.format("Subject %1$s is not an instance of %2$s!", subject, getSubjectType()));
 		final ITypeRef<? extends ISubjectType> subjectTypeType = ITypeRef.of(getSubjectType().getErasedType().getAnnotation(SubjectType.class).value());
-		if (!subjectTypeType.isInstance(subjectType)) throw new NoAccessorFoundException(String.format("Subject type %1$s is not an instance of %2$s!", subjectType, subjectTypeType));
+		if (!subjectTypeType.isInstance(subject.getType())) throw new NoAccessorFoundException(String.format("Subject type %1$s is not an instance of %2$s!", subject.getType(), subjectTypeType));
 		if (!getPredicateTypeType().isInstance(predicateType)) throw new NoAccessorFoundException(String.format("Predicate type %1$s is not an instance of %2$s!", predicateType, getPredicateTypeType()));
 	}
 
@@ -61,9 +61,10 @@ public interface ITypedMetadataAccessor<T, S extends ISubject, PT extends IPredi
 	}
 
 	@Override
-	public default boolean isApplicable(IMetadataRegistry.IFindContext context, ISubjectType subjectType, IPredicateType<?> predicateType) {
+	public default boolean isApplicable(ISubject subject, IPredicateType<?> predicateType) {
+		final ITypeRef<S> subjectType = getSubjectType();
+		final ITypeRef<? extends ISubjectType> subjectTypeType = ITypeRef.of(subjectType.getErasedType().getAnnotation(SubjectType.class).value());
 		final ITypeRef<? extends IPredicateType<T>> predicateTypeType = getPredicateTypeType();
-		final ITypeRef<? extends ISubjectType> subjectTypeType = ITypeRef.of(getSubjectType().getErasedType().getAnnotation(SubjectType.class).value());
-		return subjectTypeType.isInstance(subjectType) && predicateTypeType.isInstance(predicateType) && predicateType.getObjectType().isAssignableFrom(getObjectType());
+		return subjectType.isInstance(subject) && subjectTypeType.isInstance(subject.getType()) && predicateTypeType.isInstance(predicateType) && predicateType.getObjectType().isAssignableFrom(getObjectType());
 	}
 }

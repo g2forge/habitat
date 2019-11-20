@@ -34,11 +34,11 @@ class SubjectModifier implements ISubjectModifier {
 
 	@Override
 	public IPredicateModifier testSubject(IPredicate1<? super ISubject> filter) {
-		return new PredicateModifier(getBuilder(), MixinMetadataAccessor.builder().subject(filter));
+		return new PredicateModifier(getBuilder(), MixinMetadata.builder().subject(filter));
 	}
 
 	@Override
 	public IPredicateModifier testType(IPredicate1<? super ISubjectType> filter) {
-		return new PredicateModifier(getBuilder(), MixinMetadataAccessor.builder().subjectType(filter).subject(s -> filter.test(s.getType())));
+		return new PredicateModifier(getBuilder(), MixinMetadata.builder().subjectType(filter).subject(s -> filter.test(s.getType())));
 	}
 }

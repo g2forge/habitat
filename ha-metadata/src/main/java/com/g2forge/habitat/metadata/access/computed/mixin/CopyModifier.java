@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 class CopyModifier implements ICopyModifier {
 	protected final MixinMetadataRegistry.MixinMetadataRegistryBuilder builder;
 
-	protected final MixinMetadataAccessor.MixinMetadataAccessorBuilder accessor;
+	protected final MixinMetadata.MixinMetadataBuilder metadata;
 
 	@Override
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder done() {
@@ -25,7 +25,7 @@ class CopyModifier implements ICopyModifier {
 
 	@Override
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder of(AnnotatedElement element, Object value) {
-		return getBuilder().accessor(getAccessor().accessor(new IMetadataAccessor() {
+		return getBuilder().accessor(getMetadata().accessor(new IMetadataAccessor() {
 			@Override
 			public <_T> IPredicate<_T> bind(ISubject subject, IPredicateType<_T> predicateType) {
 				return subject.getContext().of(element, value).bind(predicateType);

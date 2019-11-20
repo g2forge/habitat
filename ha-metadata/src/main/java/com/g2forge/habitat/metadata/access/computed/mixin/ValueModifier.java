@@ -17,16 +17,16 @@ import lombok.RequiredArgsConstructor;
 class ValueModifier<T> implements IValueModifier<T> {
 	protected final MixinMetadataRegistry.MixinMetadataRegistryBuilder builder;
 
-	protected final MixinMetadataAccessor.MixinMetadataAccessorBuilder accessor;
+	protected final MixinMetadata.MixinMetadataBuilder metadata;
 
 	@Override
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder absent() {
-		return getBuilder().accessor(getAccessor().accessor(new ConstantMetadataAccessor(null, false)).build());
+		return getBuilder().accessor(getMetadata().accessor(new ConstantMetadataAccessor(null, false)).build());
 	}
 
 	@Override
 	public ICopyModifier copy() {
-		return new CopyModifier(getBuilder(), getAccessor());
+		return new CopyModifier(getBuilder(), getMetadata());
 	}
 
 	@Override
@@ -36,13 +36,13 @@ class ValueModifier<T> implements IValueModifier<T> {
 
 	@Override
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder set(T value) {
-		return getBuilder().accessor(getAccessor().accessor(new ConstantMetadataAccessor(value, true)).build());
+		return getBuilder().accessor(getMetadata().accessor(new ConstantMetadataAccessor(value, true)).build());
 	}
 
 	@Override
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder supply(ISupplier<? super T> supplier) {
 		if (supplier == null) throw new NullPointerException("Supplier cannot be null!");
-		return getBuilder().accessor(getAccessor().accessor(new IMetadataAccessor() {
+		return getBuilder().accessor(getMetadata().accessor(new IMetadataAccessor() {
 			@Override
 			public <_T> IPredicate<_T> bind(ISubject subject, IPredicateType<_T> predicateType) {
 				@SuppressWarnings("unchecked")

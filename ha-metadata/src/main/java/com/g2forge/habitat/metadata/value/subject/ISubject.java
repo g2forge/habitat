@@ -15,7 +15,7 @@ public interface ISubject extends ITyped<ISubjectType>, IMetadataValue, IMetadat
 	}
 
 	public default <T> IPredicate<T> bind(IPredicateType<T> predicateType) {
-		return getContext().find(getType(), predicateType).bind(this, predicateType);
+		return getContext().find(this, predicateType).bind(this, predicateType);
 	}
 
 	public default <T> T get(Class<T> type) {
