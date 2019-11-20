@@ -4,7 +4,9 @@ import java.lang.reflect.AnnotatedElement;
 
 import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
+import com.g2forge.habitat.metadata.type.subject.SubjectTypeDescriptor;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
+import com.g2forge.habitat.metadata.value.subject.SubjectDescriptor;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,12 +24,12 @@ class SubjectModifier implements ISubjectModifier {
 
 	@Override
 	public IPredicateModifier of(AnnotatedElement element, Object value) {
-		return new PredicateModifier(getBuilder(), MixinMetadataAccessor.builder().subject((s, c) -> c.of(element, value).equals(s)));
+		return testSubject(new SubjectDescriptor(element, value).reduce()::isMatch);
 	}
 
 	@Override
 	public IPredicateModifier subject(Class<? extends AnnotatedElement> elementType, Class<?> valueType) {
-		return new PredicateModifier(getBuilder(), MixinMetadataAccessor.builder().subjectType((s, c) -> c.subject(elementType, valueType).equals(s)).subject((s, c) -> c.subject(elementType, valueType).equals(s.getType())));
+		return testType(new SubjectTypeDescriptor(elementType, valueType).reduce()::isMatch);
 	}
 
 	@Override

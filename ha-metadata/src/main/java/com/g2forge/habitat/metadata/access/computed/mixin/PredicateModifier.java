@@ -1,8 +1,8 @@
 package com.g2forge.habitat.metadata.access.computed.mixin;
 
 import com.g2forge.alexandria.java.function.IPredicate1;
-import com.g2forge.alexandria.java.function.IPredicate2;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
+import com.g2forge.habitat.metadata.type.predicate.PredicateTypeDescriptor;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,12 +17,12 @@ class PredicateModifier implements IPredicateModifier {
 
 	@Override
 	public <T> IValueModifier<T> bind(Class<T> type) {
-		return internal((p, c) -> c.predicate(type).equals(p));
+		return test(new PredicateTypeDescriptor(type).reduce()::isMatch);
 	}
 
 	@Override
 	public <T> IValueModifier<T> bind(IPredicateType<T> predicateType) {
-		return internal(IPredicate1.<IPredicateType<?>>isEqual(predicateType).ignore1());
+		return test(new PredicateTypeDescriptor(predicateType.getPredicateID()).reduce()::isMatch);
 	}
 
 	@Override
@@ -30,17 +30,13 @@ class PredicateModifier implements IPredicateModifier {
 		return getBuilder();
 	}
 
-	protected <T> IValueModifier<T> internal(final IPredicate2<? super IPredicateType<?>, ? super TestContext> filter) {
-		return new ValueModifier<>(getBuilder(), getAccessor().predicateType(filter));
-	}
-
 	@Override
 	public <T> IValueModifier<T> predicate(Class<T> type) {
-		return internal((p, c) -> c.predicate(type).equals(p));
+		return bind(type);
 	}
 
 	@Override
 	public <T> IValueModifier<T> test(IPredicate1<? super IPredicateType<?>> filter) {
-		return internal(filter.ignore1());
+		return new ValueModifier<>(getBuilder(), getAccessor().predicateType(filter.ignore1()));
 	}
 }
