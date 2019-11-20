@@ -37,6 +37,6 @@ class PredicateModifier implements IPredicateModifier {
 
 	@Override
 	public <T> IValueModifier<T> test(IPredicate1<? super IPredicateType<?>> filter) {
-		return new ValueModifier<>(getBuilder(), getAccessor().predicateType(filter.ignore1()));
+		return new ValueModifier<>(getBuilder(), getAccessor().predicateType(filter));
 	}
 }
