@@ -1,6 +1,12 @@
 package com.g2forge.habitat.metadata.access.computed.mixin;
 
 import com.g2forge.alexandria.java.function.ISupplier;
+import com.g2forge.habitat.metadata.access.ConstantMetadataAccessor;
+import com.g2forge.habitat.metadata.access.IMetadataAccessor;
+import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
+import com.g2forge.habitat.metadata.value.predicate.ConstantPredicate;
+import com.g2forge.habitat.metadata.value.predicate.IPredicate;
+import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,12 +21,12 @@ class ValueModifier<T> implements IValueModifier<T> {
 
 	@Override
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder absent() {
-		return getBuilder().applicable(getAccessor().supplier(null).build());
+		return getBuilder().accessor(getAccessor().accessor(new ConstantMetadataAccessor(null, false)).build());
 	}
 
 	@Override
 	public ICopyModifier copy() {
-		return new CopyModifier(getBuilder());
+		return new CopyModifier(getBuilder(), getAccessor());
 	}
 
 	@Override
@@ -30,11 +36,19 @@ class ValueModifier<T> implements IValueModifier<T> {
 
 	@Override
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder set(T value) {
-		return getBuilder().applicable(getAccessor().supplier(ISupplier.create(value)).build());
+		return getBuilder().accessor(getAccessor().accessor(new ConstantMetadataAccessor(value, true)).build());
 	}
 
 	@Override
 	public MixinMetadataRegistry.MixinMetadataRegistryBuilder supply(ISupplier<? super T> supplier) {
-		return getBuilder().applicable(getAccessor().supplier(supplier).build());
+		if (supplier == null) throw new NullPointerException("Supplier cannot be null!");
+		return getBuilder().accessor(getAccessor().accessor(new IMetadataAccessor() {
+			@Override
+			public <_T> IPredicate<_T> bind(ISubject subject, IPredicateType<_T> predicateType) {
+				@SuppressWarnings("unchecked")
+				final _T value = (_T) supplier.get();
+				return new ConstantPredicate<>(subject, predicateType, value, true);
+			}
+		}).build());
 	}
 }

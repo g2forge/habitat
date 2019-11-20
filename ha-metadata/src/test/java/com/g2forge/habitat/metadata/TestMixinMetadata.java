@@ -42,7 +42,7 @@ public class TestMixinMetadata {
 
 	@Test
 	public void mixed() {
-		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.applicable(new ElementMetadataAccessor()).build()).build();
+		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.accessor(new ElementMetadataAccessor()).build()).build();
 		final IPredicate<Element> predicate = metadata.of(getClass()).bind(Element.class);
 		HAssert.assertEquals(getClass(), predicate.get0().getType());
 	}

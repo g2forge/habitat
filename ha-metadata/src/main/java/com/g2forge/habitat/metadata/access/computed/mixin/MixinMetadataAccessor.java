@@ -1,8 +1,8 @@
 package com.g2forge.habitat.metadata.access.computed.mixin;
 
 import com.g2forge.alexandria.java.function.IPredicate1;
-import com.g2forge.alexandria.java.function.ISupplier;
 import com.g2forge.habitat.metadata.access.IApplicableMetadataAccessor;
+import com.g2forge.habitat.metadata.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.access.IMetadataRegistry;
 import com.g2forge.habitat.metadata.access.NoAccessorFoundException;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
@@ -27,18 +27,16 @@ public class MixinMetadataAccessor implements IApplicableMetadataAccessor {
 
 	protected final IPredicate1<? super IPredicateType<?>> predicateType;
 
-	protected final ISupplier<?> supplier;
+	protected final IMetadataAccessor accessor;
 
 	@Override
 	public <T> IPredicate<T> bind(ISubject subject, IPredicateType<T> predicateType) {
 		return new IPredicate<T>() {
 			@Override
 			public T get0() {
-				final ISupplier<?> supplier = getSupplier();
-				if (supplier == null) return null;
-				@SuppressWarnings("unchecked")
-				final T retVal = (T) supplier.get();
-				return retVal;
+				final IMetadataAccessor accessor = getAccessor();
+				if (accessor == null) return null;
+				return accessor.bind(subject, predicateType).get0();
 			}
 
 			@Override
@@ -53,7 +51,8 @@ public class MixinMetadataAccessor implements IApplicableMetadataAccessor {
 
 			@Override
 			public boolean isPresent() {
-				return getSupplier() != null;
+				if (getAccessor() == null) return false;
+				return getAccessor().bind(subject, predicateType).isPresent();
 			}
 		};
 	}

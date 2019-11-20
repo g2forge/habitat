@@ -2,6 +2,7 @@ package com.g2forge.habitat.metadata.access.computed.mixin;
 
 import java.util.Map;
 
+import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IPredicate3;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
 import com.g2forge.habitat.metadata.access.IApplicableMetadataAccessor;
@@ -20,8 +21,8 @@ import lombok.Singular;
 @Builder(toBuilder = true)
 public class MixinMetadataRegistry implements IComputedMetadataRegistry {
 	public static class MixinMetadataRegistryBuilder implements IBuilder<MixinMetadataRegistry> {
-		public MixinMetadataRegistryBuilder applicable(IApplicableMetadataAccessor accessor) {
-			accessor(accessor::isApplicable, (IMetadataAccessor) accessor);
+		public MixinMetadataRegistryBuilder accessor(IApplicableMetadataAccessor accessor) {
+			factory(accessor::isApplicable, c -> (IMetadataAccessor) accessor);
 			return this;
 		}
 
@@ -32,12 +33,12 @@ public class MixinMetadataRegistry implements IComputedMetadataRegistry {
 
 	@Singular
 	@Getter(AccessLevel.PROTECTED)
-	protected final Map<IPredicate3<? super IMetadataRegistry.IFindContext, ? super ISubjectType, ? super IPredicateType<?>>, IMetadataAccessor> accessors;
+	protected final Map<IPredicate3<? super IMetadataRegistry.IFindContext, ? super ISubjectType, ? super IPredicateType<?>>, IFunction1<? super IFindContext, ? extends IMetadataAccessor>> factories;
 
 	@Override
 	public IMetadataAccessor find(IFindContext context, ISubjectType subjectType, IPredicateType<?> predicateType) throws NoAccessorFoundException {
-		for (Map.Entry<IPredicate3<? super IMetadataRegistry.IFindContext, ? super ISubjectType, ? super IPredicateType<?>>, IMetadataAccessor> entry : getAccessors().entrySet()) {
-			if (entry.getKey().test(context, subjectType, predicateType)) return entry.getValue();
+		for (Map.Entry<IPredicate3<? super IMetadataRegistry.IFindContext, ? super ISubjectType, ? super IPredicateType<?>>, IFunction1<? super IFindContext, ? extends IMetadataAccessor>> entry : getFactories().entrySet()) {
+			if (entry.getKey().test(context, subjectType, predicateType)) return entry.getValue().apply(context);
 		}
 		throw new NoAccessorFoundException("No matching accessors found");
 	}
