@@ -12,12 +12,14 @@ import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
 public class MetadataTypeContext implements IMetadataTypeContext {
+	@Getter(AccessLevel.PROTECTED)
 	protected final IMetadataValueContext valueContext;
 
 	@Override
