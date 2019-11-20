@@ -3,7 +3,7 @@ package com.g2forge.habitat.metadata.type.subject;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Objects;
 
-import com.g2forge.habitat.metadata.IDescriptor;
+import com.g2forge.habitat.metadata.meta.IMetadataDescriptor;
 
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class SubjectTypeDescriptor implements IDescriptor<ISubjectType, SubjectTypeDescriptor> {
+public class SubjectTypeDescriptor implements IMetadataDescriptor<ISubjectType, SubjectTypeDescriptor> {
 	protected final Class<? extends AnnotatedElement> elementType;
 
 	protected final Class<?> valueType;
