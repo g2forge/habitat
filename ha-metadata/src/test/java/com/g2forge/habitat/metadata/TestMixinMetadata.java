@@ -84,6 +84,7 @@ public class TestMixinMetadata {
 	public void specDirectDirectSet() {
 		final IMetadata metadata = Metadata.builder().mixins(mixins -> mixins.subject().of(A.class).bind(String.class).set("Hello").build()).build();
 		HAssert.assertEquals("Hello", metadata.of(A.class).get(String.class));
+		HAssert.assertFalse(metadata.of(B.class).isPresent(String.class));
 	}
 
 	@Test
