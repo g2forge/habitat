@@ -12,7 +12,7 @@ public abstract class AMetadataRegistry implements IMetadataRegistry {
 	public IMetadataAccessor find(IFindContext context, ISubjectType subjectType, IPredicateType<?> predicateType) {
 		if (context == null) throw new NullPointerException("The find context must be provided!");
 		final IApplicableMetadataAccessor accessor = getAccessor();
-		accessor.check(subjectType, predicateType);
+		accessor.check(context, subjectType, predicateType);
 		check(subjectType);
 		check(predicateType);
 		return accessor;

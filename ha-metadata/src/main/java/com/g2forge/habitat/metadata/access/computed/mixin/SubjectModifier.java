@@ -22,21 +22,21 @@ class SubjectModifier implements ISubjectModifier {
 
 	@Override
 	public IPredicateModifier of(AnnotatedElement element, Object value) {
-		return testSubject(s -> s.getContext().of(element, value).equals(s));
+		return new PredicateModifier(getBuilder(), MixinMetadataAccessor.builder().subject((s, c) -> c.of(element, value).equals(s)));
 	}
 
 	@Override
 	public IPredicateModifier subject(Class<? extends AnnotatedElement> elementType, Class<?> valueType) {
-		return testType(st -> st.getContext().subject(elementType, valueType).equals(st));
+		return new PredicateModifier(getBuilder(), MixinMetadataAccessor.builder().subjectType((s, c) -> c.subject(elementType, valueType).equals(s)).subject((s, c) -> c.subject(elementType, valueType).equals(s.getType())));
 	}
 
 	@Override
 	public IPredicateModifier testSubject(IPredicate1<? super ISubject> filter) {
-		return new PredicateModifier(getBuilder(), MixinMetadataAccessor.builder().subject(filter));
+		return new PredicateModifier(getBuilder(), MixinMetadataAccessor.builder().subject(filter.ignore1()));
 	}
 
 	@Override
 	public IPredicateModifier testType(IPredicate1<? super ISubjectType> filter) {
-		return new PredicateModifier(getBuilder(), MixinMetadataAccessor.builder().subjectType(filter).subject(s -> filter.test(s.getType())));
+		return new PredicateModifier(getBuilder(), MixinMetadataAccessor.builder().subjectType(filter.ignore1()).subject((s, c) -> filter.test(s.getType())));
 	}
 }

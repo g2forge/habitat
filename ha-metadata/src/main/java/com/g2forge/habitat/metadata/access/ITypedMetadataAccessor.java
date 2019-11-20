@@ -26,7 +26,8 @@ public interface ITypedMetadataAccessor<T, S extends ISubject, PT extends IPredi
 
 	public IPredicate<T> bindTyped(S subject, PT predicateType);
 
-	public default void check(ISubjectType subjectType, IPredicateType<?> predicateType) {
+	@Override
+	public default void check(IMetadataRegistry.IFindContext context, ISubjectType subjectType, IPredicateType<?> predicateType) {
 		final ITypeRef<? extends ISubjectType> subjectTypeType = ITypeRef.of(getSubjectType().getErasedType().getAnnotation(SubjectType.class).value());
 		if (!subjectTypeType.isInstance(subjectType)) throw new NoAccessorFoundException(String.format("Subject type %1$s is not an instance of %2$s!", subjectType, subjectTypeType));
 		if (!getPredicateTypeType().isInstance(predicateType)) throw new NoAccessorFoundException(String.format("Predicate type %1$s is not an instance of %2$s!", predicateType, getPredicateTypeType()));
@@ -60,7 +61,7 @@ public interface ITypedMetadataAccessor<T, S extends ISubject, PT extends IPredi
 	}
 
 	@Override
-	public default boolean isApplicable(ISubjectType subjectType, IPredicateType<?> predicateType) {
+	public default boolean isApplicable(IMetadataRegistry.IFindContext context, ISubjectType subjectType, IPredicateType<?> predicateType) {
 		final ITypeRef<? extends IPredicateType<T>> predicateTypeType = getPredicateTypeType();
 		final ITypeRef<? extends ISubjectType> subjectTypeType = ITypeRef.of(getSubjectType().getErasedType().getAnnotation(SubjectType.class).value());
 		return subjectTypeType.isInstance(subjectType) && predicateTypeType.isInstance(predicateType) && predicateType.getObjectType().isAssignableFrom(getObjectType());

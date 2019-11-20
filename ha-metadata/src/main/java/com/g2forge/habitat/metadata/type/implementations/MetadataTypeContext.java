@@ -9,8 +9,9 @@ import com.g2forge.habitat.metadata.annotations.ContainerAnnotationReflection;
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
-import com.g2forge.habitat.metadata.value.IMetadataValueContext;
+import com.g2forge.habitat.metadata.value.IMetadataSubjectFactory;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
+import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MetadataTypeContext implements IMetadataTypeContext {
 	@Getter(AccessLevel.PROTECTED)
-	protected final IMetadataValueContext valueContext;
+	protected final IMetadataSubjectFactory<ISubject> metadataSubjectFactory;
 
 	@Override
 	public <T> IPredicateType<T> predicate(Class<T> type) {
@@ -40,7 +41,7 @@ public class MetadataTypeContext implements IMetadataTypeContext {
 		}
 
 		// Handle indirect predicate types
-		final IPredicate<IndirectMetadata> predicate = getValueContext().of(type, null).bind(IndirectMetadata.class);
+		final IPredicate<IndirectMetadata> predicate = getMetadataSubjectFactory().of(type, null).bind(IndirectMetadata.class);
 		if (predicate.isPresent() && (predicate.get0() != null)) return new IndirectPredicateType<>(this, type, predicate.get0());
 
 		// Fall back to general predicate types
