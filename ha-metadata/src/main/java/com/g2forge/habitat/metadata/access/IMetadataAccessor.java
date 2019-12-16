@@ -7,8 +7,7 @@ import com.g2forge.habitat.metadata.value.subject.ISubject;
 public interface IMetadataAccessor {
 	/**
 	 * Method must first verify that the subject and predicateType are ones that it is prepared to look up. While this method should only ever be called after
-	 * {@link com.g2forge.habitat.metadata.value.IMetadataValueContext#find(com.g2forge.habitat.metadata.type.subject.ISubjectType, IPredicateType)} the
-	 * implementor of this interface should not assume that.
+	 * {@link com.g2forge.habitat.metadata.value.IMetadataValueContext#find(ISubject, IPredicateType)} the implementor of this interface should not assume that.
 	 * 
 	 * @param <T> The type of the object of the predicate.
 	 * @param subject The subject to get metadata about.
