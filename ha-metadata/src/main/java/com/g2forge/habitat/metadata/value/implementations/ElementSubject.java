@@ -2,8 +2,8 @@ package com.g2forge.habitat.metadata.value.implementations;
 
 import java.lang.reflect.AnnotatedElement;
 
-import com.g2forge.habitat.metadata.annotations.IJavaAnnotated;
-import com.g2forge.habitat.metadata.annotations.implementations.ElementJavaAnnotated;
+import com.g2forge.alexandria.java.reflect.annotations.ElementJavaAnnotations;
+import com.g2forge.alexandria.java.reflect.annotations.IJavaAnnotations;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
 import com.g2forge.habitat.metadata.value.subject.IElementSubject;
@@ -32,5 +32,5 @@ class ElementSubject implements IElementSubject {
 	@Getter(lazy = true)
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	private final IJavaAnnotated annotated = new ElementJavaAnnotated(getElement());
+	private final IJavaAnnotations annotations = new ElementJavaAnnotations(getElement());
 }
