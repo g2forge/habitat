@@ -27,7 +27,7 @@ public class TestIndirectMetadata {
 	public static class ElementMetadataAccessor implements ITypedMetadataAccessor<Element, IElementSubject, IPredicateType<Element>> {
 		@Override
 		public IPredicate<Element> bindTyped(IElementSubject subject, IPredicateType<Element> predicateType) {
-			return new ConstantPredicate<>(subject, predicateType, new Element((Class<?>) subject.getElement()), true);
+			return ConstantPredicate.present(subject, predicateType, new Element((Class<?>) subject.getElement()));
 		}
 	}
 
@@ -42,7 +42,7 @@ public class TestIndirectMetadata {
 	public static class InstanceOfMetadataAccessor implements ITypedMetadataAccessor<InstanceOf, IValueSubject, IPredicateType<InstanceOf>> {
 		@Override
 		public IPredicate<InstanceOf> bindTyped(IValueSubject subject, IPredicateType<InstanceOf> predicateType) {
-			return new ConstantPredicate<>(subject, predicateType, new InstanceOf(((Class<?>) subject.getElement()).isInstance(subject.getValue())), true);
+			return ConstantPredicate.present(subject, predicateType, new InstanceOf(((Class<?>) subject.getElement()).isInstance(subject.getValue())));
 		}
 	}
 
@@ -57,7 +57,7 @@ public class TestIndirectMetadata {
 	public static class ValueMetadataAccessor implements ITypedMetadataAccessor<Value, IValueSubject, IPredicateType<Value>> {
 		@Override
 		public IPredicate<Value> bindTyped(IValueSubject subject, IPredicateType<Value> predicateType) {
-			return new ConstantPredicate<>(subject, predicateType, new Value(subject.getValue()), true);
+			return ConstantPredicate.present(subject, predicateType, new Value(subject.getValue()));
 		}
 	}
 

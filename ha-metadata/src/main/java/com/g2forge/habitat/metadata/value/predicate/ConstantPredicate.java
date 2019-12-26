@@ -11,6 +11,14 @@ import lombok.RequiredArgsConstructor;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class ConstantPredicate<T> implements IPredicate<T> {
+	public static <T> IPredicate<T> absent(ISubject subject, IPredicateType<T> type) {
+		return new ConstantPredicate<>(subject, type, null, false);
+	}
+
+	public static <T> IPredicate<T> present(ISubject subject, IPredicateType<T> type, T value) {
+		return new ConstantPredicate<>(subject, type, value, true);
+	}
+
 	protected final ISubject subject;
 
 	protected final IPredicateType<T> type;
