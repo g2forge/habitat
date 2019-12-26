@@ -37,7 +37,7 @@ public class TestMixinMetadata {
 	public static class ElementMetadataAccessor implements ITypedMetadataAccessor<Element, IElementSubject, IPredicateType<Element>> {
 		@Override
 		public IPredicate<Element> bindTyped(IElementSubject subject, IPredicateType<Element> predicateType) {
-			return new ConstantPredicate<>(subject, predicateType, new Element((Class<?>) subject.getElement()), true);
+			return ConstantPredicate.present(subject, predicateType, new Element((Class<?>) subject.getElement()));
 		}
 	}
 

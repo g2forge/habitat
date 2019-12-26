@@ -47,7 +47,7 @@ class ValueModifier<T> implements IValueModifier<T> {
 			public <_T> IPredicate<_T> bind(ISubject subject, IPredicateType<_T> predicateType) {
 				@SuppressWarnings("unchecked")
 				final _T value = (_T) supplier.get();
-				return new ConstantPredicate<>(subject, predicateType, value, true);
+				return ConstantPredicate.present(subject, predicateType, value);
 			}
 		}).build());
 	}
