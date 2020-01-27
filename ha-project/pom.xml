@@ -5,7 +5,7 @@
 	<groupId>com.g2forge.habitat</groupId>
 	<artifactId>ha-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
@@ -45,7 +45,7 @@
 		<connection>scm:git:git://github.com/${habitat.organization}/${habitat.repository}.git</connection>
 		<developerConnection>scm:git:ssh://github.com:${habitat.organization}/${habitat.repository}.git</developerConnection>
 		<url>http://github.com/${habitat.organization}/${habitat.repository}/tree/${project.version}</url>
-	  <tag>0.0.1</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<build>
