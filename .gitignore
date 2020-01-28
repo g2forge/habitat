@@ -1,6 +1,7 @@
 /.project
 /.classpath
 /.settings/
+/.factorypath
 /target/
 /bulldozer-temp.json
-/.factorypath
+/bulldozer-state.json
