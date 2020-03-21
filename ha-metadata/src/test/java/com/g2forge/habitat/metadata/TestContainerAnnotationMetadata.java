@@ -1,7 +1,6 @@
 package com.g2forge.habitat.metadata;
 
 import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -12,24 +11,22 @@ import org.junit.Test;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.habitat.metadata.Metadata;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
 
 /**
- * This is similar to {@link TestContainerAnnotationMetadata} except that {@link TestRepeatableAnnotationMetadata.Contained} is {@link Repeatable}.
+ * This is similar to {@link TestRepeatableAnnotationMetadata} except that {@link TestContainerAnnotationMetadata.Contained} is not
+ * {@link java.lang.annotation.Repeatable}.
  */
-public class TestRepeatableAnnotationMetadata {
+public class TestContainerAnnotationMetadata {
 	@Contained("A")
 	public interface Annotated1 {}
 
-	@Contained("A")
-	@Contained("B")
+	@Container({ @Contained("A"), @Contained("B") })
 	public interface Annotated2 {}
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
-	@Repeatable(Container.class)
 	public @interface Contained {
 		public String value();
 	}
@@ -49,8 +46,8 @@ public class TestRepeatableAnnotationMetadata {
 		HAssert.assertEquals("A", contained.get0().value());
 
 		final IPredicate<Container> container = subject.bind(Container.class);
-		HAssert.assertTrue(container.isPresent());
-		HAssert.assertEquals(HCollection.asList("A"), Stream.of(container.get0().value()).map(Contained::value).collect(Collectors.toList()));
+		HAssert.assertNull(container.get0());
+		HAssert.assertFalse(container.isPresent());
 	}
 
 	@Test

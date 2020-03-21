@@ -69,7 +69,7 @@ public class ContainerAnnotationReflection<T extends Annotation, U extends Annot
 		final Class<?> componentType = returnType.getComponentType();
 		if (!componentType.isAnnotation()) throw new IllegalArgumentException(String.format("%1$s is not a repeatable annotation container!", container));
 		final Repeatable repeatable = componentType.getAnnotation(Repeatable.class);
-		if (!repeatable.value().equals(container)) throw new IllegalArgumentException(String.format("%1$s is not a repeatable annotation container!", container));
+		if ((repeatable == null) || !repeatable.value().equals(container)) throw new IllegalArgumentException(String.format("%1$s is not a repeatable annotation container!", container));
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final Class<U> repeatableClass = (Class) componentType;
 		this.repeatable = repeatableClass;
