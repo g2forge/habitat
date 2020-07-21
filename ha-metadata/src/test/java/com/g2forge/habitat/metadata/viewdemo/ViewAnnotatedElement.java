@@ -8,9 +8,10 @@ import java.lang.reflect.Method;
 import com.g2forge.alexandria.adt.associative.cache.Cache;
 import com.g2forge.alexandria.adt.associative.cache.NeverCacheEvictionPolicy;
 import com.g2forge.alexandria.java.core.error.RuntimeReflectionException;
+import com.g2forge.alexandria.java.function.IFunction1;
 
 public class ViewAnnotatedElement extends AFilteredAnnotatedElement {
-	protected static final Cache<Class<? extends Annotation>, Method> cache = new Cache<>(ViewAnnotatedElement::getViewMethod, NeverCacheEvictionPolicy.create());
+	protected static final IFunction1<Class<? extends Annotation>, Method> cache = new Cache<>(ViewAnnotatedElement::getViewMethod, NeverCacheEvictionPolicy.create());
 
 	protected static Method getViewMethod(Class<? extends Annotation> type) {
 		for (Method method : type.getMethods()) {
