@@ -5,16 +5,16 @@
 	<groupId>com.g2forge.habitat</groupId>
 	<artifactId>ha-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
-		<version>0.0.14-SNAPSHOT</version>
+		<version>0.0.15-SNAPSHOT</version>
 	</parent>
 
 	<properties>
-		<alexandria.version>0.0.14-SNAPSHOT</alexandria.version>
+		<alexandria.version>0.0.15-SNAPSHOT</alexandria.version>
 		
 		<habitat.organization>g2forge</habitat.organization>
 		<habitat.name>Habitat</habitat.name>
@@ -40,13 +40,6 @@
 			<url>https://github.com/${habitat.organization}/${habitat.repository}/blob/${project.version}/LICENSE</url>
 		</license>
 	</licenses>
-
-	<scm>
-		<connection>scm:git:git://github.com/${habitat.organization}/${habitat.repository}.git</connection>
-		<developerConnection>scm:git:ssh://github.com:${habitat.organization}/${habitat.repository}.git</developerConnection>
-		<url>http://github.com/${habitat.organization}/${habitat.repository}/tree/${project.version}</url>
-	  <tag>HEAD</tag>
-  </scm>
 
 	<build>
 		<plugins>
