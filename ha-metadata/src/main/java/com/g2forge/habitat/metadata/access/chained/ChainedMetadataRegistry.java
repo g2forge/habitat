@@ -37,6 +37,6 @@ public class ChainedMetadataRegistry implements IMetadataRegistry {
 				exceptions.add(exception);
 			}
 		}
-		throw HError.addSuppressed(new NoAccessorFoundException(String.format("None of the chained registries found an appropriate accessor for subject type %1$s and predicate type %2$s!", subject, predicateType)), exceptions);
+		throw HError.withSuppressed(new NoAccessorFoundException(String.format("None of the chained registries found an appropriate accessor for subject type %1$s and predicate type %2$s!", subject, predicateType)), exceptions);
 	}
 }
