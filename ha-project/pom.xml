@@ -1,21 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.g2forge.habitat</groupId>
 	<artifactId>ha-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
-		<version>0.0.15-SNAPSHOT</version>
+		<version>0.0.16-SNAPSHOT</version>
 	</parent>
 
 	<properties>
-		<alexandria.version>0.0.15-SNAPSHOT</alexandria.version>
+		<alexandria.version>0.0.16-SNAPSHOT</alexandria.version>
 
 		<habitat.organization>g2forge</habitat.organization>
 		<habitat.name>Habitat</habitat.name>
@@ -39,11 +38,6 @@
 			<url>https://github.com/${habitat.organization}/${habitat.repository}/blob/${project.version}/LICENSE</url>
 		</license>
 	</licenses>
-	<scm>
-		<connection>scm:git:git://github.com/${habitat.organization}/${habitat.repository}.git</connection>
-		<developerConnection>scm:git:ssh://github.com:${habitat.organization}/${habitat.repository}.git</developerConnection>
-		<url>http://github.com/${habitat.organization}/${habitat.repository}/tree/${project.version}</url>
-	</scm>
 
 	<build>
 		<plugins>
