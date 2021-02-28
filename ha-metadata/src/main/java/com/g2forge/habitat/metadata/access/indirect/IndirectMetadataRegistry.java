@@ -1,5 +1,7 @@
 package com.g2forge.habitat.metadata.access.indirect;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.function.type.ITypeFunction1;
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
@@ -29,8 +31,8 @@ public class IndirectMetadataRegistry implements IMetadataRegistry {
 		@Override
 		public <_T> _T apply(Class<_T> type) {
 			try {
-				return type.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
+				return type.getConstructor().newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				throw new RuntimeException(String.format("Failed to instantiate %1$s using zero arguments new instance!", type), e);
 			}
 		}
