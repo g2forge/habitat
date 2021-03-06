@@ -20,13 +20,37 @@ import lombok.experimental.UtilityClass;
 @Helpers
 public class HTrace {
 	public static Method getMain() {
-		final StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-		return new SmartStackTraceElement(stackTrace[stackTrace.length - 1]).getMethod();
+		return getMethod(-1, 2);
 	}
 
 	public static Method getCaller() {
+		return getMethod(0, 2);
+	}
+
+	/**
+	 * Get the caller method relative to the method which calls this. {@code getCaller(0)} will return the method that calls this. {@code getCaller(1)} will
+	 * return the method that called that. Negative offsets start from the bottom of the stack, so {@code getCaller(-1)} will return the main method.
+	 * 
+	 * @param offset The offset relative to the caller of this method.
+	 * @return
+	 */
+	public static Method getMethod(int offset) {
+		return getMethod(offset, 2);
+	}
+
+	protected static Method getMethod(int offset, int invisible) {
 		final StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-		return new SmartStackTraceElement(stackTrace[1]).getMethod();
+
+		final int actual, pretendDepth = stackTrace.length - invisible;
+		if (offset >= 0) {
+			if (offset >= pretendDepth) throw new IllegalArgumentException();
+			actual = offset + invisible;
+		} else {
+			if (offset < -pretendDepth) throw new IllegalArgumentException();
+			actual = stackTrace.length + offset;
+		}
+
+		return new SmartStackTraceElement(stackTrace[actual]).getMethod();
 	}
 
 	protected static String getDescriptor(Method method) {
