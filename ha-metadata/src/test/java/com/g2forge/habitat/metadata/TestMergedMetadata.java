@@ -9,8 +9,6 @@ import org.junit.Test;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.habitat.metadata.IMetadata;
-import com.g2forge.habitat.metadata.Metadata;
 import com.g2forge.habitat.metadata.TestRepeatableAnnotationMetadata.Contained;
 import com.g2forge.habitat.metadata.TestRepeatableAnnotationMetadata.Container;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;

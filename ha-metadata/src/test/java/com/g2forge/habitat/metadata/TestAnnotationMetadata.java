@@ -6,8 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.habitat.metadata.IMetadata;
-import com.g2forge.habitat.metadata.Metadata;
 
 public class TestAnnotationMetadata {
 	@Retained("Hello")
