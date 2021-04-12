@@ -37,7 +37,7 @@
 			<name>The Apache License, Version 2.0</name>
 			<url>https://github.com/${habitat.organization}/${habitat.repository}/blob/${project.version}/LICENSE</url>
 		</license>
-	</licenses>v
+	</licenses>
 
 	<build>
 		<plugins>
