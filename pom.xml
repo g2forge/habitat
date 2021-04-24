@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.g2forge.habitat</groupId>
 		<artifactId>ha-project</artifactId>
-		<version>0.0.5-SNAPSHOT</version>
+		<version>0.0.5</version>
 		<relativePath>ha-project/pom.xml</relativePath>
 	</parent>
 
@@ -20,4 +20,8 @@
 		<module>ha-trace</module>
 		<module>ha-metadata</module>
 	</modules>
+
+  <scm>
+    <tag>0.0.5</tag>
+  </scm>
 </project>
