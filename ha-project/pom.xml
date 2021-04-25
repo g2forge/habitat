@@ -5,16 +5,16 @@
 	<groupId>com.g2forge.habitat</groupId>
 	<artifactId>ha-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.6-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
-		<version>0.0.17-SNAPSHOT</version>
+		<version>0.0.18-SNAPSHOT</version>
 	</parent>
 
 	<properties>
-		<alexandria.version>0.0.17-SNAPSHOT</alexandria.version>
+		<alexandria.version>0.0.18-SNAPSHOT</alexandria.version>
 
 		<habitat.organization>g2forge</habitat.organization>
 		<habitat.name>Habitat</habitat.name>
