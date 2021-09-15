@@ -14,14 +14,28 @@ import lombok.RequiredArgsConstructor;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class StackTraceAnalyzer implements IStackTraceAnalyzer {
+	protected final Object context;
+
 	protected final Throwable throwable;
 
 	@Getter(lazy = true)
 	@EqualsAndHashCode.Exclude
 	private final List<? extends ISmartStackTraceElement> elements = computeElements();
 
+	public StackTraceAnalyzer() {
+		this(new Throwable());
+	}
+
+	public StackTraceAnalyzer(Object context) {
+		this(context, new Throwable());
+	}
+
+	public StackTraceAnalyzer(Throwable throwable) {
+		this(throwable, throwable);
+	}
+
 	protected List<? extends ISmartStackTraceElement> computeElements() {
-		final ClassLoader classLoader = getThrowable().getClass().getClassLoader();
+		final ClassLoader classLoader = getContext().getClass().getClassLoader();
 		return Stream.of(getThrowable().getStackTrace()).map(e -> new SmartStackTraceElement(e, classLoader)).collect(Collectors.toList());
 	}
 

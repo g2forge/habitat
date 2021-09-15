@@ -2,6 +2,8 @@ package com.g2forge.habitat.trace;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +21,14 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 @Helpers
 public class HTrace {
-	public static Method getMain() {
-		return getMethod(-1, 2);
+	public static final String INITIALIZER = "<init>";
+
+	public static Executable getMain() {
+		return getExecutable(-1, 2);
 	}
 
-	public static Method getCaller() {
-		return getMethod(0, 2);
+	public static Executable getCaller() {
+		return getExecutable(0, 2);
 	}
 
 	/**
@@ -34,11 +38,11 @@ public class HTrace {
 	 * @param offset The offset relative to the caller of this method.
 	 * @return
 	 */
-	public static Method getMethod(int offset) {
-		return getMethod(offset, 2);
+	public static Executable getExecutable(int offset) {
+		return getExecutable(offset, 2);
 	}
 
-	protected static Method getMethod(int offset, int invisible) {
+	protected static Executable getExecutable(int offset, int invisible) {
 		final StackTraceElement[] stackTrace = new Throwable().getStackTrace();
 
 		final int actual, pretendDepth = stackTrace.length - invisible;
@@ -50,19 +54,26 @@ public class HTrace {
 			actual = stackTrace.length + offset;
 		}
 
-		return new SmartStackTraceElement(stackTrace[actual]).getMethod();
+		return new SmartStackTraceElement(stackTrace[actual]).getExecutable();
 	}
 
 	protected static String getDescriptor(Method method) {
+		return getDescriptor(method.getParameterTypes(), method.getReturnType());
+	}
+
+	protected static String getDescriptor(final Class<?>[] parameterTypes, final Class<?> returnType) {
 		final StringBuilder retVal = new StringBuilder();
 		retVal.append('(');
-		final Class<?>[] parameterTypes = method.getParameterTypes();
 		for (int i = 0; i < parameterTypes.length; i++) {
 			retVal.append(getName(parameterTypes[i]));
 		}
 		retVal.append(')');
-		retVal.append(getName(method.getReturnType()));
+		retVal.append(getName(returnType));
 		return retVal.toString();
+	}
+
+	protected static String getDescriptor(Constructor<?> constructor) {
+		return getDescriptor(constructor.getParameterTypes(), Void.TYPE);
 	}
 
 	protected static String getName(Class<?> type) {
@@ -82,7 +93,16 @@ public class HTrace {
 		return "L" + type.getName().replace('.', '/') + ";";
 	}
 
-	protected static Map<Integer, String> getLineMap(InputStream classData, String methodName) throws IOException {
+	/**
+	 * Get a map from source line numbers to method descriptors for all methods with the specified name. In short this lets one retrieve the descriptor for a
+	 * method and line number, which in turn can be used to get reflective access to that method.
+	 * 
+	 * @param classData An input stream for the class file.
+	 * @param methodName The name of the methods to map.
+	 * @return A map from line numbers to the method descriptor.
+	 * @throws IOException There was a problem reading the class file.
+	 */
+	protected static Map<Integer, String> getLine2MethodMap(InputStream classData, String methodName) throws IOException {
 		final Map<Integer, String> retVal = new HashMap<>();
 		final ClassReader reader = new ClassReader(classData);
 		reader.accept(new ClassVisitor(Opcodes.ASM7) {
@@ -93,6 +113,35 @@ public class HTrace {
 					@Override
 					public void visitLineNumber(int line, Label start) {
 						retVal.put(line, descriptor);
+					}
+				};
+			}
+		}, 0);
+		return retVal;
+	}
+
+	protected static Map<Integer, String> getLine2FieldMap(InputStream classData, String className) throws IOException {
+		final Map<Integer, String> retVal = new HashMap<>();
+		final ClassReader reader = new ClassReader(classData);
+		reader.accept(new ClassVisitor(Opcodes.ASM7) {
+			@Override
+			public MethodVisitor visitMethod(final int access, final String name, final String descriptor, final String signature, final String[] exceptions) {
+				if (!INITIALIZER.equals(name)) return null;
+				return new MethodVisitor(Opcodes.ASM7) {
+					protected int line = -1;
+
+					@Override
+					public void visitFieldInsn(final int opcode, final String owner, final String name, final String descriptor) {
+						if (opcode == Opcodes.PUTFIELD || opcode == Opcodes.PUTSTATIC) {
+							if (className.equals(owner)) {
+								retVal.put(line, name);
+							}
+						}
+					}
+
+					@Override
+					public void visitLineNumber(int line, Label start) {
+						this.line = line;
 					}
 				};
 			}
