@@ -82,6 +82,18 @@
 					<url>https://maven.pkg.github.com/g2forge/habitat</url>
 				</snapshotRepository>
 			</distributionManagement>
+			<repositories>
+				<repository>
+					<id>github</id>
+					<url>https://maven.pkg.github.com/g2forge/*</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
 		</profile>
 	</profiles>
 </project>
