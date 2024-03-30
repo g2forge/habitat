@@ -20,7 +20,6 @@ class MergedPredicate<T> implements IPredicate<T> {
 	@Override
 	public T get0() {
 		if (getType() instanceof IContainerPredicateType) {
-			@SuppressWarnings("unchecked")
 			final IContainerPredicateType<T, ?> cast = (IContainerPredicateType<T, ?>) getType();
 			return merge(cast);
 		} else {
