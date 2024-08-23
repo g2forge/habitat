@@ -19,5 +19,6 @@
 		<module>ha-project</module>
 		<module>ha-trace</module>
 		<module>ha-metadata</module>
+		<module>ha-plugin</module>
 	</modules>
 </project>
