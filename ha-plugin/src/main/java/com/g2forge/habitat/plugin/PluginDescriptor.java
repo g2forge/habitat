@@ -24,10 +24,22 @@ public class PluginDescriptor<P, B> {
 		protected final IConsumer2<? super T, ? super U> callback;
 	}
 
+	public static class PluginDescriptorBuilder<P, B> {
+		public <U> PluginDescriptorBuilder<P, B> dependency_(Class<U> type, IConsumer2<? super B, ? super U> callback) {
+			return dependency(new Dependency<>(type, callback));
+		}
+	}
+
+	public static <P> PluginDescriptor<P, P> create(Class<P> type, ISupplier<P> constructor) {
+		return PluginDescriptor.<P, P>builder().type(type).constructor(constructor).builder(IFunction1.identity()).build();
+	}
+
 	@Singular
 	protected final List<Dependency<B, ?>> dependencies;
 
 	protected final ISupplier<B> constructor;
 
 	protected final IFunction1<? super B, ? extends P> builder;
+
+	protected final Class<P> type;
 }
