@@ -3,12 +3,12 @@ package com.g2forge.habitat.plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.g2forge.alexandria.adt.collection.DStreamCollection;
-import com.g2forge.alexandria.adt.collection.ICollection;
 import com.g2forge.alexandria.adt.graph.v2.DiGraphBuilder;
 import com.g2forge.alexandria.adt.graph.v2.member.ASingleGraphMember;
 import com.g2forge.alexandria.annotations.note.Note;
 import com.g2forge.alexandria.annotations.note.NoteType;
+import com.g2forge.alexandria.collection.DStreamCollection;
+import com.g2forge.alexandria.collection.ICollection;
 import com.g2forge.alexandria.java.function.ISupplier;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.alexandria.service.BasicServiceLoader;

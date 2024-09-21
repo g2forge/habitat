@@ -1,8 +1,8 @@
 package com.g2forge.habitat.plugin;
 
-import com.g2forge.alexandria.adt.collection.CollectionCollection;
-import com.g2forge.alexandria.adt.collection.ICollection;
 import com.g2forge.alexandria.annotations.service.Service;
+import com.g2forge.alexandria.collection.CollectionCollection;
+import com.g2forge.alexandria.collection.ICollection;
 
 import lombok.Builder;
 import lombok.Data;
