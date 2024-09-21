@@ -2,7 +2,7 @@ package com.g2forge.habitat.metadata.type.implementations;
 
 import java.lang.annotation.Annotation;
 
-import com.g2forge.alexandria.adt.collection.strategy.ICollectionStrategy;
+import com.g2forge.alexandria.collection.strategy.ICollectionStrategy;
 import com.g2forge.habitat.metadata.annotations.ContainerAnnotationReflection;
 import com.g2forge.habitat.metadata.type.IMetadataTypeContext;
 import com.g2forge.habitat.metadata.type.predicate.IAnnotationPredicateType;

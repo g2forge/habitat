@@ -1,6 +1,6 @@
 package com.g2forge.habitat.metadata.access.merged;
 
-import com.g2forge.alexandria.adt.collection.collector.ICollectionBuilder;
+import com.g2forge.alexandria.collection.collector.ICollectionBuilder;
 import com.g2forge.habitat.metadata.type.predicate.IContainerPredicateType;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;

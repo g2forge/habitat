@@ -8,8 +8,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.g2forge.alexandria.adt.collection.collector.ICollectionBuilder;
-import com.g2forge.alexandria.adt.collection.strategy.ICollectionStrategy;
+import com.g2forge.alexandria.collection.collector.ICollectionBuilder;
+import com.g2forge.alexandria.collection.strategy.ICollectionStrategy;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 
 import lombok.AccessLevel;
