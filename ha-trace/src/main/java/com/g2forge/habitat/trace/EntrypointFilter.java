@@ -18,7 +18,8 @@ public enum EntrypointFilter {
 	ECLIPSE(new String[] { "org.eclipse.jdt.launching.internal." }, false),
 	JDK(new String[] { "jdk." }, false),
 	JUNIT(new String[] { "org.junit." }, true),
-	ECLIPSE_JUNIT(new String[] { "org.eclipse.jdt.internal.junit.", "org.eclipse.jdt.internal.junit4." }, true);
+	ECLIPSE_JUNIT(new String[] { "org.eclipse.jdt.internal.junit.", "org.eclipse.jdt.internal.junit4." }, true),
+	SUREFIRE_JUNIT(new String[] { "org.apache.maven.surefire." }, true);
 
 	public static final Set<EntrypointFilter> ALL = EnumSet.allOf(EntrypointFilter.class);
 
