@@ -71,6 +71,12 @@ public class TestHTrace {
 	}
 
 	@Test
+	public void entrypoint() {
+		final Executable entrypoint = HTrace.getEntrypoint(EntrypointFilter.ALL);
+		HAssert.assertEquals(getClass(), entrypoint.getDeclaringClass());
+	}
+
+	@Test
 	public void initializerInline() {
 		final List<? extends ISmartStackTraceElement> elements = new InitializerInline().field.getElements();
 		final Field field = elements.get(1).getInitialized();
