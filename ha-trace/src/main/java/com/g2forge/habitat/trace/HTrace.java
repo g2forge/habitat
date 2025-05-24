@@ -2,6 +2,7 @@ package com.g2forge.habitat.trace;
 
 import java.lang.reflect.Executable;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.g2forge.alexandria.java.core.marker.Helpers;
 
@@ -10,12 +11,26 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 @Helpers
 public class HTrace {
+	protected static ThrowableStackTraceAnalyzer createSTA() {
+		return new ThrowableStackTraceAnalyzer(new Throwable(), 2);
+	}
+
+	protected static Thread[] enumerateThreads() {
+		Thread[] threads = new Thread[(int) (Thread.activeCount() * 1.5)];
+		while (true) {
+			final int count = Thread.enumerate(threads);
+			if (count <= threads.length) break;
+			threads = new Thread[(int) (count * 1.5)];
+		}
+		return threads;
+	}
+
 	public static Executable getCaller() {
-		return new StackTraceAnalyzer().getCaller();
+		return createSTA().getCaller();
 	}
 
 	public static Executable getEntrypoint(Set<EntrypointFilter> filters) {
-		return new StackTraceAnalyzer().getEntrypoint(filters);
+		return createSTA().getEntrypoint(filters);
 	}
 
 	/**
@@ -26,10 +41,14 @@ public class HTrace {
 	 * @return
 	 */
 	public static Executable getExecutable(int offset) {
-		return new StackTraceAnalyzer().getExecutable(offset, 2);
+		return createSTA().getExecutable(offset, 2);
 	}
 
 	public static Executable getMain() {
-		return new StackTraceAnalyzer().getMain();
+		return createSTA().getMain();
+	}
+
+	public static Thread getMainThread() {
+		return Stream.of(enumerateThreads()).filter(t -> t.getId() == 1).findAny().get();
 	}
 }

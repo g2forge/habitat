@@ -11,7 +11,7 @@ import com.g2forge.alexandria.test.HAssert;
 public class TestHTrace {
 	public static class InitializerInline {
 		protected final int a = 0;
-		protected final IStackTraceAnalyzer field = new StackTraceAnalyzer(this);
+		protected final IStackTraceAnalyzer field = new ThrowableStackTraceAnalyzer(this);
 		protected final int b = 0;
 	}
 
@@ -22,7 +22,7 @@ public class TestHTrace {
 
 		public InitializerMethod() {
 			a = 0;
-			field = new StackTraceAnalyzer(this);
+			field = new ThrowableStackTraceAnalyzer(this);
 			b = 0;
 		}
 	}
@@ -31,7 +31,7 @@ public class TestHTrace {
 		protected final int a = 0;
 		// @formatter:off
 		protected final IStackTraceAnalyzer field =
-				new StackTraceAnalyzer(
+				new ThrowableStackTraceAnalyzer(
 						this);
 		// @formatter:on
 		protected final int b;
@@ -45,11 +45,11 @@ public class TestHTrace {
 		protected final IStackTraceAnalyzer field;
 
 		public InitializerMultiple(boolean b) {
-			field = new StackTraceAnalyzer(this);
+			field = new ThrowableStackTraceAnalyzer(this);
 		}
 
 		public InitializerMultiple(int x) {
-			field = new StackTraceAnalyzer(this);
+			field = new ThrowableStackTraceAnalyzer(this);
 		}
 	}
 
@@ -72,8 +72,9 @@ public class TestHTrace {
 
 	@Test
 	public void entrypoint() {
-		final Executable entrypoint = HTrace.getEntrypoint(EntrypointFilter.ALL);
-		HAssert.assertEquals(getClass(), entrypoint.getDeclaringClass());
+		final Executable executable = HTrace.getEntrypoint(EntrypointFilter.ALL);
+		HAssert.assertEquals("entrypoint", executable.getName());
+		HAssert.assertEquals(getClass(), executable.getDeclaringClass());
 	}
 
 	@Test
@@ -106,6 +107,11 @@ public class TestHTrace {
 		final Field field = elements.get(1).getInitialized();
 		HAssert.assertNotNull(field);
 		HAssert.assertEquals("field", field.getName());
+	}
+
+	@Test
+	public void mainThread() {
+		HAssert.assertEquals(Thread.currentThread(), HTrace.getMainThread());
 	}
 
 	@Test
