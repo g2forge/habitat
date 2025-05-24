@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
 
 public class TestHTrace {
@@ -111,7 +112,15 @@ public class TestHTrace {
 
 	@Test
 	public void mainThread() {
-		HAssert.assertEquals(Thread.currentThread(), HTrace.getMainThread());
+		final Thread mainThread = HTrace.getMainThread();
+		final Thread currentThread = Thread.currentThread();
+		// If the main thread is current, there's nothing more to test
+		if (mainThread != currentThread) {
+			// Main thread isn't current, so make sure we're starting form Thread.run
+			final Executable entrypoint = new ThreadStackTraceAnalyzer(currentThread, 0).getEntrypoint(HCollection.emptySet());
+			HAssert.assertEquals(Thread.class, entrypoint.getDeclaringClass());
+			HAssert.assertEquals("run", entrypoint.getName());
+		}
 	}
 
 	@Test
