@@ -16,10 +16,18 @@ public enum EntrypointFilter {
 	JROCKIT(new String[] { "jrockit." }, false),
 	OMG(new String[] { "org.omg." }, false),
 	ECLIPSE(new String[] { "org.eclipse.jdt.launching.internal." }, false),
-	JDK(new String[] { "jdk." }, false),
-	JUNIT(new String[] { "org.junit." }, true),
-	ECLIPSE_JUNIT(new String[] { "org.eclipse.jdt.internal.junit.", "org.eclipse.jdt.internal.junit4." }, true),
-	SUREFIRE_JUNIT(new String[] { "org.apache.maven.surefire." }, true);
+	INTELLIJ(new String[] { "com.intellij.rt." }, false),
+	JDK(new String[] { "jdk.", "jdk.internal." }, false),
+	YOURKIT(new String[] { "com.yourkit.runtime." }, false),
+	SPRING(new String[] { "com.springsource.loaded.", "org.springsource.loaded." }, false),
+	JAVASSIST(new String[] { "javassist." }, false),
+	APACHEWEBBEANS(new String[] { "org.apache.webbeans." }, false),
+	KOTLIN(new String[] { "kotlin.", "kotlinx." }, false),
+	ANDROID(new String[] { "androidx.compose.runtime." }, false),
+	MOCKITO(new String[] { "org.mockito." }, true),
+	JUNIT(new String[] { "org.junit.", "junit." }, true),
+	ECLIPSEJUNIT(new String[] { "org.eclipse.jdt.internal.junit.", "org.eclipse.jdt.internal.junit4." }, true),
+	SUREFIRE(new String[] { "org.apache.maven.surefire." }, true);
 
 	public static final Set<EntrypointFilter> ALL = EnumSet.allOf(EntrypointFilter.class);
 
