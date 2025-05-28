@@ -35,7 +35,7 @@ public abstract class AStackTraceAnalyzer implements IStackTraceAnalyzer {
 		Collections.reverse(limited);
 		final Set<String> prefixes = filters.stream().flatMap(filter -> Stream.of(filter.getPrefixes())).collect(Collectors.toSet());
 		final ISmartStackTraceElement element = limited.stream().filter(e -> {
-			final String packageName = e.getDeclaringClass().getPackageName();
+			final String packageName = e.getDeclaringClass().getName();
 			return !prefixes.stream().filter(prefix -> packageName.startsWith(prefix)).findAny().isPresent();
 		}).findFirst().orElse(null);
 		return (element != null) ? element.getExecutable() : null;
