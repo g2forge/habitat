@@ -27,7 +27,7 @@ public enum EntrypointFilter {
 	MOCKITO(new String[] { "org.mockito." }, true),
 	JUNIT(new String[] { "org.junit.", "junit." }, true),
 	ECLIPSEJUNIT(new String[] { "org.eclipse.jdt.internal.junit.", "org.eclipse.jdt.internal.junit4." }, true),
-	INTELLIJJUNIT(new String[] { "com.intellij.junit4." }, true),
+	INTELLIJJUNIT(new String[] { "com.intellij.junit4.", "com.intellij.junit5." }, true),
 	SUREFIRE(new String[] { "org.apache.maven.surefire." }, true);
 
 	public static final Set<EntrypointFilter> ALL = EnumSet.allOf(EntrypointFilter.class);
