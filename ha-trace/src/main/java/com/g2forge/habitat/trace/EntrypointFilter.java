@@ -26,7 +26,7 @@ public enum EntrypointFilter {
 	ANDROID(new String[] { "androidx.compose.runtime." }, false),
 	MOCKITO(new String[] { "org.mockito." }, true),
 	JUNIT(new String[] { "org.junit.", "junit." }, true),
-	ECLIPSEJUNIT(new String[] { "org.eclipse.jdt.internal.junit.", "org.eclipse.jdt.internal.junit4." }, true),
+	ECLIPSEJUNIT(new String[] { "org.eclipse.jdt.internal.junit.", "org.eclipse.jdt.internal.junit4.", "org.eclipse.jdt.internal.junit5." }, true),
 	INTELLIJJUNIT(new String[] { "com.intellij.junit4.", "com.intellij.junit5." }, true),
 	SUREFIRE(new String[] { "org.apache.maven.surefire." }, true);
 
