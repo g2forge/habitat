@@ -2,11 +2,13 @@ package com.g2forge.habitat.metadata.value.implementations;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.util.List;
 
 import com.g2forge.alexandria.java.reflect.annotations.ElementJavaAnnotations;
 import com.g2forge.alexandria.java.reflect.annotations.IJavaAnnotations;
 import com.g2forge.habitat.metadata.type.subject.IValueSubjectType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
+import com.g2forge.habitat.metadata.value.subject.IElementSubject;
 import com.g2forge.habitat.metadata.value.subject.IValueSubject;
 
 import lombok.Builder;
@@ -19,7 +21,7 @@ import lombok.ToString;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class ElementValueSubject implements IValueSubject {
+class ElementValueSubject implements IValueSubject {
 	@ToString.Exclude
 	protected final IMetadataValueContext context;
 
@@ -45,5 +47,10 @@ public class ElementValueSubject implements IValueSubject {
 		final Class<?> valueType = (value instanceof Annotation) ? ((Annotation) value).annotationType() : value.getClass();
 
 		return (IValueSubjectType) getContext().getTypeContext().subject(elementType, valueType);
+	}
+
+	@Override
+	public List<IElementSubject> getParents() {
+		return ElementSubject.getParents(this, getElement());
 	}
 }
