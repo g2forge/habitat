@@ -1,15 +1,16 @@
 package com.g2forge.habitat.trace;
 
-import java.lang.reflect.Executable;
 import java.util.List;
 import java.util.Set;
 
+import com.g2forge.habitat.trace.executable.IExecutable;
+
 public interface IStackTraceAnalyzer {
-	public Executable getCaller();
+	public IExecutable getCaller();
 
 	public List<? extends ISmartStackTraceElement> getElements();
 
-	public Executable getEntrypoint(Set<EntrypointFilter> filters);
+	public IExecutable getEntrypoint(Set<EntrypointFilter> filters);
 
-	public Executable getMain();
+	public IExecutable getMain();
 }

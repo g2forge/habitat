@@ -1,12 +1,13 @@
 package com.g2forge.habitat.trace;
 
-import java.lang.reflect.Executable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.g2forge.habitat.trace.executable.IExecutable;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,14 +23,14 @@ public abstract class AStackTraceAnalyzer implements IStackTraceAnalyzer {
 	}
 
 	@Override
-	public Executable getCaller() {
+	public IExecutable getCaller() {
 		return getExecutable(0, getInvisibles());
 	}
 
 	protected abstract ClassLoader getContextClassloader();
 	
 	@Override
-	public Executable getEntrypoint(Set<EntrypointFilter> filters) {
+	public IExecutable getEntrypoint(Set<EntrypointFilter> filters) {
 		final List<? extends ISmartStackTraceElement> elements = this.getElements();
 		final List<? extends ISmartStackTraceElement> limited = new ArrayList<>(elements.subList(getInvisibles(), elements.size()));
 		Collections.reverse(limited);
@@ -41,7 +42,7 @@ public abstract class AStackTraceAnalyzer implements IStackTraceAnalyzer {
 		return (element != null) ? element.getExecutable() : null;
 	}
 
-	protected Executable getExecutable(int offset, int invisible) {
+	protected IExecutable getExecutable(int offset, int invisible) {
 		final StackTraceElement[] stackTrace = getStackTrace();
 
 		final int actual, pretendDepth = stackTrace.length - invisible;
@@ -59,7 +60,7 @@ public abstract class AStackTraceAnalyzer implements IStackTraceAnalyzer {
 	protected abstract int getInvisibles();
 
 	@Override
-	public Executable getMain() {
+	public IExecutable getMain() {
 		return getExecutable(-1, getInvisibles());
 	}
 

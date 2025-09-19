@@ -1,6 +1,5 @@
 package com.g2forge.habitat.trace;
 
-import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -8,6 +7,7 @@ import org.junit.Test;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
+import com.g2forge.habitat.trace.executable.IExecutable;
 
 public class TestHTrace {
 	public static class InitializerInline {
@@ -55,25 +55,41 @@ public class TestHTrace {
 	}
 
 	public static class Multiple {
-		public Executable m(int[] i) {
+		public IExecutable m(int[] i) {
 			return HTrace.getCaller();
 		}
 
-		public Executable m(Integer[] i) {
+		public IExecutable m(Integer[] i) {
 			return HTrace.getCaller();
 		}
 	}
 
+	protected static final IExecutable staticEntrypointExecutable;
+
+	protected static final Throwable staticEntrypointThrowable;
+
+	static {
+		IExecutable _staticEntrypointExecutable = null;
+		Throwable _staticEntrypointThrowable = null;
+		try {
+			_staticEntrypointExecutable = HTrace.getEntrypoint(EntrypointFilter.ALL);
+		} catch (Throwable throwable) {
+			_staticEntrypointThrowable = throwable;
+		}
+		staticEntrypointExecutable = _staticEntrypointExecutable;
+		staticEntrypointThrowable = _staticEntrypointThrowable;
+	}
+
 	@Test
 	public void caller() {
-		final Executable executable = HTrace.getCaller();
+		final IExecutable executable = HTrace.getCaller();
 		HAssert.assertEquals("caller", executable.getName());
 		HAssert.assertEquals(getClass(), executable.getDeclaringClass());
 	}
 
 	@Test
 	public void entrypoint() {
-		final Executable executable = HTrace.getEntrypoint(EntrypointFilter.ALL);
+		final IExecutable executable = HTrace.getEntrypoint(EntrypointFilter.ALL);
 		HAssert.assertEquals("entrypoint", executable.getName());
 		HAssert.assertEquals(getClass(), executable.getDeclaringClass());
 	}
@@ -117,7 +133,7 @@ public class TestHTrace {
 		// If the main thread is current, there's nothing more to test
 		if (mainThread != currentThread) {
 			// Main thread isn't current, so make sure we're starting form Thread.run
-			final Executable entrypoint = new ThreadStackTraceAnalyzer(currentThread, 0).getEntrypoint(HCollection.emptySet());
+			final IExecutable entrypoint = new ThreadStackTraceAnalyzer(currentThread, 0).getEntrypoint(HCollection.emptySet());
 			HAssert.assertEquals(Thread.class, entrypoint.getDeclaringClass());
 			HAssert.assertEquals("run", entrypoint.getName());
 		}
@@ -125,11 +141,18 @@ public class TestHTrace {
 
 	@Test
 	public void object() {
-		HAssert.assertEquals(Integer.class, new Multiple().m((Integer[]) null).getParameterTypes()[0].getComponentType());
+		HAssert.assertEquals(Integer.class, new Multiple().m((Integer[]) null).getExecutable().getParameterTypes()[0].getComponentType());
 	}
 
 	@Test
 	public void primitive() {
-		HAssert.assertEquals(Integer.TYPE, new Multiple().m((int[]) null).getParameterTypes()[0].getComponentType());
+		HAssert.assertEquals(Integer.TYPE, new Multiple().m((int[]) null).getExecutable().getParameterTypes()[0].getComponentType());
+	}
+
+	@Test
+	public void staticEntrypoint() {
+		if (staticEntrypointThrowable != null) throw new AssertionError(staticEntrypointThrowable);
+		HAssert.assertNotNull(staticEntrypointExecutable);
+		HAssert.assertEquals(getClass(), staticEntrypointExecutable.getDeclaringClass());
 	}
 }

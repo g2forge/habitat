@@ -1,10 +1,10 @@
 package com.g2forge.habitat.trace;
 
-import java.lang.reflect.Executable;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import com.g2forge.alexandria.java.core.marker.Helpers;
+import com.g2forge.habitat.trace.executable.IExecutable;
 
 import lombok.experimental.UtilityClass;
 
@@ -25,11 +25,11 @@ public class HTrace {
 		return threads;
 	}
 
-	public static Executable getCaller() {
+	public static IExecutable getCaller() {
 		return createSTA().getCaller();
 	}
 
-	public static Executable getEntrypoint(Set<EntrypointFilter> filters) {
+	public static IExecutable getEntrypoint(Set<EntrypointFilter> filters) {
 		return createSTA().getEntrypoint(filters);
 	}
 
@@ -40,11 +40,11 @@ public class HTrace {
 	 * @param offset The offset relative to the caller of this method.
 	 * @return
 	 */
-	public static Executable getExecutable(int offset) {
+	public static IExecutable getExecutable(int offset) {
 		return createSTA().getExecutable(offset, 2);
 	}
 
-	public static Executable getMain() {
+	public static IExecutable getMain() {
 		return createSTA().getMain();
 	}
 
