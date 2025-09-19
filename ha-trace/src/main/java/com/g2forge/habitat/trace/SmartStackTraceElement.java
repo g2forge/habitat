@@ -2,7 +2,6 @@ package com.g2forge.habitat.trace;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -10,6 +9,9 @@ import java.util.stream.Stream;
 
 import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.core.helpers.HStream;
+import com.g2forge.habitat.trace.executable.ExecutableExecutable;
+import com.g2forge.habitat.trace.executable.IExecutable;
+import com.g2forge.habitat.trace.executable.StaticInitializerExecutable;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,7 +34,7 @@ public class SmartStackTraceElement implements ISmartStackTraceElement {
 	private final Class<?> declaringClass = computeDeclaringClass();
 
 	@Getter(lazy = true)
-	private final Executable executable = computeExecutable();
+	private final IExecutable executable = computeExecutable();
 
 	@Getter(lazy = true)
 	private final Field initialized = computeInitialized();
@@ -50,7 +52,7 @@ public class SmartStackTraceElement implements ISmartStackTraceElement {
 		}
 	}
 
-	protected Executable computeExecutable() {
+	protected IExecutable computeExecutable() {
 		// Use the line number to look up the method descriptor, that way we can handle overloaded methods correctly
 		final Map<Integer, String> lineMap;
 		try (final InputStream classStream = getClassLoader().getResourceAsStream(getClassName().replace('.', '/') + ".class")) {
@@ -61,16 +63,17 @@ public class SmartStackTraceElement implements ISmartStackTraceElement {
 		final String descriptor = lineMap.get(element.getLineNumber());
 
 		// Find the method with the correct name and descriptor
-		if (HTraceInternal.INITIALIZER.equals(element.getMethodName())) return HStream.findOne(Stream.of(getDeclaringClass().getDeclaredConstructors()).filter(c -> (descriptor == null) || HTraceInternal.getDescriptor(c).equals(descriptor)));
+		if (HTraceInternal.INITIALIZER.equals(element.getMethodName())) return new ExecutableExecutable(HStream.findOne(Stream.of(getDeclaringClass().getDeclaredConstructors()).filter(c -> (descriptor == null) || HTraceInternal.getDescriptor(c).equals(descriptor))));
+		else if ("<clinit>".equals(element.getMethodName())) return new StaticInitializerExecutable(getDeclaringClass());
 		else {
 			try {
-				return HStream.findOne(Stream.of(getDeclaringClass().getDeclaredMethods()).filter(m -> element.getMethodName().equals(m.getName())).filter(m -> (descriptor == null) || HTraceInternal.getDescriptor(m).equals(descriptor)));
+				return new ExecutableExecutable(HStream.findOne(Stream.of(getDeclaringClass().getDeclaredMethods()).filter(m -> element.getMethodName().equals(m.getName())).filter(m -> (descriptor == null) || HTraceInternal.getDescriptor(m).equals(descriptor))));
 			} catch (Throwable thowable) {
 				throw new RuntimeException(String.format("Failed to find method %1$s.%2$s with descriptor %3$s, possible methods are: %4$s", getDeclaringClass().getName(), element.getMethodName(), descriptor, Stream.of(getDeclaringClass().getDeclaredMethods()).map(Method::getName).collect(HCollector.joining(", ", ", & "))), thowable);
 			}
 		}
 	}
-
+	
 	protected Field computeInitialized() {
 		if (!HTraceInternal.INITIALIZER.equals(element.getMethodName())) return null;
 
