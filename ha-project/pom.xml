@@ -5,13 +5,13 @@
 	<groupId>com.g2forge.habitat</groupId>
 	<artifactId>ha-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.6-SNAPSHOT</version>
+	<version>0.0.6</version>
 
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
 		<version>0.0.19</version>
-		<relativePath></relativePath>
+		<relativePath />
 	</parent>
 
 	<properties>
@@ -43,7 +43,8 @@
 		<connection>scm:git:git://github.com/${habitat.organization}/${habitat.repository}.git</connection>
 		<developerConnection>scm:git:ssh://github.com:${habitat.organization}/${habitat.repository}.git</developerConnection>
 		<url>http://github.com/${habitat.organization}/${habitat.repository}/tree/${project.version}</url>
-	</scm>
+	  <tag>0.0.6</tag>
+  </scm>
 
 	<build>
 		<plugins>
