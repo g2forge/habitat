@@ -5,6 +5,7 @@ import com.g2forge.habitat.metadata.access.IApplicableMetadataAccessor;
 import com.g2forge.habitat.metadata.access.IMetadataAccessor;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.type.subject.ISubjectType;
+import com.g2forge.habitat.metadata.value.predicate.APredicate;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
 
@@ -29,12 +30,12 @@ class MixinMetadata implements IApplicableMetadataAccessor {
 
 	@Override
 	public <T> IPredicate<T> bind(ISubject subject, IPredicateType<T> predicateType) {
-		return new IPredicate<T>() {
+		return new APredicate<T>() {
 			@Override
-			public T get0() {
+			public T get() {
 				final IMetadataAccessor accessor = getAccessor();
 				if (accessor == null) return null;
-				return accessor.bind(subject, predicateType).get0();
+				return accessor.bind(subject, predicateType).get();
 			}
 
 			@Override

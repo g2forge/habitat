@@ -45,11 +45,11 @@ public class TestRepeatableAnnotationMetadata {
 
 		final IPredicate<Contained> contained = subject.bind(Contained.class);
 		HAssert.assertTrue(contained.isPresent());
-		HAssert.assertEquals("A", contained.get0().value());
+		HAssert.assertEquals("A", contained.get().value());
 
 		final IPredicate<Container> container = subject.bind(Container.class);
 		HAssert.assertTrue(container.isPresent());
-		HAssert.assertEquals(HCollection.asList("A"), Stream.of(container.get0().value()).map(Contained::value).collect(Collectors.toList()));
+		HAssert.assertEquals(HCollection.asList("A"), Stream.of(container.get().value()).map(Contained::value).collect(Collectors.toList()));
 	}
 
 	@Test
@@ -57,11 +57,11 @@ public class TestRepeatableAnnotationMetadata {
 		final ISubject subject = Metadata.getStandard().of(Annotated2.class);
 
 		final IPredicate<Contained> contained = subject.bind(Contained.class);
-		HAssert.assertNull(contained.get0());
+		HAssert.assertNull(contained.get());
 		HAssert.assertFalse(contained.isPresent());
 
 		final IPredicate<Container> container = subject.bind(Container.class);
 		HAssert.assertTrue(container.isPresent());
-		HAssert.assertEquals(HCollection.asList("A", "B"), Stream.of(container.get0().value()).map(Contained::value).collect(Collectors.toList()));
+		HAssert.assertEquals(HCollection.asList("A", "B"), Stream.of(container.get().value()).map(Contained::value).collect(Collectors.toList()));
 	}
 }

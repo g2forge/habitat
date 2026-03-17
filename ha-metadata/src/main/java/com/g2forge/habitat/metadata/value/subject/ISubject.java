@@ -24,7 +24,7 @@ public interface ISubject extends ITyped<ISubjectType>, IMetadataValue, IMetadat
 	}
 
 	public default <T> T get(IPredicateType<T> predicateType) {
-		return bind(predicateType).get0();
+		return bind(predicateType).get();
 	}
 
 	public default boolean isPresent(Class<?> type) {

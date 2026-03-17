@@ -42,7 +42,7 @@ public class MetadataTypeContext implements IMetadataTypeContext {
 
 		// Handle indirect predicate types
 		final IPredicate<IndirectMetadata> predicate = getMetadataSubjectFactory().of(type, null).bind(IndirectMetadata.class);
-		if (predicate.isPresent() && (predicate.get0() != null)) return new IndirectPredicateType<>(this, type, predicate.get0());
+		if (predicate.isPresent() && (predicate.get() != null)) return new IndirectPredicateType<>(this, type, predicate.get());
 
 		// Fall back to general predicate types
 		return new PredicateType<>(this, type);
