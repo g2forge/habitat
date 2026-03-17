@@ -55,62 +55,62 @@ public class TestInheritedAnnotationMetadata {
 	public void aContained() {
 		final IPredicate<Contained> contained = Metadata.getStandard().of(A.class).bind(Contained.class);
 		HAssert.assertTrue(contained.isPresent());
-		HAssert.assertEquals("AC", contained.get0().value());
+		HAssert.assertEquals("AC", contained.get().value());
 	}
 
 	@Test
 	public void aContainer() {
 		final IPredicate<Container> container = Metadata.getStandard().of(A.class).bind(Container.class);
 		HAssert.assertTrue(container.isPresent());
-		HAssert.assertEquals(HCollection.asList("AC"), Stream.of(container.get0().value()).map(Contained::value).collect(Collectors.toList()));
+		HAssert.assertEquals(HCollection.asList("AC"), Stream.of(container.get().value()).map(Contained::value).collect(Collectors.toList()));
 	}
 
 	@Test
 	public void aNonRepeatable() {
 		final IPredicate<NonRepeatable> nonRepeatable = Metadata.getStandard().of(A.class).bind(NonRepeatable.class);
 		HAssert.assertTrue(nonRepeatable.isPresent());
-		HAssert.assertEquals("ANR", nonRepeatable.get0().value());
+		HAssert.assertEquals("ANR", nonRepeatable.get().value());
 	}
 
 	@Test
 	public void bContained() {
 		final IPredicate<Contained> contained = Metadata.getStandard().of(B.class).bind(Contained.class);
 		HAssert.assertTrue(contained.isPresent());
-		HAssert.assertEquals("BC", contained.get0().value());
+		HAssert.assertEquals("BC", contained.get().value());
 	}
 
 	@Test
 	public void bContainer() {
 		final IPredicate<Container> container = Metadata.getStandard().of(B.class).bind(Container.class);
 		HAssert.assertTrue(container.isPresent());
-		HAssert.assertEquals(HCollection.asList("BC", "AC"), Stream.of(container.get0().value()).map(Contained::value).collect(Collectors.toList()));
+		HAssert.assertEquals(HCollection.asList("BC", "AC"), Stream.of(container.get().value()).map(Contained::value).collect(Collectors.toList()));
 	}
 
 	@Test
 	public void bNonRepeatable() {
 		final IPredicate<NonRepeatable> nonRepeatable = Metadata.getStandard().of(B.class).bind(NonRepeatable.class);
 		HAssert.assertTrue(nonRepeatable.isPresent());
-		HAssert.assertEquals("BNR", nonRepeatable.get0().value());
+		HAssert.assertEquals("BNR", nonRepeatable.get().value());
 	}
 
 	@Test
 	public void cContained() {
 		final IPredicate<Contained> contained = Metadata.getStandard().of(C.class).bind(Contained.class);
 		HAssert.assertTrue(contained.isPresent());
-		HAssert.assertEquals("AC", contained.get0().value());
+		HAssert.assertEquals("AC", contained.get().value());
 	}
 
 	@Test
 	public void cContainer() {
 		final IPredicate<Container> container = Metadata.getStandard().of(C.class).bind(Container.class);
 		HAssert.assertTrue(container.isPresent());
-		HAssert.assertEquals(HCollection.asList("AC"), Stream.of(container.get0().value()).map(Contained::value).collect(Collectors.toList()));
+		HAssert.assertEquals(HCollection.asList("AC"), Stream.of(container.get().value()).map(Contained::value).collect(Collectors.toList()));
 	}
 
 	@Test
 	public void cNonRepeatable() {
 		final IPredicate<NonRepeatable> nonRepeatable = Metadata.getStandard().of(C.class).bind(NonRepeatable.class);
 		HAssert.assertTrue(nonRepeatable.isPresent());
-		HAssert.assertEquals("ANR", nonRepeatable.get0().value());
+		HAssert.assertEquals("ANR", nonRepeatable.get().value());
 	}
 }

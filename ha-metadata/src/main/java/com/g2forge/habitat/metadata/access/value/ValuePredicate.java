@@ -8,6 +8,7 @@ import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.alexandria.java.function.ISupplier;
 import com.g2forge.habitat.metadata.type.predicate.IPredicateType;
 import com.g2forge.habitat.metadata.value.IMetadataValueContext;
+import com.g2forge.habitat.metadata.value.predicate.APredicate;
 import com.g2forge.habitat.metadata.value.predicate.IPredicate;
 import com.g2forge.habitat.metadata.value.subject.ISubject;
 import com.g2forge.habitat.metadata.value.subject.IValueSubject;
@@ -20,8 +21,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @RequiredArgsConstructor
-class ValuePredicate<T> implements IPredicate<T> {
+class ValuePredicate<T> extends APredicate<T> {
 	protected static <I, O> O first(IPredicate1<? super I> predicate, IFunction1<? super I, ? extends O> function, ISupplier<? extends O> noMatch, Iterable<? extends ISupplier<? extends I>> suppliers) {
 		for (ISupplier<? extends I> supplier : suppliers) {
 			final I value = supplier.get();
@@ -49,9 +51,9 @@ class ValuePredicate<T> implements IPredicate<T> {
 		suppliers.add(() -> context.of(subject.getType().getValue(), null).bind(predicateType));
 		if (subject.getElement() != null) suppliers.add(() -> context.of(subject.getElement(), null).bind(predicateType));
 
-		return first(IPredicate::isPresent, IFunction1.identity(), () -> new IPredicate<T>() {
+		return first(IPredicate::isPresent, IFunction1.identity(), () -> new APredicate<T>() {
 			@Override
-			public T get0() {
+			public T get() {
 				return null;
 			}
 
@@ -73,8 +75,8 @@ class ValuePredicate<T> implements IPredicate<T> {
 	}
 
 	@Override
-	public T get0() {
-		return getDelegate().get0();
+	public T get() {
+		return getDelegate().get();
 	}
 
 	@Override

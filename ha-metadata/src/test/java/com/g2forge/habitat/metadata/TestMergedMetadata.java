@@ -54,6 +54,6 @@ public class TestMergedMetadata {
 		final ISubject subject = metadata.merge(metadata.of(E.class), metadata.of(F.class));
 		final IPredicate<Container> predicate = subject.bind(Container.class);
 		HAssert.assertTrue(predicate.isPresent());
-		HAssert.assertEquals(HCollection.asList("A", "B"), Stream.of(predicate.get0().value()).map(Contained::value).collect(Collectors.toList()));
+		HAssert.assertEquals(HCollection.asList("A", "B"), Stream.of(predicate.get().value()).map(Contained::value).collect(Collectors.toList()));
 	}
 }

@@ -64,7 +64,7 @@ public class TestIndirectMetadata {
 	@Test
 	public void element() {
 		final IPredicate<Element> predicate = Metadata.getStandard().of(getClass()).bind(Element.class);
-		HAssert.assertEquals(getClass(), predicate.get0().getType());
+		HAssert.assertEquals(getClass(), predicate.get().getType());
 	}
 
 	@Test
@@ -79,6 +79,6 @@ public class TestIndirectMetadata {
 	@Test
 	public void value() {
 		final IPredicate<Value> predicate = Metadata.getStandard().of(getClass(), this).bind(Value.class);
-		HAssert.assertSame(this, predicate.get0().getValue());
+		HAssert.assertSame(this, predicate.get().getValue());
 	}
 }

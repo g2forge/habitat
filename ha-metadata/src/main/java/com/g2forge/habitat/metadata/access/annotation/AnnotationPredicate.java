@@ -12,7 +12,7 @@ import com.g2forge.alexandria.java.core.helpers.HTree;
 import com.g2forge.alexandria.java.reflect.annotations.IJavaAnnotations;
 import com.g2forge.habitat.metadata.annotations.ContainerAnnotationReflection;
 import com.g2forge.habitat.metadata.type.predicate.IAnnotationPredicateType;
-import com.g2forge.habitat.metadata.value.predicate.IPredicate;
+import com.g2forge.habitat.metadata.value.predicate.APredicate;
 import com.g2forge.habitat.metadata.value.subject.IElementSubject;
 
 import lombok.AccessLevel;
@@ -23,8 +23,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @RequiredArgsConstructor
-public class AnnotationPredicate<T extends Annotation> implements IPredicate<T> {
+public class AnnotationPredicate<T extends Annotation> extends APredicate<T> {
 	protected final IElementSubject subject;
 
 	protected final IAnnotationPredicateType<T> type;
@@ -35,7 +36,7 @@ public class AnnotationPredicate<T extends Annotation> implements IPredicate<T> 
 	private final ContainerAnnotationReflection<T, Annotation> containerAnnotationReflection = ContainerAnnotationReflection.createIfContainer(getType().getAnnotationType());
 
 	@Override
-	public T get0() {
+	public T get() {
 		final Class<T> annotationType = getType().getAnnotationType();
 		if (annotationType.isAnnotationPresent(Inherited.class)) {
 			// Inherited annotations
