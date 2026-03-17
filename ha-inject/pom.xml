@@ -2,24 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>habitat</artifactId>
-	<packaging>pom</packaging>
+	<artifactId>ha-inject</artifactId>
 
 	<parent>
 		<groupId>com.g2forge.habitat</groupId>
 		<artifactId>ha-project</artifactId>
 		<version>0.0.8-SNAPSHOT</version>
-		<relativePath>ha-project/pom.xml</relativePath>
+		<relativePath>../ha-project/pom.xml</relativePath>
 	</parent>
 
-	<name>Habitat</name>
-	<description>Habitat provides all the support a growing program needs.</description>
-
-	<modules>
-		<module>ha-project</module>
-		<module>ha-trace</module>
-		<module>ha-metadata</module>
-		<module>ha-plugin</module>
-		<module>ha-inject</module>
-	</modules>
+	<name>Habitat Inject</name>
+	<description>An API for value injection.</description>
 </project>
