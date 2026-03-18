@@ -10,12 +10,12 @@
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
-		<version>0.0.21-SNAPSHOT</version>
+		<version>0.0.21</version>
 		<relativePath />
 	</parent>
 
 	<properties>
-		<alexandria.version>0.0.21-SNAPSHOT</alexandria.version>
+		<alexandria.version>0.0.21</alexandria.version>
 
 		<habitat.organization>g2forge</habitat.organization>
 		<habitat.name>Habitat</habitat.name>
