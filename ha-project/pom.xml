@@ -5,17 +5,17 @@
 	<groupId>com.g2forge.habitat</groupId>
 	<artifactId>ha-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.8-SNAPSHOT</version>
+	<version>0.0.9-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
-		<version>0.0.21-SNAPSHOT</version>
+		<version>0.0.22-SNAPSHOT</version>
 		<relativePath />
 	</parent>
 
 	<properties>
-		<alexandria.version>0.0.21-SNAPSHOT</alexandria.version>
+		<alexandria.version>0.0.22-SNAPSHOT</alexandria.version>
 
 		<habitat.organization>g2forge</habitat.organization>
 		<habitat.name>Habitat</habitat.name>
